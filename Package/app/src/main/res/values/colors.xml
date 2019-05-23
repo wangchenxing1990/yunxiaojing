@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="grayAccent">#9f9f9f</color>
+    <color name="white_color">#ffffff</color>
+    <color name="black_color">#000000</color>
+    <color name="gray_color">#eeeeee</color>
+    <color name="line_color">#9f9f9f</color>
+    <color name="text_continue__color">#fc7373</color>
+    <color name="text_fale__color">#71c1ff</color>
+    <color name="num_keyboard_divider_color">#c5c5c5</color>
+    <color name="num_keyboard_text_color">#373737</color>
+    <color name="list_item_bg_press">#33000000</color>
+    <color name="gray_auxiliary_text_color">#747373</color>
+    <color name="home_tab_bg_color">#F8F8F8</color>
+    <color name="home_tab_text_color_normal">#929191</color>
+    <color name="home_tab_text_color_press">#fedf9e</color>
+    <color name="tab_text_color_normal">#96999c</color>
+    <color name="tab_text_color_press">#39bdcc</color>
+</resources>
