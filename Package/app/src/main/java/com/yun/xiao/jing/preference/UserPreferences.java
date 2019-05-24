@@ -3,6 +3,10 @@ package com.yun.xiao.jing.preference;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.provider.Settings;
+
+import com.yun.xiao.jing.ChessApp;
+
 /**
  * SharedPreferences集成工具类
  */
@@ -63,5 +67,7 @@ public class UserPreferences {
     public String getUserToken() {
         return sp_userinfo.getString(KEY_USER_TOKEN , "");
     }
-
+    public static String getDevice(){
+        return Settings.System.getString(ChessApp.sAppContext.getContentResolver(), Settings.System.ANDROID_ID);
+    }
 }

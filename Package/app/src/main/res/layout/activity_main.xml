@@ -10,6 +10,7 @@
         android:id="@+id/frame_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white_color"
         android:layout_marginBottom="@dimen/dp_48" />
 
     <com.yun.xiao.jing.defineView.HomeTabLayout
@@ -19,41 +20,6 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         app:itemCount="5"/>
-
-    <!--<com.htgames.nutspoker.hotupdate.view.DownloadProgressView-->
-        <!--android:id="@+id/mDownloadProgressView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--tools:visibility="visible"-->
-        <!--android:layout_marginTop="@dimen/action_bar_height"-->
-        <!--android:visibility="gone" />-->
-
-    <!--<View-->
-        <!--android:id="@+id/view_shadow"-->
-        <!--style="@style/view_shadow_style" />-->
-
-    <!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-        <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-        <!--android:id="@+id/circular_reveal_view_id"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:background="@mipmap/login_bg"-->
-        <!--android:orientation="vertical">-->
-
-        <!--<com.github.jorgecastillo.FillableLoader-->
-            <!--android:id="@+id/fillableLoader"-->
-            <!--android:layout_width="232dp"-->
-            <!--android:layout_height="91dp"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--android:layout_marginTop="190dp"-->
-            <!--app:fl_fillColor="@color/login_solid_color"-->
-            <!--app:fl_fillDuration="0"-->
-            <!--app:fl_fillPercentage="100"-->
-            <!--app:fl_originalHeight="165"-->
-            <!--app:fl_originalWidth="418"-->
-            <!--app:fl_strokeColor="@color/login_solid_color"-->
-            <!--app:fl_strokeDrawingDuration="0"/>-->
-    <!--</RelativeLayout>-->
 
     <!--<ViewStub-->
         <!--android:id="@+id/view_stub"-->

@@ -49,5 +49,9 @@ public class ApiCode {
     public static int USER_TIME_EXPIRED_UPDATE_FAILED=542;//token时间过期更新失败
 
 
+    public static int ACCOUNT_OFF_LINE_SUCCESSFULLY=500;//账号离线成功
+    public static int ACCOUNT_OFF_LINE_FAILED=501;//账号离线失败
+
+
     public static String PHONE="phone";
 }

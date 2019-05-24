@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/text_setting_color">
+
+    <RelativeLayout
+        android:id="@+id/relative_layout_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:background="@color/white_color">
+
+        <FrameLayout
+            android:id="@+id/frame_layout"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@mipmap/icon_left" />
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/text_super_time"
+            android:textColor="@color/black_color"
+            android:textSize="@dimen/sp_16" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relative_layout_about_us"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relative_layout_title"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_50"
+        android:layout_marginRight="@dimen/dp_20"
+        android:background="@drawable/background_white_setting">
+
+        <TextView
+            android:id="@+id/text_about_us"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/dp_20"
+            android:text="@string/text_setting_about_us"
+            android:textColor="@color/black_color"
+            android:textSize="@dimen/sp_18" />
+
+        <View
+            android:id="@+id/view_about_us"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@+id/text_about_us"
+            android:background="@color/black_color" />
+
+        <TextView
+            android:id="@+id/text_terms_service"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"
+            android:layout_below="@+id/view_about_us"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/dp_20"
+            android:text="@string/text_setting_terms_service"
+            android:textColor="@color/black_color"
+            android:textSize="@dimen/sp_18" />
+
+        <View
+            android:id="@+id/view_terms_service"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@+id/text_terms_service"
+            android:background="@color/black_color" />
+
+        <TextView
+            android:id="@+id/text_contanct_us"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"
+            android:layout_below="@+id/view_terms_service"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/dp_20"
+            android:text="@string/text_setting_contanct_us"
+            android:textColor="@color/black_color"
+            android:textSize="@dimen/sp_18" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:layout_below="@+id/relative_layout_about_us"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_40"
+        android:layout_marginRight="@dimen/dp_20"
+        android:background="@drawable/background_white_setting"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/text_log_out"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/text_setting_log_out"
+            android:textColor="@color/text_setting_log_out_color"
+            android:textSize="@dimen/sp_15" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_3"
+            android:layout_marginBottom="@dimen/dp_3"
+            android:background="@color/black_color" />
+
+        <TextView
+            android:id="@+id/text_delete"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/text_setting_delete"
+            android:textColor="@color/text_setting_delete_color"
+            android:textSize="@dimen/sp_15" />
+
+    </LinearLayout>
+</RelativeLayout>

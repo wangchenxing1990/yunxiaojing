@@ -90,8 +90,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.text_view_next:
-                Toast.makeText(ChessApp.sAppContext, "获取网络数据", Toast.LENGTH_SHORT).show();
-                initData();//获取网络数据
+//                Toast.makeText(ChessApp.sAppContext, "获取网络数据", Toast.LENGTH_SHORT).show();
+                AddUserHeaderImgActivity.start(this);
+//                initData();//获取网络数据
                 break;
         }
     }

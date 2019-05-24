@@ -4,10 +4,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.TextView;
+
+import com.yun.xiao.jing.R;
 
 public class FindFragment extends Fragment {
     private static Fragment fragment = null;
@@ -24,13 +28,20 @@ public class FindFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    private View rootView;
+    private RecyclerView recyclerView;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        TextView textView=new TextView(getActivity());
-        textView.setText("FindFragmentFindFragmentFindFragmentFindFragment");
-        textView.setTextSize(20);
-        return textView;
+        rootView = inflater.inflate(R.layout.fragment_find, container, false);
+        return rootView;
     }
 
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        recyclerView = rootView.findViewById(R.id.recycler_view);
+    }
 }

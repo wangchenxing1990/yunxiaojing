@@ -8,4 +8,7 @@ public class ApiConstants {
     public static String ADD_USER_HEADER_IMG="addUserHeaderImg";//上传用户头像
     public static String ADD_USER_PASSWORD="addUserPassword";//上传用户头像
     public static String CHECK_USER_LOGIN="checkUserLogin";//免登录检测用户信息
+    public static String USER_DELETE_ACCOUNT="userDeleteAccount";//免登录检测用户信息
+    public static String ACCOUNT_IS_OFF_LINE="AccountIsOffline";//免登录检测用户信息
+    public static String FILE_PROVIDER="com.yunxiaojing.fileprovider";
 }
