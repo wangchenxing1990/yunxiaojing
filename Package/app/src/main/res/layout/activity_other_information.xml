@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_color">
+
+
+    <FrameLayout
+        android:id="@+id/view_pager_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_170"
+        android:clickable="true"
+        android:foreground="@drawable/fg_horde">
+
+        <com.yun.xiao.jing.defineView.BannerViewPager
+            android:id="@+id/view_pager_auto_notice"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@mipmap/banner_default" />
+
+        <com.yun.xiao.jing.defineView.DiscoveryBannerIndicator
+            android:id="@+id/discovery_banner_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="4dp" />
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/iamge_view_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/sp_20"
+        android:layout_marginTop="@dimen/sp_10"
+        android:src="@mipmap/icon_back_finish" />
+
+    <ImageView
+        android:id="@+id/image_view_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_20"
+        android:src="@mipmap/icon_point_three" />
+
+    <TextView
+        android:id="@+id/text_view_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view_pager_container"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_10"
+        android:text="Rihanna"
+        android:textColor="@color/black_color"
+        android:textSize="@dimen/sp_15" />
+
+    <TextView
+        android:id="@+id/text_view_age"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view_pager_container"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_toRightOf="@+id/text_view_name"
+        android:background="@drawable/icon_female_background"
+        android:drawablePadding="@dimen/dp_2"
+        android:paddingLeft="@dimen/sp_6"
+        android:paddingTop="@dimen/dp_1"
+        android:paddingRight="@dimen/sp_6"
+        android:paddingBottom="@dimen/dp_1"
+        android:text="25"
+        android:textColor="@color/white_color"
+        android:textSize="@dimen/sp_12" />
+
+    <TextView
+        android:id="@+id/text_view_height"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_view_name"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@drawable/icon_female_background"
+        android:drawableLeft="@mipmap/icon_height"
+        android:drawablePadding="@dimen/sp_8"
+        android:paddingLeft="@dimen/sp_10"
+        android:paddingTop="@dimen/dp_2"
+        android:paddingRight="@dimen/sp_10"
+        android:paddingBottom="@dimen/dp_2"
+        android:text="163cm"
+        android:textColor="@color/white_color"
+        android:textSize="@dimen/sp_15" />
+
+    <TextView
+        android:id="@+id/text_view_bachelor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_view_name"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_toRightOf="@+id/text_view_height"
+        android:background="@drawable/icon_female_background"
+        android:drawableLeft="@mipmap/icon_record"
+        android:drawablePadding="@dimen/sp_8"
+        android:paddingLeft="@dimen/sp_10"
+        android:paddingTop="@dimen/dp_2"
+        android:paddingRight="@dimen/sp_10"
+        android:paddingBottom="@dimen/dp_2"
+        android:text="bachelor"
+        android:textColor="@color/white_color"
+        android:textSize="@dimen/sp_15" />
+
+    <TextView
+        android:id="@+id/text_view_some_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_view_name"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_toRightOf="@+id/text_view_bachelor"
+        android:background="@drawable/icon_female_background"
+        android:drawableLeft="@mipmap/icon_some_time"
+        android:drawablePadding="@dimen/sp_8"
+        android:paddingLeft="@dimen/sp_10"
+        android:paddingTop="@dimen/dp_2"
+        android:paddingRight="@dimen/sp_10"
+        android:paddingBottom="@dimen/dp_2"
+        android:text="sometimes"
+        android:textColor="@color/white_color"
+        android:textSize="@dimen/sp_15" />
+
+    <TextView
+        android:id="@+id/text_view_school"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_view_some_time"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:text="我毕业于..."
+        android:textColor="@color/black_color"
+        android:textSize="@dimen/sp_14" />
+
+    <TextView
+        android:id="@+id/text_school_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_view_school"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_2"
+        android:text="上海交通大学"
+        android:textColor="@color/black_color"
+        android:textSize="@dimen/sp_15"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/view_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:layout_below="@+id/text_school_name"
+        android:layout_marginTop="@dimen/dp_30"
+        android:background="@color/line_color" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_school_name"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/image_selection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@mipmap/icon_selection" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/image_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@mipmap/icon_message" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/mSwipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view_line"
+        android:layout_marginTop="@dimen/dp_20">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+</RelativeLayout>

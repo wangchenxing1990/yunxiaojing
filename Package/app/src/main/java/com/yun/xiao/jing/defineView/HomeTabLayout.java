@@ -60,6 +60,7 @@ public class HomeTabLayout extends LinearLayout {
                 homeImage.setId(R.id.item_data);
                 homeImage.setEnabled(false);
                 homeImage.setPadding(0, 0, 0, ScreenUtil.dp2px(context, 5));
+                homeImage.setVisibility(INVISIBLE);
                 frameLayout.addView(homeImage, homeLP);
                 addView(frameLayout, lp);
             } else {

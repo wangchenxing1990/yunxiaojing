@@ -1,4 +1,4 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_main"
@@ -21,10 +21,20 @@
         android:layout_gravity="bottom"
         app:itemCount="5"/>
 
+    <ImageView
+        android:id="@+id/image_view_home"
+        android:layout_width="48dip"
+        android:layout_height="48dip"
+        android:padding="@dimen/dp_4"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/home_tab_game"
+        />
+
     <!--<ViewStub-->
         <!--android:id="@+id/view_stub"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="match_parent"-->
         <!--android:layout_marginTop="@dimen/action_bar_height"-->
         <!--android:layout="@layout/layout_jelly_view"/>-->
-</merge>
+</RelativeLayout>

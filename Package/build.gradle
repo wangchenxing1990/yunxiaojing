@@ -13,7 +13,21 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
+ext {
+    compileSdkVersion = 28
+    buildToolsVersion = '28.0.3'
+    minSdkVersion = 15
+    targetSdkVersion = 28
+    appTargetSdkVersion = 28
+    versionCode = 1
+    versionName = '1.0'
+    sdkSourceCompatibility = 1.8
+    sdkTargetCompatibility = 1.8
+    appSourceCompatibility = 1.8
+    appTargetCompatibility = 1.8
+//    nimOutputDir = "nim-outputs-${versionName}-${getBuildTime()}-${getGitVersion()}"
 
+}
 allprojects {
     repositories {
         google()

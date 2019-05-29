@@ -379,7 +379,7 @@ public class RegisterAction extends BaseAction {
                     }else if(code == ApiCode.USER_TIME_EXPIRED_UPDATE_FAILED){
                         requestCallback.onFailed();
                     }else if(code == ApiCode.USER_TIME_EXPIRATION){
-                        requestCallback.onFailed();
+                        requestCallback.onResult(code, response, null);
                     }else if(code == ApiCode.USER_ALREADY_OFFLINE){
                         requestCallback.onFailed();
                     }

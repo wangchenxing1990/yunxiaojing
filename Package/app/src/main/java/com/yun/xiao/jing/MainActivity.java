@@ -2,13 +2,17 @@ package com.yun.xiao.jing;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.Image;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.netease.nimlib.plugin.interact.IMixPushInteract;
+import com.yun.xiao.jing.activity.PostInfoActivity;
 import com.yun.xiao.jing.defineView.HomeTabItem;
 import com.yun.xiao.jing.defineView.HomeTabLayout;
 import com.yun.xiao.jing.fragment.ConversationFragment;
@@ -24,18 +28,29 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(activity, MainActivity.class);
         activity.startActivity(intent);
     }
+
     private HomeTabItem discoveryTab;
     private HomeTabItem clubTab;
     private ImageView homeTab;
     private HomeTabItem recordTab;
     private HomeTabItem meTab;
+    private ImageView image_view_home;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        image_view_home = findViewById(R.id.image_view_home);
         initHomeBottomTab();
         initFragments();
+        image_view_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PostInfoActivity.start(MainActivity.this);
+            }
+        });
     }
+
     private void initFragments() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         if (conversationFragment == null) {
@@ -47,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 //        ft.commitAllowingStateLoss();
         mCurrentFragment = conversationFragment;
     }
+
     private Fragment conversationFragment;
     private Fragment findFragment;
     private Fragment settingFragment;
@@ -57,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
     final static String FRAGMENT_RECORD = "RecordFragment";
     final static String FRAGMENT_ME = "MeFragment";
     final static String FRAGMENT_RECENTCONTACTS = "RecentContactsFragment";
+
     private void initHomeBottomTab() {
 //        mOnlineStatusView = (OnlineStatusView) findViewById(R.id.mOnlineStatusView);
         View.OnClickListener clickListener = new View.OnClickListener() {
@@ -64,20 +81,22 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 discoveryTab.setEnabled(v == discoveryTab ? false : true);
                 clubTab.setEnabled(v == clubTab ? false : true);
-                homeTab.setEnabled(v == homeTab ? false : true);
+//                homeTab.setEnabled(v == homeTab ? false : true);
+//                homeTab.setEnabled(v == homeTab);
                 recordTab.setEnabled(v == recordTab ? false : true);
                 meTab.setEnabled(v == meTab ? false : true);
                 if (v == discoveryTab) {
                     if (conversationFragment == null) {
-                        conversationFragment =  ConversationFragment.newInstance();
+                        conversationFragment = ConversationFragment.newInstance();
                     }
                     changeFragment(conversationFragment, FRAGMENT_DISCOVERY);
                 } else if (v == clubTab) {
                     if (findFragment == null) {
-                        findFragment=  FindFragment.newInstance();
+                        findFragment = FindFragment.newInstance();
                     }
                     changeFragment(findFragment, FRAGMENT_RECENTCONTACTS);
                 } else if (v == homeTab) {
+                    Log.i("11111111111", "1441414444114");
 //                    if (mCurrentFragment != null && mGameFragment != null && mCurrentFragment == mGameFragment) {
 ////                        mGameFragment.onBackPressed();
 //                    } else {
@@ -86,20 +105,21 @@ public class MainActivity extends AppCompatActivity {
 //                        }
 //                        changeFragment(mGameFragment, FRAGMENT_GAME);
 //                    }
+//                    PostInfoActivity.start(MainActivity.this);
                 } else if (v == recordTab) {
                     if (settingFragment == null) {
-                        settingFragment =  SettingFragment.newInstance();
+                        settingFragment = SettingFragment.newInstance();
                     }
                     changeFragment(settingFragment, FRAGMENT_RECORD);
                 } else if (v == meTab) {
                     if (meFragment == null) {
-                        meFragment =  MeFragment.newInstance();
+                        meFragment = MeFragment.newInstance();
                     }
                     changeFragment(meFragment, FRAGMENT_ME);
                 }
             }
         };
-        HomeTabLayout home_tab_layout =  findViewById(R.id.home_tab_layout);
+        HomeTabLayout home_tab_layout = findViewById(R.id.home_tab_layout);
         //发现
         discoveryTab = (HomeTabItem) home_tab_layout.getChildAt(0);
         discoveryTab.setOnClickListener(clickListener);
@@ -107,9 +127,14 @@ public class MainActivity extends AppCompatActivity {
         clubTab = (HomeTabItem) home_tab_layout.getChildAt(1);
         clubTab.setOnClickListener(clickListener);
         //发表说说
-        homeTab =  home_tab_layout.findViewById(R.id.item_data);
+        homeTab = home_tab_layout.findViewById(R.id.item_data);
         homeTab.setImageResource(R.drawable.home_tab_game);
-        homeTab.setOnClickListener(clickListener);
+        homeTab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PostInfoActivity.start(MainActivity.this);
+            }
+        });
         //
         recordTab = (HomeTabItem) home_tab_layout.getChildAt(3);
         recordTab.setOnClickListener(clickListener);
@@ -125,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
         //设置
         meTab.setResources(R.string.more, R.drawable.home_tab_me);
     }
+
     public void changeFragment(Fragment fragment, String tag) {
         if (fragment == mCurrentFragment) {
             //如果选择的是当前的，不进行任何操作

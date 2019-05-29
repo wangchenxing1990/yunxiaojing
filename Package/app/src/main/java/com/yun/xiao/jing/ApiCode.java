@@ -49,9 +49,23 @@ public class ApiCode {
     public static int USER_TIME_EXPIRED_UPDATE_FAILED=542;//token时间过期更新失败
 
 
+    public static int THE_USER_LIST_SUCCESSFULLY=160;//获取用户列表成功
+
+
     public static int ACCOUNT_OFF_LINE_SUCCESSFULLY=500;//账号离线成功
+    public static int PASSWORD_IS_CORRECT=530;//密码正确
     public static int ACCOUNT_OFF_LINE_FAILED=501;//账号离线失败
 
+
+    public static int HOME_PAGE_BROWSING_SUCCESSFULLY=600;//主页浏览记录成功
+    public static int HOME_PAGE_USER_PAGE_VIEWS=610;//用户主页浏览总量
+    public static int PERSONAL_HOME_PAGE_SUCCESSFULLY=320;//个人主页信息
+
+    public static int PERSONAL_INFORMATION_SUCCESSFULLY=370;//用户主页浏览总量
+    public static int TOTAL_STATISTICS=630;//用户主页浏览总量
+    public static int HOME_BROWSING_IS_SUCCESSFULLY=620;//用户主页浏览总量
+    public static int DYNAMIC_LIST_DATA=230;//用户主页浏览总量
+    public static int FOUCS_ON_SUCCESS=200;//关注用户
 
     public static String PHONE="phone";
 }

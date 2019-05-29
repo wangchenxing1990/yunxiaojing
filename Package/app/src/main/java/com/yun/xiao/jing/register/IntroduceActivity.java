@@ -31,6 +31,7 @@ import com.yun.xiao.jing.preference.UserPreferences;
 import com.yun.xiao.jing.util.DateTool;
 import com.yun.xiao.jing.util.LogUtil;
 
+import java.lang.ref.WeakReference;
 import java.util.Date;
 
 public class IntroduceActivity extends AppCompatActivity implements View.OnClickListener {
@@ -148,7 +149,6 @@ public class IntroduceActivity extends AppCompatActivity implements View.OnClick
 
     private void updateIntroduceInformation() {
         String username = edit_text.getText().toString().trim();
-        String birthday = "1990-5-20";
         if (TextUtils.isEmpty(username)) {
             Toast.makeText(ChessApp.sAppContext, R.string.input_name_info, Toast.LENGTH_SHORT).show();
             return;

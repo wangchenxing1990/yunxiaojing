@@ -19,6 +19,7 @@ public class UserPreferences {
     private static final String KEY_USER_COUNTRY_CODE = "country_code";
     private static final String KEY_USER_TOKEN = "token";
     private static final String KEY_USER_ID = "uid";
+    private static final String KEY_USER_ACCOUNT = "account";
     //余额
     private static final String KEY_USER_COINS = "coins";
     private static final String KEY_USER_DIAMOND = "diamond";
@@ -41,20 +42,25 @@ public class UserPreferences {
         return mPreferences;
     }
 
-    /** 设置用户手机号 */
+    /**
+     * 设置用户手机号
+     */
     public void setUserPhone(String phnoe) {
         Editor edit = sp_userinfo.edit();
         edit.putString(KEY_USER_PHONE, phnoe);
         edit.apply();
     }
 
-    /** 设置用户手机号 */
+    /**
+     * 设置用户手机号
+     */
     public String getUserPhone() {
-        return sp_userinfo.getString(KEY_USER_PHONE , "");
+        return sp_userinfo.getString(KEY_USER_PHONE, "");
     }
 
     /**
      * 设置用户token
+     *
      * @param token
      */
     public void setUserToken(String token) {
@@ -63,11 +69,24 @@ public class UserPreferences {
         edit.apply();
     }
 
-    /** 获取用户token */
+    /**
+     * 获取用户token
+     */
     public String getUserToken() {
-        return sp_userinfo.getString(KEY_USER_TOKEN , "");
+        return sp_userinfo.getString(KEY_USER_TOKEN, "");
     }
-    public static String getDevice(){
+
+    public static String getDevice() {
         return Settings.System.getString(ChessApp.sAppContext.getContentResolver(), Settings.System.ANDROID_ID);
+    }
+
+    public String getUserAccount() {
+        return sp_userinfo.getString(KEY_USER_ACCOUNT, "");
+    }
+
+    public void setAccount(String account) {
+        Editor edit = sp_userinfo.edit();
+        edit.putString(KEY_USER_TOKEN, account);
+        edit.apply();
     }
 }

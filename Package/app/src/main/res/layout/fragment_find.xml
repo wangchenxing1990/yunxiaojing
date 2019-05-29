@@ -1,23 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white_color">
+    android:background="@color/view_line_background"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/text_fragment_find"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        style="@style/text_title_style"
-        android:layout_marginTop="@dimen/dp_20"
-        android:text="@string/text_square"
-         />
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_below="@+id/text_fragment_find"
-        android:layout_marginTop="@dimen/dp_10"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="@dimen/dp_48"
+        android:background="@color/white_color">
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/image_view_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_20"
+            android:src="@mipmap/icon_find_left" />
+
+        <ImageView
+            android:id="@+id/image_view_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_25"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_toRightOf="@+id/image_view_left"
+            android:src="@mipmap/icon_select_normal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Finding"
+            android:textColor="@color/text_continue__color"
+            android:textSize="@dimen/sp_16" />
+
+        <ImageView
+            android:id="@+id/image_view_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_25"
+            android:src="@mipmap/icon_select_normal" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_2"
+        android:layout_below="@+id/image_view_left"
+        android:background="@color/color_line_ec" />
+
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/mSwipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/view_line">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_10" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</LinearLayout>
