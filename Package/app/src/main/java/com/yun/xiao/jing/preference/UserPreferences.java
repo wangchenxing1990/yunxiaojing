@@ -30,6 +30,8 @@ public class UserPreferences {
     static final String KEY_USER_LEVEL = "level";//100表示能够组局钻石赛
     //第几次修改昵称
     static final String KEY_NICKNAME_TIMES = "nickname_times";
+    static final String KEY_USER_IM_ACCOUNT = "imaccount";
+    static final String KEY_USER_IM_TOKEN = "imtoken";
 
     private UserPreferences(Context context) {
         sp_userinfo = context.getSharedPreferences(USERINFO, Context.MODE_PRIVATE);
@@ -88,5 +90,25 @@ public class UserPreferences {
         Editor edit = sp_userinfo.edit();
         edit.putString(KEY_USER_TOKEN, account);
         edit.apply();
+    }
+
+    public void setUserIMToken(String imtoken) {
+        Editor edit = sp_userinfo.edit();
+        edit.putString(KEY_USER_IM_TOKEN, imtoken);
+        edit.apply();
+    }
+
+    public void setUserIMAccount(String imaccount) {
+        Editor edit = sp_userinfo.edit();
+        edit.putString(KEY_USER_IM_ACCOUNT, imaccount);
+        edit.apply();
+    }
+
+    public String getKeyIMAccount() {
+        return sp_userinfo.getString(KEY_USER_IM_ACCOUNT, "");
+    }
+
+    public String getKeyImToken() {
+        return sp_userinfo.getString(KEY_USER_IM_TOKEN, "");
     }
 }

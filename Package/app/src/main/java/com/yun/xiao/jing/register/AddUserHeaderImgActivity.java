@@ -73,6 +73,7 @@ public class AddUserHeaderImgActivity extends AppCompatActivity implements View.
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ChessApp.addActivity(this);
         mAction = new RegisterAction(this, null);
         userToken = UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
         device = UserPreferences.getDevice();
@@ -390,22 +391,21 @@ public class AddUserHeaderImgActivity extends AppCompatActivity implements View.
 
     }
 
-    private static class MyHandler extends Handler{
-        private WeakReference<AddUserHeaderImgActivity> mActivity;
-        public MyHandler(AddUserHeaderImgActivity activity){
-             mActivity= new WeakReference<>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case 133:
-//                    IntroduceActivity.start;
-                    break;
-            }
-        }
-    }
+//    private static class MyHandler extends Handler{
+//        private WeakReference<AddUserHeaderImgActivity> mActivity;
+//        public MyHandler(AddUserHeaderImgActivity activity){
+//             mActivity= new WeakReference<>(activity);
+//        }
+//
+//        @Override
+//        public void handleMessage(Message msg) {
+//            super.handleMessage(msg);
+//            switch (msg.what) {
+//                case 133:
+//                    break;
+//            }
+//        }
+//    }
 
     private Handler handler = new Handler() {
         @Override

@@ -122,10 +122,10 @@ public class HeadImageView extends CircleImageView {
                 .placeholder(defaultResId)
                 .error(defaultResId)
                 .override(thumbSize, thumbSize);
-        Glide.with(getContext().getApplicationContext()).asBitmap()
-                .load(url)
-                .apply(requestOptions)
-                .into(this);
+//        Glide.with(getContext().getApplicationContext()).asBitmap()
+//                .load(url)
+//                .apply(requestOptions)
+//                .into(this);
     }
 
     /**

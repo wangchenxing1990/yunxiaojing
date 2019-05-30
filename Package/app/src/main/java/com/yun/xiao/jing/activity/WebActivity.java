@@ -15,6 +15,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 
+import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.R;
 
 public class WebActivity extends AppCompatActivity implements View.OnClickListener {
@@ -31,6 +32,7 @@ public class WebActivity extends AppCompatActivity implements View.OnClickListen
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ChessApp.addActivity(this);
         url = getIntent().getStringExtra("url");
         setContentView(R.layout.activity_web);
         frame_layout = findViewById(R.id.frame_layout);

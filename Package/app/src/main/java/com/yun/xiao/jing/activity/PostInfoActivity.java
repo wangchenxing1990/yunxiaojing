@@ -15,6 +15,7 @@ import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.R;
 import com.yun.xiao.jing.adapter.GridImageAdapter;
 import com.yun.xiao.jing.api.FullyGridLayoutManager;
@@ -33,6 +34,7 @@ public class PostInfoActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ChessApp.addActivity(this);
         setContentView(R.layout.activity_post_info);
         initView();
     }

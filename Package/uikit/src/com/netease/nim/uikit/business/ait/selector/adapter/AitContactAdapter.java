@@ -22,7 +22,7 @@ public class AitContactAdapter extends BaseMultiItemQuickAdapter<AitContactItem,
     public AitContactAdapter(RecyclerView recyclerView, List<AitContactItem> data) {
         super(recyclerView, data);
         addItemType(ItemType.SIMPLE_LABEL, R.layout.nim_ait_contact_label_item, SimpleLabelViewHolder.class);
-        addItemType(ItemType.ROBOT, R.layout.nim_ait_contact_robot_item, RobotViewHolder.class);
+//        addItemType(ItemType.ROBOT, R.layout.nim_ait_contact_robot_item, RobotViewHolder.class);
         addItemType(ItemType.TEAM_MEMBER, R.layout.nim_ait_contact_team_member_item, TeamMemberViewHolder.class);
     }
 

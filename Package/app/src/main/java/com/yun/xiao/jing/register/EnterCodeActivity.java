@@ -39,6 +39,7 @@ public class EnterCodeActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ChessApp.addActivity(this);
         mAction = new RegisterAction(this, null);
         phone = getIntent().getStringExtra(ApiCode.PHONE);
         setContentView(R.layout.activity_enter_code);

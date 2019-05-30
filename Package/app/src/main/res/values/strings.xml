@@ -39,7 +39,8 @@
     <string name="input_name_info">请输入你的昵称</string>
     <string name="select_sex">请选择性别</string>
     <string name="select_birthday">请选择出生日期</string>
-
+    <string name="start_session_record">我发起了白板演示</string>
+    <string name="session_end_record">白板演示已结束</string>
 
     <string name="text_phone_no_empty">手机号码不能为空</string>
     <string name="text_device_no_empty">手机设备不能为空</string>
@@ -54,4 +55,22 @@
     <string name="main_tab_record">生涯</string>
     <string name="main_tab_me">我</string>
     <string name="more">更多</string>
+    <string name="message_p2p_clear_tips">确定清空点对点历史消息?</string>
+    <string name="sure_keep_roam">确认单保留漫游</string>
+    <string name="message_info">聊天信息</string>
+    <string name="message_history_query">云消息记录</string>
+    <string name="message_clear">清空本地消息记录</string>
+    <string name="message_p2p_clear">清空点对点历史消息</string>
+    <string name="input_panel_file">发送文件</string>
+    <string name="readed">已读</string>
+    <string name="unread">未读</string>
+    <string name="ack_msg_info">消息已读详情</string>
+    <string name="create_normal_team">创建讨论组</string>
+    <string name="msg_notice">消息提醒</string>
+    <string name="input_panel_ack_msg">已读回执</string>
+    <string name="input_panel_guess">猜 拳</string>
+    <string name="input_panel_RTS">白 板</string>
+    <string name="input_panel_snapchat">阅后即焚</string>
+    <string name="input_panel_tip">Tip</string>
+    <string name="send_ack_msg">发送已读回执消息</string>
 </resources>

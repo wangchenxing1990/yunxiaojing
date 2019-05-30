@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.R;
 
 import java.nio.channels.InterruptedByTimeoutException;
@@ -18,6 +19,7 @@ public class EditInfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ChessApp.addActivity(this);
         setContentView(R.layout.activity_edit_info);
     }
 }

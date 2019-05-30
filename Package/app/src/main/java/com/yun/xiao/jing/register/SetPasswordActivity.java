@@ -13,12 +13,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.auth.AuthService;
+import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.MainActivity;
 import com.yun.xiao.jing.R;
 import com.yun.xiao.jing.action.RegisterAction;
 import com.yun.xiao.jing.interfaces.RequestCallback;
 import com.yun.xiao.jing.preference.UserPreferences;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class SetPasswordActivity extends AppCompatActivity implements View.OnClickListener {
     public static void start(Activity activity) {
@@ -32,6 +38,7 @@ public class SetPasswordActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAction = new RegisterAction(this, null);
+        ChessApp.addActivity(this);
         setContentView(R.layout.activity_set_password);
         initView();
     }
@@ -70,13 +77,13 @@ public class SetPasswordActivity extends AppCompatActivity implements View.OnCli
             Toast.makeText(ChessApp.sAppContext, R.string.password_no_passwordCheck, Toast.LENGTH_SHORT).show();
             return;
         }
-        String token= UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
+        String token = UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
         String device = Settings.System.getString(getContentResolver(), Settings.System.ANDROID_ID);
-        Log.i("TAGTaG","token::"+token+"device:::"+device);
+        Log.i("TAGTaG", "token::" + token + "device:::" + device);
         mAction.updatePasswordInfo(token, device, passwordCheck, new RequestCallback() {
             @Override
             public void onResult(int code, String result, Throwable var3) {
-                MainActivity.start(SetPasswordActivity.this);
+                parseData(result);
             }
 
             @Override
@@ -84,5 +91,35 @@ public class SetPasswordActivity extends AppCompatActivity implements View.OnCli
 
             }
         });
+    }
+
+    private void parseData(String result) {
+            String imAccount = UserPreferences.getInstance(ChessApp.sAppContext).getKeyIMAccount();
+            String imToken = UserPreferences.getInstance(ChessApp.sAppContext).getKeyImToken();
+            loginNeteaseNim(imAccount, imToken);
+    }
+
+    private void loginNeteaseNim(String imaccount, String imtoken) {
+        LoginInfo loginInfo = new LoginInfo(imaccount, imtoken);
+        com.netease.nimlib.sdk.RequestCallback<LoginInfo> callback = new com.netease.nimlib.sdk.RequestCallback<LoginInfo>() {
+
+            @Override
+            public void onSuccess(LoginInfo loginInfo) {
+                MainActivity.start(SetPasswordActivity.this);
+                ChessApp.removeActivity(SetPasswordActivity.this);
+                finish();
+            }
+
+            @Override
+            public void onFailed(int i) {
+
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+
+            }
+        };
+        NIMClient.getService(AuthService.class).login(loginInfo).setCallback(callback);
     }
 }

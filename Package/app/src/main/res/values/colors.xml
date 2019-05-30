@@ -35,4 +35,6 @@
     <color name="color_text_cc">#cccccc</color>
     <color name="color_text_c4">#c4c4c4</color>
     <color name="color_text_33">#333333</color>
+    <color name="color_238fea">#238EFA</color>
+    <color name="action_bar_tittle_color_555555">#555555</color>
 </resources>

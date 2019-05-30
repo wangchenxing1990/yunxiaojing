@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.netease.nim.uikit.api.NimUIKit;
 import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.FindInfoBean;
 import com.yun.xiao.jing.InfoBeanTwo;
@@ -93,6 +94,7 @@ public class OtherInformationActivity extends AppCompatActivity implements View.
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ChessApp.addActivity(this);
         token = getIntent().getStringExtra("token");
         findAction = new FindAction(this, null);
         userToken = UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
@@ -175,7 +177,7 @@ public class OtherInformationActivity extends AppCompatActivity implements View.
             image_selection.setImageResource(R.mipmap.icon_selection);
         } else if (infoBeanTwo.getInfo().getFocus_on().equals("yes")) {
             image_message.setImageResource(R.mipmap.icon_sellection_other);
-            image_message.setClickable(false);
+//            image_message.setClickable(false);
         }
         for (int i = 0; i < infoBeanTwo.getInfo().getImages().size(); i++) {
             BannerItem item = new BannerItem();
@@ -232,6 +234,7 @@ public class OtherInformationActivity extends AppCompatActivity implements View.
             case R.id.image_view_right:
                 break;
             case R.id.image_message:
+                NimUIKit.startP2PSession(this, infoBeanTwo.getInfo().getImaccount());
                 break;
             case R.id.image_selection://点击收藏
                 Toast.makeText(OtherInformationActivity.this,"ssssss", Toast.LENGTH_SHORT).show();

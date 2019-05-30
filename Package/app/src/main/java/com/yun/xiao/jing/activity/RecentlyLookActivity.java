@@ -38,6 +38,7 @@ public class RecentlyLookActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ChessApp.addActivity(this);
         findAction = new FindAction(this, null);
         userToken = UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
         device = UserPreferences.getDevice();

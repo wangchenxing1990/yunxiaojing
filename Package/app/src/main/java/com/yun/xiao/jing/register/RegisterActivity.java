@@ -12,6 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.auth.AuthService;
+import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.yun.xiao.jing.ApiCode;
 import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.MainActivity;
@@ -34,18 +37,16 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ChessApp.addActivity(this);
         mAction = new RegisterAction(this, null);
         token = UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
         device = Settings.System.getString(getContentResolver(), Settings.System.ANDROID_ID);
         setContentView(R.layout.activity_register);
         initView();
         if (!TextUtils.isEmpty(token)) {//没有token//检测用户是否登录
-//            initData();
             checkUserLogin();
         }
-//        else {//有token免登录检测用户信息
-//            checkUserLogin();
-//        }
+
     }
 
     private void checkUserLogin() {
@@ -59,10 +60,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         JSONObject jsonObject = new JSONObject(result);
                         JSONObject jsonInfo = jsonObject.getJSONObject("info");
                         String token = jsonInfo.getString("token");
-                        UserPreferences.getInstance(ChessApp.sAppContext).setUserToken(token);
                         String headImg = jsonInfo.getString("headimg");
                         String username = jsonInfo.getString("username");
                         String password = jsonInfo.getString("password");
+                        String imtoken = jsonInfo.getString("imtoken");
+                        String imaccount = jsonInfo.getString("imaccount");
+
+                        UserPreferences.getInstance(ChessApp.sAppContext).setUserToken(token);
+                        UserPreferences.getInstance(ChessApp.sAppContext).setUserIMToken(imtoken);
+                        UserPreferences.getInstance(ChessApp.sAppContext).setUserIMAccount(imaccount);
                         if (TextUtils.isEmpty(headImg)) {
                             AddUserHeaderImgActivity.start(RegisterActivity.this);
                         } else if (TextUtils.isEmpty(username)) {
@@ -70,8 +76,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         } else if (TextUtils.isEmpty(password)) {
                             SetPasswordActivity.start(RegisterActivity.this);
                         } else {
-                            MainActivity.start(RegisterActivity.this);
-                            finish();
+                            loginNeteaseNim(imaccount, imtoken);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -86,12 +91,34 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         });
     }
 
+    private void loginNeteaseNim(String imaccount, String imtoken) {
+        LoginInfo loginInfo = new LoginInfo(imaccount, imtoken);
+        com.netease.nimlib.sdk.RequestCallback<LoginInfo> call = new com.netease.nimlib.sdk.RequestCallback<LoginInfo>() {
+            @Override
+            public void onSuccess(LoginInfo loginInfo) {
+                MainActivity.start(RegisterActivity.this);
+                finish();
+            }
+
+            @Override
+            public void onFailed(int i) {
+
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+
+            }
+        };
+        NIMClient.getService(AuthService.class).login(loginInfo).setCallback(call);
+    }
+
     /**
      * 检测用户登录
      */
     private void initData() {
         final String phone = edit_text_input.getText().toString().trim();
-        String id = Settings.System.getString(getContentResolver(), Settings.System.ANDROID_ID);
+        String id = UserPreferences.getDevice();
 
         mAction.getRegisterCode(phone, id, "86", new RequestCallback() {
             @Override
@@ -119,6 +146,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             SetPasswordActivity.start(RegisterActivity.this);
                         } else {
                             MainActivity.start(RegisterActivity.this);
+                            ChessApp.removeActivity(RegisterActivity.this);
                             finish();
                         }
                     } catch (JSONException e) {

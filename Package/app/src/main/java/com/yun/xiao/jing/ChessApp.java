@@ -1,13 +1,19 @@
 package com.yun.xiao.jing;
 
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.android.volley.RequestQueue;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.api.UIKitOptions;
+import com.netease.nim.uikit.business.contact.core.query.PinYin;
+import com.netease.nim.uikit.business.contact.core.util.ContactHelper;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.SDKOptions;
 import com.netease.nimlib.sdk.StatusBarNotificationConfig;
@@ -15,6 +21,7 @@ import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.uinfo.UserInfoProvider;
 import com.netease.nimlib.sdk.uinfo.model.UserInfo;
+import com.netease.nimlib.sdk.util.NIMUtil;
 import com.nostra13.universalimageloader.cache.disc.impl.ext.LruDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
@@ -24,10 +31,12 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.yun.xiao.jing.api.HttpManager;
 import com.yun.xiao.jing.preference.UserPreferences;
+import com.yun.xiao.jing.session.SessionHelper;
 import com.yun.xiao.jing.util.CacheConstant;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 
 
 public class ChessApp extends MultiDexApplication {
@@ -41,16 +50,46 @@ public class ChessApp extends MultiDexApplication {
         sRequestQueue = HttpManager.getInstance(sAppContext);
         DemoCache.setContext(this);
         NIMClient.init(this, getLoginInfo(), options());
-        initUIKit();
+        if (NIMUtil.isMainProcess(this)) {
+            // 注意：以下操作必须在主进程中进行
+            // 1、UI相关初始化操作
+            // 2、相关Service调用
+            PinYin.init(this);// init pinyin
+            PinYin.validate();
+            initUIKit();
+            initSystemMessageCache();
+
+        }
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(ChessApp.sAppContext));
     }
+    //初始化系统消息缓存
+    private void initSystemMessageCache() {
+//        MessageDataCache.getInstance().registerObservers(true);
+        if (!TextUtils.isEmpty(NimUIKit.getAccount())) {
+//            MessageDataCache.getInstance().clearCache();
+//            MessageDataCache.getInstance().buildCache();
+        }
+    }
+    /**
+     * 初始化UiKit
+     */
+//    private void initUiKit() {
+//        // 设置用户资料提供者（必须）,通讯录提供者（必须）
+////        NimUIKit.init(this, infoProvider, contactProvider, UniversalImageLoaderUtil.getDefaultConfig(getApplicationContext()), BuildConfig.DEBUG);
+//        // 设置地理位置提供者。如果需要发送地理位置消息，该参数必须提供。如果不需要，可以忽略。
+////        NimUIKit.setLocationProvider(new NimDemoLocationProvider());
+//        //会话窗口的定制初始化
+//        SessionHelper.init();
+//        // 通讯录列表定制初始化
+//        ContactHelper.init();
+//    }
     private void initUIKit() {
         // 初始化
         NimUIKit.init(this, buildUIKitOptions());
-
+        // 注册自定义推送消息处理，这个是可选项
 //        NimUIKit.setLocationProvider(new NimDemoLocationProvider());
         // IM 会话窗口的定制初始化。
-//        SessionHelper.init();
+        SessionHelper.init();
         // 聊天室聊天窗口的定制初始化。
 //        ChatRoomSessionHelper.init();
 
@@ -69,84 +108,89 @@ public class ChessApp extends MultiDexApplication {
         options.appCacheDir = NimSDKOptionConfig.getAppCacheDir(ChessApp.sAppContext) + "/app";
         return options;
     }
-    private LoginInfo getLoginInfo() {
-        String account = UserPreferences.getInstance(ChessApp.sAppContext).getUserAccount();
-        String token = UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
 
+    private LoginInfo getLoginInfo() {
+        String account = UserPreferences.getInstance(ChessApp.sAppContext).getKeyIMAccount();
+        String token = UserPreferences.getInstance(ChessApp.sAppContext).getKeyImToken();
         if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(token)) {
-//            DemoCache.setAccount(account.toLowerCase());
+            DemoCache.setAccount(account.toLowerCase());
             return new LoginInfo(account, token);
         } else {
             return null;
         }
     }
+
     // 如果返回值为 null，则全部使用默认参数。
     private SDKOptions options() {
         SDKOptions options = new SDKOptions();
 
-        // 如果将新消息通知提醒托管给 SDK 完成，需要添加以下配置。否则无需设置。
-        StatusBarNotificationConfig config = new StatusBarNotificationConfig();
-//        config.notificationEntrance = WelcomeActivity.class; // 点击通知栏跳转到该Activity
-//        config.notificationSmallIconId = R.drawable.ic_stat_notify_msg;
-        // 呼吸灯配置
-        config.ledARGB = Color.GREEN;
-        config.ledOnMs = 1000;
-        config.ledOffMs = 1500;
-        // 通知铃声的uri字符串
-        config.notificationSound = "android.resource://com.netease.nim.demo/raw/msg";
-        options.statusBarNotificationConfig = config;
-
-        // 配置保存图片，文件，log 等数据的目录
-        // 如果 options 中没有设置这个值，SDK 会使用采用默认路径作为 SDK 的数据目录。
-        // 该目录目前包含 log, file, image, audio, video, thumb 这6个目录。
-//        String sdkPath = getAppCacheDir(context) + "/nim"; // 可以不设置，那么将采用默认路径
-        // 如果第三方 APP 需要缓存清理功能， 清理这个目录下面个子目录的内容即可。
-//        options.sdkStorageRootPath = sdkPath;
-
-        // 配置是否需要预下载附件缩略图，默认为 true
-        options.preloadAttach = true;
-
-        // 配置附件缩略图的尺寸大小。表示向服务器请求缩略图文件的大小
-        // 该值一般应根据屏幕尺寸来确定， 默认值为 Screen.width / 2
-//        options.thumbnailSize = ${Screen.width} / 2;
-
-        // 用户资料提供者, 目前主要用于提供用户资料，用于新消息通知栏中显示消息来源的头像和昵称
-        options.userInfoProvider = new UserInfoProvider() {
-            @Override
-            public UserInfo getUserInfo(String account) {
-                return null;
-            }
-
-            @Override
-            public String getDisplayNameForMessageNotifier(String account, String sessionId,
-                                                           SessionTypeEnum sessionType) {
-                return null;
-            }
-
-            @Override
-            public Bitmap getAvatarForMessageNotifier(SessionTypeEnum sessionTypeEnum, String s) {
-                return null;
-            }
-        };
+//        // 如果将新消息通知提醒托管给 SDK 完成，需要添加以下配置。否则无需设置。
+//        StatusBarNotificationConfig config = new StatusBarNotificationConfig();
+////        config.notificationEntrance = WelcomeActivity.class; // 点击通知栏跳转到该Activity
+////        config.notificationSmallIconId = R.drawable.ic_stat_notify_msg;
+//        // 呼吸灯配置
+//        config.ledARGB = Color.GREEN;
+//        config.ledOnMs = 1000;
+//        config.ledOffMs = 1500;
+//        // 通知铃声的uri字符串
+//        config.notificationSound = "android.resource://com.yun.xiao.jing/raw/msg";
+//        options.statusBarNotificationConfig = config;
+//
+//        // 配置保存图片，文件，log 等数据的目录
+//        // 如果 options 中没有设置这个值，SDK 会使用采用默认路径作为 SDK 的数据目录。
+//        // 该目录目前包含 log, file, image, audio, video, thumb 这6个目录。
+////        String sdkPath = getAppCacheDir(context) + "/nim"; // 可以不设置，那么将采用默认路径
+//        // 如果第三方 APP 需要缓存清理功能， 清理这个目录下面个子目录的内容即可。
+////        options.sdkStorageRootPath = sdkPath;
+//
+//        // 配置是否需要预下载附件缩略图，默认为 true
+//        options.preloadAttach = true;
+//
+//        // 配置附件缩略图的尺寸大小。表示向服务器请求缩略图文件的大小
+//        // 该值一般应根据屏幕尺寸来确定， 默认值为 Screen.width / 2
+////        options.thumbnailSize = ${Screen.width} / 2;
+//
+//        // 用户资料提供者, 目前主要用于提供用户资料，用于新消息通知栏中显示消息来源的头像和昵称
+//        options.userInfoProvider = new UserInfoProvider() {
+//            @Override
+//            public UserInfo getUserInfo(String account) {
+//                return null;
+//            }
+//
+//            @Override
+//            public String getDisplayNameForMessageNotifier(String account, String sessionId,
+//                                                           SessionTypeEnum sessionType) {
+//                return null;
+//            }
+//
+//            @Override
+//            public Bitmap getAvatarForMessageNotifier(SessionTypeEnum sessionTypeEnum, String s) {
+//                return null;
+//            }
+//        };
         return options;
     }
 
-    private ImageLoaderConfiguration getDefaultConfig() throws IOException {
-        int MAX_CACHE_MEMORY_SIZE = (int) (Runtime.getRuntime().maxMemory() / 8);
-        File cacheDir = new File(CacheConstant.getImageCachePath());
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration
-                .Builder(this)
-                .threadPoolSize(3) // 线程池内加载的数量
-                .threadPriority(Thread.NORM_PRIORITY - 2) // 降低线程的优先级，减小对UI主线程的影响
-                .denyCacheImageMultipleSizesInMemory()
-                .memoryCache(new LruMemoryCache(MAX_CACHE_MEMORY_SIZE))
-                .discCache(new LruDiskCache(cacheDir, new Md5FileNameGenerator(), 0))
-                .defaultDisplayImageOptions(DisplayImageOptions.createSimple())
-                .imageDownloader(new BaseImageDownloader(this, 5 * 1000, 30 * 1000)) // connectTimeout (5 s), readTimeout (30 s)超时时间
-                .writeDebugLogs()
-                .build();
 
-        return config;
+    public static LinkedList<Activity> activities = new LinkedList<Activity>();
+
+    public static void addActivity(Activity activity) {
+        activities.add(activity);
+    }
+
+    public static void removeActivity(Activity activity) {
+        activities.remove(activity);
+    }
+
+    public static void finishAll() {
+        for (Activity activity : activities) {
+            if (!activity.isFinishing()) {
+                activity.finish();
+            }
+        }
+        ActivityManager activityMgr = (ActivityManager)sAppContext.getSystemService(Context.ACTIVITY_SERVICE);
+        activityMgr.killBackgroundProcesses(sAppContext.getPackageName());
+        System.exit(0);
     }
 
 

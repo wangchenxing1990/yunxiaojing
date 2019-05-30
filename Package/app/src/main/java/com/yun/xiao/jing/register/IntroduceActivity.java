@@ -51,6 +51,7 @@ public class IntroduceActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ChessApp.addActivity(this);
         mAction = new RegisterAction(this, null);
         setContentView(R.layout.activity_introduce);
         initData();

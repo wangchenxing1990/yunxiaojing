@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.auth.AuthService;
 import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.R;
 import com.yun.xiao.jing.action.LoginAction;
@@ -31,6 +33,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         loginAction = new LoginAction(this, null);
         super.onCreate(savedInstanceState);
+        ChessApp.addActivity(this);
         setContentView(R.layout.activity_setting);
         initView();
         token = UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
@@ -96,10 +99,10 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void loginOutAccount() {
-
         loginAction.loginOutAccount(token, device, new RequestCallback() {
             @Override
             public void onResult(int code, String result, Throwable var3) {
+                NIMClient.getService(AuthService.class).logout();
                 finish();
             }
 

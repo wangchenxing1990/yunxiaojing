@@ -263,11 +263,11 @@ public class RegisterAction extends BaseAction {
                 try {
                     JSONObject json = new JSONObject(response);
                     int code = json.getInt("code");
-                    if (code == ApiCode.USER_PASSWORD_UPDATED_SUCCESSFULLY) {//110短信验证码不能为空
+                    if (code == ApiCode.USER_PASSWORD_UPDATED_SUCCESSFULLY) {
                         requestCallback.onResult(code, response, null);
-                    } else if (code == ApiCode.USER_PASSWORD_UPDATED_FAILED) {//111短信验证码无效或已过期
+                    } else if (code == ApiCode.USER_PASSWORD_UPDATED_FAILED) {
                         requestCallback.onFailed();
-                    } else if (code == ApiCode.USER_PASSWORD_IS_EMPTY) {//112短信验证码错误
+                    } else if (code == ApiCode.USER_PASSWORD_IS_EMPTY) {
                         requestCallback.onFailed();
                     }
                 } catch (JSONException e) {

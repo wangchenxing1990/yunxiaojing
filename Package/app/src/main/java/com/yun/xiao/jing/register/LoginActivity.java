@@ -12,13 +12,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.JsonObject;
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.Observer;
+import com.netease.nimlib.sdk.StatusCode;
+import com.netease.nimlib.sdk.auth.AuthServiceObserver;
+import com.yun.xiao.jing.interfaces.RequestCallback;
+import com.netease.nimlib.sdk.auth.AuthService;
+import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.yun.xiao.jing.ChessApp;
-import com.yun.xiao.jing.FindInfoBean;
 import com.yun.xiao.jing.MainActivity;
 import com.yun.xiao.jing.R;
 import com.yun.xiao.jing.action.LoginAction;
-import com.yun.xiao.jing.interfaces.RequestCallback;
 import com.yun.xiao.jing.preference.UserPreferences;
 
 import org.json.JSONException;
@@ -41,10 +45,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ChessApp.addActivity(this);
         loginAction = new LoginAction(this, null);
         userToken = UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
         device = UserPreferences.getDevice();
-        Log.i("deviceLogin","devicedevice:::"+device);
         Intent intent = getIntent();
         name = intent.getStringExtra("name");
         mobile_prefix = intent.getStringExtra("mobile_prefix");
@@ -88,15 +92,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         loginAction.loginUserQueryInformation(name, mobile_prefix, password, "android", userToken, device, new RequestCallback() {
             @Override
-            public void onResult(int code, String result, Throwable var3) {
+            public void onResult(final int code, String result, Throwable var3) {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     JSONObject jsonInfo = jsonObject.getJSONObject("info");
                     String token = jsonInfo.getString("token");
-                    UserPreferences.getInstance(ChessApp.sAppContext).setUserToken(token);
+
                     String headImg = jsonInfo.getString("headimg");
                     String username = jsonInfo.getString("username");
                     String password = jsonInfo.getString("password");
+                    String imaccount = jsonInfo.getString("imaccount");
+                    String imtoken = jsonInfo.getString("imtoken");
+                    UserPreferences.getInstance(ChessApp.sAppContext).setUserToken(token);
+                    UserPreferences.getInstance(ChessApp.sAppContext).setUserIMAccount(imaccount);
+                    UserPreferences.getInstance(ChessApp.sAppContext).setUserIMToken(imtoken);
+                    UserPreferences.getInstance(ChessApp.sAppContext).setUserToken(username);
                     if (TextUtils.isEmpty(headImg)) {
                         AddUserHeaderImgActivity.start(LoginActivity.this);
                     } else if (TextUtils.isEmpty(username)) {
@@ -104,8 +114,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     } else if (TextUtils.isEmpty(password)) {
                         SetPasswordActivity.start(LoginActivity.this);
                     } else {
-                        MainActivity.start(LoginActivity.this);
-                        finish();
+                        Log.i("登录云信", "登陆云新");
+                        com.netease.nimlib.sdk.auth.LoginInfo info = new com.netease.nimlib.sdk.auth.LoginInfo(imaccount, imtoken); // config...
+                        com.netease.nimlib.sdk.RequestCallback<com.netease.nimlib.sdk.auth.LoginInfo> callback =
+                                new com.netease.nimlib.sdk.RequestCallback<com.netease.nimlib.sdk.auth.LoginInfo>() {
+                                    @Override
+                                    public void onSuccess(LoginInfo loginInfo) {
+                                        Log.i("登录云信成功", "account:::::" + loginInfo.getAccount() + "  appkey:::" + loginInfo.getAppKey() + "  token:::" + loginInfo.getToken());
+                                        MainActivity.start(LoginActivity.this);
+                                        finish();
+                                    }
+
+                                    @Override
+                                    public void onFailed(int i) {
+                                        Log.i("登录云信失败", "account:::::" + i);
+                                    }
+
+                                    @Override
+                                    public void onException(Throwable throwable) {
+                                        Log.i("登录云信异常", "account:::::" + throwable);
+                                    }
+                                };
+                        NIMClient.getService(AuthService.class).login(info)
+                                .setCallback(callback);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
