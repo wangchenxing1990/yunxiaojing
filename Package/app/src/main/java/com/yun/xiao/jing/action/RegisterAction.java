@@ -69,6 +69,7 @@ public class RegisterAction extends BaseAction {
                         return;
                     } else if (code == ApiCode.SMS_IS_SUCCESSFULLY) {//105短信发送成功
                         Toast.makeText(ChessApp.sAppContext, R.string.text_message_send_successfully, Toast.LENGTH_SHORT).show();
+                        requestCallback.onResult(code, response, null);
                         return;
                     } else if (code == ApiCode.SMS_IS_FAILED) {//106短信发送失败
                         Toast.makeText(ChessApp.sAppContext, R.string.text_message_send_failed, Toast.LENGTH_SHORT).show();
@@ -366,7 +367,7 @@ public class RegisterAction extends BaseAction {
         SignStringRequest signRequest = new SignStringRequest(Request.Method.POST, requestCreateUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.i("wangyukui1990", response);
+                Log.i("wangyukui1990检测", response);
                 try {
                     JSONObject json = new JSONObject(response);
                     int code = json.getInt("code");

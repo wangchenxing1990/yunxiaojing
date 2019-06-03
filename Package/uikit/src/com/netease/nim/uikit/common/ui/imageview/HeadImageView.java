@@ -3,6 +3,7 @@ package com.netease.nim.uikit.common.ui.imageview;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -122,10 +123,10 @@ public class HeadImageView extends CircleImageView {
                 .placeholder(defaultResId)
                 .error(defaultResId)
                 .override(thumbSize, thumbSize);
-//        Glide.with(getContext().getApplicationContext()).asBitmap()
-//                .load(url)
-//                .apply(requestOptions)
-//                .into(this);
+        Glide.with(getContext().getApplicationContext()).asBitmap()
+                .load(url)
+                .apply(requestOptions)
+                .into(this);
     }
 
     /**

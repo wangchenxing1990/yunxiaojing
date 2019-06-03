@@ -8,11 +8,12 @@
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!-- 8.0 系统需要-->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- 多媒体相关 -->
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
@@ -56,6 +57,7 @@
         <activity android:name=".activity.OtherInformationActivity" />
         <activity android:name=".register.LoginActivity" />
         <activity android:name=".activity.RecentlyLookActivity" />
+        <activity android:name=".activity.OtherFriendsDetailActivity" />
         <meta-data
             android:name="com.netease.nim.appKey"
             android:value="b63bba8f52f1596e1a8819cb34ce8b91" />

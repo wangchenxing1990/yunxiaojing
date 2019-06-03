@@ -178,4 +178,59 @@ public class LoginAction extends BaseAction {
         signRequest.setTag(requestCreateUrl);
         ChessApp.sRequestQueue.add(signRequest);
     }
+
+    public void submitPostInDynamicToService(String userToken, String device, String content, final RequestCallback requestCallback) {
+        requestCreateUrl = ApiConstants.HOST + ApiConstants.USER_IN_DYNAMIC;
+        Log.i("上传动态的数据", requestCreateUrl);
+        final HashMap<String, String> headerMap = new HashMap<>();
+        headerMap.put("user-token", userToken);
+        headerMap.put("mobile-device", device);
+
+        final HashMap<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("content", content);
+        paramsMap.put("images", content);
+        paramsMap.put("address", content);
+
+        SignStringRequest signRequest = new SignStringRequest(Request.Method.POST, requestCreateUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.i("上传动态的数据", response);
+                try {
+                    JSONObject json = new JSONObject(response);
+                    int code = json.getInt("code");
+                    if (code == ApiCode.DYNAMIC_RELEASE_SUCCESSFUL) {//发表动态成功
+                        requestCallback.onResult(code, response, null);
+                    } else {//发表动态失败
+                        requestCallback.onFailed();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (!TextUtils.isEmpty(error.getMessage())) {
+                    LogUtil.i(TAG, error.getMessage());
+                }
+//                Toast.makeText(ChessApp.sAppContext, R.string.club_create_failed, Toast.LENGTH_SHORT).show();
+//                DialogMaker.dismissProgressDialog();
+                if (requestCallback != null) {
+                    requestCallback.onFailed();
+                }
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return paramsMap;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return headerMap;
+            }
+        };
+        signRequest.setTag(requestCreateUrl);
+        ChessApp.sRequestQueue.add(signRequest);
+    }
 }

@@ -1,7 +1,9 @@
 package com.yun.xiao.jing.register;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -12,6 +14,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
+import com.netease.nim.uikit.common.ToastHelper;
+import com.netease.nim.uikit.support.permission.MPermission;
+import com.netease.nim.uikit.support.permission.annotation.OnMPermissionDenied;
+import com.netease.nim.uikit.support.permission.annotation.OnMPermissionGranted;
+import com.netease.nim.uikit.support.permission.annotation.OnMPermissionNeverAskAgain;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.auth.AuthService;
 import com.netease.nimlib.sdk.auth.LoginInfo;
@@ -33,6 +40,16 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private RegisterAction mAction;
     private String token = "";
     private String device = "";
+    private static final int BASIC_PERMISSION_REQUEST_CODE = 100;
+    private static final String[] BASIC_PERMISSIONS = new String[]{
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA,
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,21 +57,56 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         ChessApp.addActivity(this);
         mAction = new RegisterAction(this, null);
         token = UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
-        device = Settings.System.getString(getContentResolver(), Settings.System.ANDROID_ID);
+        device = UserPreferences.getDevice();
         setContentView(R.layout.activity_register);
         initView();
+        requestBasicPermission();
+        Log.i("检测是否可以自动登录", "tokentoken:::" + token);
         if (!TextUtils.isEmpty(token)) {//没有token//检测用户是否登录
             checkUserLogin();
         }
 
     }
 
+    private void requestBasicPermission() {
+        MPermission.printMPermissionResult(true, this, BASIC_PERMISSIONS);
+        MPermission.with(RegisterActivity.this)
+                .setRequestCode(BASIC_PERMISSION_REQUEST_CODE)
+                .permissions(BASIC_PERMISSIONS)
+                .request();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        MPermission.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+    }
+
+    @OnMPermissionGranted(BASIC_PERMISSION_REQUEST_CODE)
+    public void onBasicPermissionSuccess() {
+        try {
+            ToastHelper.showToast(this, "授权成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        MPermission.printMPermissionResult(false, this, BASIC_PERMISSIONS);
+    }
+
+    @OnMPermissionDenied(BASIC_PERMISSION_REQUEST_CODE)
+    @OnMPermissionNeverAskAgain(BASIC_PERMISSION_REQUEST_CODE)
+    public void onBasicPermissionFailed() {
+        try {
+            ToastHelper.showToast(this, "未全部授权，部分功能可能无法正常运行！");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        MPermission.printMPermissionResult(false, this, BASIC_PERMISSIONS);
+    }
+
     private void checkUserLogin() {
         mAction.checkUserLogin(token, device, new RequestCallback() {
-
             @Override
             public void onResult(int code, String result, Throwable var3) {
-                Log.i("tokentokenmeiyouguoqi", result);
+                Log.i("检查是否自动登录", result);
                 if (code == ApiCode.USER_CODE_SUCCESSFULLY) {//token没有过期
                     try {
                         JSONObject jsonObject = new JSONObject(result);
@@ -69,6 +121,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         UserPreferences.getInstance(ChessApp.sAppContext).setUserToken(token);
                         UserPreferences.getInstance(ChessApp.sAppContext).setUserIMToken(imtoken);
                         UserPreferences.getInstance(ChessApp.sAppContext).setUserIMAccount(imaccount);
+                        UserPreferences.getInstance(ChessApp.sAppContext).setUserName(username);
                         if (TextUtils.isEmpty(headImg)) {
                             AddUserHeaderImgActivity.start(RegisterActivity.this);
                         } else if (TextUtils.isEmpty(username)) {
@@ -123,8 +176,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         mAction.getRegisterCode(phone, id, "86", new RequestCallback() {
             @Override
             public void onResult(int code, String result, Throwable var3) {
-                Log.i("infoss", result);
-                if (code == ApiCode.VERIFICATION_CODE) {//注册界面
+                Log.i("检查是否已经注册", result);
+                if (code == ApiCode.SMS_IS_SUCCESSFULLY) {//注册界面
                     EnterCodeActivity.startActivity(RegisterActivity.this, phone);
                 } else if (code == ApiCode.USER_HAVE_REGISTER) {//登录界面
                     LoginActivity.start(RegisterActivity.this, phone, "86");
@@ -134,10 +187,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         JSONObject jsonObject = new JSONObject(result);
                         JSONObject jsonInfo = jsonObject.getJSONObject("info");
                         String token = jsonInfo.getString("token");
-                        UserPreferences.getInstance(ChessApp.sAppContext).setUserToken(token);
                         String headImg = jsonInfo.getString("headimg");
                         String username = jsonInfo.getString("username");
                         String password = jsonInfo.getString("password");
+                        String imtoken = jsonInfo.getString("imtoken");
+                        String imaccount = jsonInfo.getString("imaccount");
+                        UserPreferences.getInstance(ChessApp.sAppContext).setUserToken(token);
+                        UserPreferences.getInstance(ChessApp.sAppContext).setUserIMAccount(imaccount);
+                        UserPreferences.getInstance(ChessApp.sAppContext).setUserIMToken(imtoken);
+                        UserPreferences.getInstance(ChessApp.sAppContext).setUserName(username);
                         if (TextUtils.isEmpty(headImg)) {
                             AddUserHeaderImgActivity.start(RegisterActivity.this);
                         } else if (TextUtils.isEmpty(username)) {

@@ -66,6 +66,7 @@ public class ApiCode {
     public static int HOME_BROWSING_IS_SUCCESSFULLY=620;//用户主页浏览总量
     public static int DYNAMIC_LIST_DATA=230;//用户主页浏览总量
     public static int FOUCS_ON_SUCCESS=200;//关注用户
+    public static int DYNAMIC_RELEASE_SUCCESSFUL=220;//关注用户
 
     public static String PHONE="phone";
 }

@@ -13,10 +13,19 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.R;
+import com.yun.xiao.jing.bean.RecentlyBean;
 import com.yun.xiao.jing.defineView.CircleTransform;
 import com.yun.xiao.jing.util.ScreenUtil;
 
+import java.util.List;
+
 public class RecentlyLookAdapter extends RecyclerView.Adapter<RecentlyLookAdapter.RecentlyViewHolder> {
+    private List<RecentlyBean.InfoBean> info;
+
+    public RecentlyLookAdapter(List<RecentlyBean.InfoBean> info) {
+        this.info = info;
+    }
+
     @NonNull
     @Override
     public RecentlyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -27,13 +36,20 @@ public class RecentlyLookAdapter extends RecyclerView.Adapter<RecentlyLookAdapte
 
     @Override
     public void onBindViewHolder(@NonNull RecentlyViewHolder viewHolder, int i) {
-//        Picasso.with(ChessApp.sAppContext).load("").transform(new CircleTransform()).into(viewHolder.image_view_user);
-//        viewHolder.text_user_name.setText("");
+        if (info.size() >=1) {
+            Picasso.with(ChessApp.sAppContext).load(info.get(i).getHeadimg()).transform(new CircleTransform()).into(viewHolder.image_view_user);
+            viewHolder.text_user_name.setText(info.get(i).getUsername());
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return info.size();
+    }
+
+    public void update(List<RecentlyBean.InfoBean> info) {
+        this.info = info;
+        notifyDataSetChanged();
     }
 
     public class RecentlyViewHolder extends RecyclerView.ViewHolder {
@@ -46,15 +62,15 @@ public class RecentlyLookAdapter extends RecyclerView.Adapter<RecentlyLookAdapte
             relative_layout = itemView.findViewById(R.id.relative_layout);
             image_view_user = itemView.findViewById(R.id.image_view_user);
             text_user_name = itemView.findViewById(R.id.text_user_name);
-            ViewGroup.LayoutParams layoutParams = relative_layout.getLayoutParams();
-            layoutParams.width = relative_layout.getWidth();
-            layoutParams.height = ScreenUtil.px2dip(109);
-            relative_layout.setLayoutParams(layoutParams);
+//            ViewGroup.LayoutParams layoutParams = relative_layout.getLayoutParams();
+//            layoutParams.width = relative_layout.getWidth();
+//            layoutParams.height = ScreenUtil.px2dip(109);
+//            relative_layout.setLayoutParams(layoutParams);
 
-            ViewGroup.LayoutParams imageViewParams = image_view_user.getLayoutParams();
-            imageViewParams.height = ScreenUtil.px2dip(70);
-            imageViewParams.width = ScreenUtil.px2dip(70);
-            image_view_user.setLayoutParams(imageViewParams);
+//            ViewGroup.LayoutParams imageViewParams = image_view_user.getLayoutParams();
+//            imageViewParams.height = ScreenUtil.px2dip(70);
+//            imageViewParams.width = ScreenUtil.px2dip(70);
+//            image_view_user.setLayoutParams(imageViewParams);
         }
     }
 }

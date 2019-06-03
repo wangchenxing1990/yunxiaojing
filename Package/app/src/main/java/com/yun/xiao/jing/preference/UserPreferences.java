@@ -32,6 +32,7 @@ public class UserPreferences {
     static final String KEY_NICKNAME_TIMES = "nickname_times";
     static final String KEY_USER_IM_ACCOUNT = "imaccount";
     static final String KEY_USER_IM_TOKEN = "imtoken";
+    static final String KEY_USER_NAME = "username";
 
     private UserPreferences(Context context) {
         sp_userinfo = context.getSharedPreferences(USERINFO, Context.MODE_PRIVATE);
@@ -110,5 +111,15 @@ public class UserPreferences {
 
     public String getKeyImToken() {
         return sp_userinfo.getString(KEY_USER_IM_TOKEN, "");
+    }
+
+    public void setUserName(String username) {
+        Editor editor = sp_userinfo.edit();
+        editor.putString(KEY_USER_NAME, username);
+        editor.apply();
+    }
+
+    public String getUserName() {
+        return sp_userinfo.getString(KEY_USER_NAME, "");
     }
 }

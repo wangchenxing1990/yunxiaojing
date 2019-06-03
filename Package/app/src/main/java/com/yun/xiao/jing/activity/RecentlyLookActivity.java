@@ -9,17 +9,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.R;
 import com.yun.xiao.jing.action.FindAction;
 import com.yun.xiao.jing.adapter.RecentlyLookAdapter;
+import com.yun.xiao.jing.bean.RecentlyBean;
 import com.yun.xiao.jing.interfaces.RequestCallback;
 import com.yun.xiao.jing.preference.UserPreferences;
 import com.yun.xiao.jing.register.IntroduceActivity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 public class RecentlyLookActivity extends AppCompatActivity implements View.OnClickListener {
@@ -34,6 +39,7 @@ public class RecentlyLookActivity extends AppCompatActivity implements View.OnCl
     private String p = "0";
     private String page = "10";
     private RecentlyLookAdapter adapter;
+    private List<RecentlyBean.InfoBean> list = new ArrayList();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,23 +48,24 @@ public class RecentlyLookActivity extends AppCompatActivity implements View.OnCl
         findAction = new FindAction(this, null);
         userToken = UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
         device = UserPreferences.getDevice();
-        adapter = new RecentlyLookAdapter();
+        adapter = new RecentlyLookAdapter(list);
         setContentView(R.layout.activity_recently_look);
         initView();
+        initData();//初始化数据
     }
 
-    private RelativeLayout relative_layout;
+    private FrameLayout relative_layout;
     private TextView text_title;
     private RecyclerView recycler_view;
 
     private void initView() {
-        relative_layout = findViewById(R.id.relative_layout);
+        relative_layout = findViewById(R.id.frame_layout_back);
         text_title = findViewById(R.id.text_title);
         recycler_view = findViewById(R.id.recycler_view);
         relative_layout.setOnClickListener(this);
         recycler_view.setLayoutManager(new LinearLayoutManager(ChessApp.sAppContext));
         recycler_view.setAdapter(adapter);
-        initData();//初始化数据
+
     }
 
     /**
@@ -68,7 +75,9 @@ public class RecentlyLookActivity extends AppCompatActivity implements View.OnCl
         findAction.gainUserPageBrowseList(userToken, device, p, page, new RequestCallback() {
             @Override
             public void onResult(int code, String result, Throwable var3) {
-
+                Gson gson = new Gson();
+                RecentlyBean recentlyBean = gson.fromJson(result, RecentlyBean.class);
+                adapter.update(recentlyBean.getInfo());
             }
 
             @Override
@@ -81,7 +90,7 @@ public class RecentlyLookActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.relative_layout:
+            case R.id.frame_layout_back:
                 finish();
                 break;
         }

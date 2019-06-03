@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_size_100"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/dp_size_40"
+        android:src="@drawable/icon_message_bell" />
+
+    <TextView
+        android:id="@+id/text_view_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_size_18"
+        android:layout_marginTop="@dimen/dp_size_30"
+        android:textSize="@dimen/sp_14"
+        android:layout_toRightOf="@+id/image_view"
+        android:text="@string/text_message_system"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/text_view_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_view_title"
+        android:layout_marginLeft="@dimen/dp_size_18"
+        android:layout_marginTop="@dimen/dp_size_1"
+        android:layout_toRightOf="@+id/image_view"
+        android:text="@string/text_message_time"
+        android:textSize="@dimen/sp_12"
+        android:textColor="@color/color_grey_999999" />
+
+    <TextView
+        android:id="@+id/text_view_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_view_time"
+        android:layout_marginLeft="@dimen/dp_size_18"
+        android:textSize="@dimen/sp_14"
+        android:layout_marginTop="@dimen/dp_size_5"
+        android:layout_toRightOf="@+id/image_view"
+        android:text="@string/text_message_content"
+        android:textColor="@color/color_black_333333" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_size_1"
+        android:layout_marginLeft="@dimen/dp_size_18"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/image_view"
+        android:background="@color/color_line" />
+</RelativeLayout>

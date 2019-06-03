@@ -19,8 +19,10 @@ import com.yun.xiao.jing.util.ScreenUtil;
 
 import java.util.List;
 
-public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.MyViewHolder> {
+public class PictureAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<PictureBean.InfoBean> listData;
+    private int FOOT_LOADING_ITEM = 1;
+    private int NORMAL_ITEM = 0;
 
     public PictureAdapter(List<PictureBean.InfoBean> listData) {
         this.listData = listData;
@@ -28,42 +30,51 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.MyViewHo
 
     @NonNull
     @Override
-    public PictureAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_picture, viewGroup, false);
-        MyViewHolder viewHolder = new MyViewHolder(view);
-        return viewHolder;
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        if (i == NORMAL_ITEM) {
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_picture, viewGroup, false);
+            MyViewHolder viewHolder = new MyViewHolder(view);
+            return viewHolder;
+        } else {
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_footer_loading, viewGroup, false);
+            FootViewHolder viewHolderFoot = new FootViewHolder(view);
+            return viewHolderFoot;
+        }
+
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PictureAdapter.MyViewHolder viewHolder, final int i) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int i) {
         Drawable drawable = ChessApp.sAppContext.getResources().getDrawable(R.drawable.icon_female);
         drawable.setBounds(0, 0, 20, 20);
-        int sex = listData.get(i).getSex();
-        int age = listData.get(i).getAge();
-        if (sex == 1) {
-            viewHolder.text_sex.setText(String.valueOf(age));
-            viewHolder.text_sex.setCompoundDrawables(drawable, null, null, null);
-        } else if (sex == 2) {
-            viewHolder.text_sex.setText(String.valueOf(age));
-            viewHolder.text_sex.setCompoundDrawables(drawable, null, null, null);
-        }
-
-        viewHolder.text_name.setText(listData.get(i).getUsername());
-        if (listData.get(i).getImages().size() != 0) {
-            Picasso
-                    .with(ChessApp.sAppContext)
-                    .load(listData.get(i).getImages().get(0).getImg_url())
-                    .into(viewHolder.imageView);
-        }
-
-        viewHolder.relative_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onPictureClick(listData.get(i).getToken());
-                }
+        if (viewHolder instanceof MyViewHolder) {
+            int sex = listData.get(i).getSex();
+            int age = listData.get(i).getAge();
+            if (sex == 1) {
+                ((MyViewHolder) viewHolder).text_sex.setText(String.valueOf(age));
+                ((MyViewHolder) viewHolder).text_sex.setCompoundDrawables(drawable, null, null, null);
+            } else if (sex == 2) {
+                ((MyViewHolder) viewHolder).text_sex.setText(String.valueOf(age));
+                ((MyViewHolder) viewHolder).text_sex.setCompoundDrawables(drawable, null, null, null);
             }
-        });
+
+            ((MyViewHolder) viewHolder).text_name.setText(listData.get(i).getUsername());
+            if (listData.get(i).getImages().size() != 0) {
+                Picasso
+                        .with(ChessApp.sAppContext)
+                        .load(listData.get(i).getImages().get(0).getImg_url())
+                        .into(((MyViewHolder) viewHolder).imageView);
+            }
+
+            ((MyViewHolder) viewHolder).relative_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        listener.onPictureClick(listData.get(i).getToken());
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -79,6 +90,17 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.MyViewHo
             this.listData = info;
         }
         notifyDataSetChanged();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position == listData.size()) {
+            return FOOT_LOADING_ITEM;
+        } else {
+            return NORMAL_ITEM;
+
+        }
+
     }
 
     private OnPictureClickListener listener;
@@ -107,6 +129,13 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.MyViewHo
             params.width = width / 3;//设置当前控件布局的高度
             params.height = width / 2;//设置当前控件布局的高度
             imageView.setLayoutParams(params);//将设置好的布局参数应用到控件中
+        }
+    }
+
+    class FootViewHolder extends RecyclerView.ViewHolder {
+
+        public FootViewHolder(@NonNull View itemView) {
+            super(itemView);
         }
     }
 }

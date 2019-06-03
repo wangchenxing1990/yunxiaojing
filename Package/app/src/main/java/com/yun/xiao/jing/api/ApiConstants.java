@@ -22,8 +22,12 @@ public class ApiConstants {
     public static String USER_FOCUS_ON="userFocusOn";// 关注用户
     public static String VERIFY_LOGIN_PASSWORD="verifyLoginPassword";// 关注用户
     public static String USER_PAGE_BROWSE_LIST="userPageBrowseList";// 关注用户
+    public static String USER_IN_DYNAMIC="userInDynamic";// 发表动态
+    public static String USER_HEAD_IMAGE_UPDATE="userHeadImageUpdate";//用户头像更新
 
 
     public static String FILE_PROVIDER="com.yunxiaojing.fileprovider";
+    public static String BITMAP_TO_BASE_64="data:image/png;base64,";
+
 
 }

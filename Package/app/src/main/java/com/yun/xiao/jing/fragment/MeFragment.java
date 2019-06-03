@@ -117,14 +117,14 @@ public class MeFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
-
+    MeInfoBean meInfoBean;
     private void getDataInformation() {
 
         mAction.getDataInformation(userToken, device, new RequestCallback() {
             @Override
             public void onResult(int code, String result, Throwable var3) {
                 Gson gson = new Gson();
-                MeInfoBean meInfoBean = gson.fromJson(result, MeInfoBean.class);
+                meInfoBean = gson.fromJson(result, MeInfoBean.class);
                 updateView(meInfoBean.getInfo());
             }
 
@@ -136,7 +136,6 @@ public class MeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void getDataBrowseCount() {
-
         mAction.getDataBrowse(userToken, device, new RequestCallback() {
             @Override
             public void onResult(int code, String result, Throwable var3) {
@@ -176,7 +175,7 @@ public class MeFragment extends Fragment implements View.OnClickListener {
                 SettingActivity.start(getActivity());
                 break;
             case R.id.image_view_edit_info://修改信息
-                EditInfoActivity.start(getActivity());
+                EditInfoActivity.start(getActivity(),meInfoBean);
                 break;
         }
     }

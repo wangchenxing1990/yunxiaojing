@@ -1,28 +1,28 @@
 -- Merging decision tree log ---
 manifest
-ADDED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:1:1-200:12
-INJECTED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:1:1-200:12
-INJECTED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:1:1-200:12
-INJECTED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:1:1-200:12
-INJECTED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:1:1-200:12
-INJECTED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:1:1-200:12
-INJECTED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:1:1-200:12
+ADDED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:1:1-208:12
+INJECTED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:1:1-208:12
+INJECTED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:1:1-208:12
+INJECTED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:1:1-208:12
+INJECTED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:1:1-208:12
+INJECTED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:1:1-208:12
+INJECTED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:1:1-208:12
 	package
 		ADDED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:2:5-36
 		INJECTED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml
 		INJECTED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml
 	android:versionName
 		INJECTED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml
-		ADDED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:1:1-200:12
+		ADDED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:1:1-208:12
 		INJECTED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml
 	android:versionCode
 		INJECTED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml
-		ADDED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:1:1-200:12
+		ADDED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:1:1-208:12
 		INJECTED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml
 	xmlns:android
 		ADDED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:1:11-69
 application
-ADDED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:5:5-199:19
+ADDED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:5:5-207:19
 meta-data#com.netease.nim.uikit.support.glide.NIMGlideModule
 ADDED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:7:9-9:42
 	android:value
@@ -357,6 +357,22 @@ ADDED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:195:9-198:
 		ADDED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:198:13-69
 	android:name
 		ADDED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:196:13-76
+activity#com.netease.nim.uikit.common.activity.ContactsActivity
+ADDED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:199:9-202:71
+	android:screenOrientation
+		ADDED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:201:13-49
+	android:theme
+		ADDED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:202:13-69
+	android:name
+		ADDED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:200:13-61
+activity#com.netease.nim.uikit.common.activity.SystemMessageActivity
+ADDED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:203:9-206:71
+	android:screenOrientation
+		ADDED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:205:13-49
+	android:theme
+		ADDED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:206:13-69
+	android:name
+		ADDED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml:204:13-66
 uses-sdk
 INJECTED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from D:\AndroidStudioProjects\Package\uikit\AndroidManifest.xml

@@ -1,15 +1,16 @@
 package com.yun.xiao.jing;
 
-import android.widget.SectionIndexer;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.List;
 
 public class FindInfoBean implements Serializable {
+
     /**
      * code : 230
      * msg : Dynamic list data obtained successfully
-     * info : [{"dynamic_id":11,"browse":0,"praise":0,"comments":0,"images":{},"content":"123123213","address":"","create_time":1558936096,"is_vip":0,"username":"Two","sex":2,"headimg":"https://resource.golinkyou.com/public/uploads/headimgurl/20190527/155892241043.png?x-oss-process=style/imageStyle","token":"C9077853CF698160C4233EC60F7927FA"},{"dynamic_id":11,"browse":0,"praise":0,"comments":0,"images":{},"content":"123123213","address":"","create_time":1558936096,"is_vip":0,"username":"Two","sex":2,"headimg":"https://resource.golinkyou.com/public/uploads/headimgurl/20190527/155892241043.png?x-oss-process=style/imageStyle","token":"C85D4E6D7A10626399E8AE7C79A79CF6"},{"dynamic_id":11,"browse":0,"praise":0,"comments":0,"images":{},"content":"123123213","address":"","create_time":1558936096,"is_vip":0,"username":"Two","sex":2,"headimg":"https://resource.golinkyou.com/public/uploads/headimgurl/20190527/155892241043.png?x-oss-process=style/imageStyle","token":"02978DF0FBEC99A6DA4C43E128488118"},{"dynamic_id":11,"browse":0,"praise":0,"comments":0,"images":{},"content":"123123213","address":"","create_time":1558936096,"is_vip":0,"username":"Two","sex":2,"headimg":"https://resource.golinkyou.com/public/uploads/headimgurl/20190527/155892241043.png?x-oss-process=style/imageStyle","token":"6D89AE40FFAA62D8CEB7D88B8BC2B974"},{"dynamic_id":11,"browse":0,"praise":0,"comments":0,"images":{},"content":"123123213","address":"","create_time":1558936096,"is_vip":0,"username":"Two","sex":2,"headimg":"https://resource.golinkyou.com/public/uploads/headimgurl/20190527/155892241043.png?x-oss-process=style/imageStyle","token":"ED11A92972EC0424FA648D860F142520"}]
+     * info : [{"dynamic_id":79,"uid":60,"browse":0,"praise":0,"comments":0,"images":{"574":"https://resource.golinkyou.com/public/uploads/dynamic/20190603/155955599597.png?x-oss-process=style/imageStyle","575":"https://resource.golinkyou.com/public/uploads/dynamic/20190603/155955599541.png?x-oss-process=style/imageStyle"},"content":"天客隆默默哦","address":"","create_time":1559555995,"is_vip":0,"username":"123456","sex":1,"headimg":"https://resource.golinkyou.com/public/uploads/headimgurl/20190529/155909709936.png?x-oss-process=style/imageStyle","token":"190696E1B6055A9044464FDAE5043837"},{"dynamic_id":78,"uid":60,"browse":0,"praise":0,"comments":0,"images":{"572":"https://resource.golinkyou.com/public/uploads/dynamic/20190603/155955383318.png?x-oss-process=style/imageStyle","573":"https://resource.golinkyou.com/public/uploads/dynamic/20190603/155955383319.png?x-oss-process=style/imageStyle"},"content":"特额流量监控哦","address":"","create_time":1559553833,"is_vip":0,"username":"123456","sex":1,"headimg":"https://resource.golinkyou.com/public/uploads/headimgurl/20190529/155909709936.png?x-oss-process=style/imageStyle","token":"190696E1B6055A9044464FDAE5043837"},{"dynamic_id":77,"uid":60,"browse":0,"praise":0,"comments":0,"images":{"571":"https://resource.golinkyou.com/public/uploads/dynamic/20190603/155955368971.png?x-oss-process=style/imageStyle"},"content":"来来来摸摸","address":"","create_time":1559553689,"is_vip":0,"username":"123456","sex":1,"headimg":"https://resource.golinkyou.com/public/uploads/headimgurl/20190529/155909709936.png?x-oss-process=style/imageStyle","token":"190696E1B6055A9044464FDAE5043837"},{"dynamic_id":76,"uid":52,"browse":1,"praise":0,"comments":0,"images":{"562":"https://resource.golinkyou.com/public/uploads/dynamic/20190603/155955163434.png?x-oss-process=style/imageStyle","563":"https://resource.golinkyou.com/public/uploads/dynamic/20190603/155955163415.png?x-oss-process=style/imageStyle","564":"https://resource.golinkyou.com/public/uploads/dynamic/20190603/155955163452.png?x-oss-process=style/imageStyle","565":"https://resource.golinkyou.com/public/uploads/dynamic/20190603/155955163420.png?x-oss-process=style/imageStyle","566":"https://resource.golinkyou.com/public/uploads/dynamic/20190603/155955163446.png?x-oss-process=style/imageStyle","567":"https://resource.golinkyou.com/public/uploads/dynamic/20190603/155955163547.png?x-oss-process=style/imageStyle","568":"https://resource.golinkyou.com/public/uploads/dynamic/20190603/155955163542.png?x-oss-process=style/imageStyle","569":"https://resource.golinkyou.com/public/uploads/dynamic/20190603/155955163569.png?x-oss-process=style/imageStyle","570":"https://resource.golinkyou.com/public/uploads/dynamic/20190603/155955163589.png?x-oss-process=style/imageStyle"},"content":"","address":"","create_time":1559551636,"is_vip":0,"username":"Three","sex":2,"headimg":"https://resource.golinkyou.com/public/uploads/headimgurl/20190527/155892245196.png?x-oss-process=style/imageStyle","token":"C07733BAB03DC53BE5CCB2AECCECA094"}]
      */
 
     private int code;
@@ -42,22 +43,24 @@ public class FindInfoBean implements Serializable {
 
     public static class InfoBean implements Serializable {
         /**
-         * dynamic_id : 11
+         * dynamic_id : 79
+         * uid : 60
          * browse : 0
          * praise : 0
          * comments : 0
-         * images : {}
-         * content : 123123213
+         * images : {"574":"https://resource.golinkyou.com/public/uploads/dynamic/20190603/155955599597.png?x-oss-process=style/imageStyle","575":"https://resource.golinkyou.com/public/uploads/dynamic/20190603/155955599541.png?x-oss-process=style/imageStyle"}
+         * content : 天客隆默默哦
          * address :
-         * create_time : 1558936096
+         * create_time : 1559555995
          * is_vip : 0
-         * username : Two
-         * sex : 2
-         * headimg : https://resource.golinkyou.com/public/uploads/headimgurl/20190527/155892241043.png?x-oss-process=style/imageStyle
-         * token : C9077853CF698160C4233EC60F7927FA
+         * username : 123456
+         * sex : 1
+         * headimg : https://resource.golinkyou.com/public/uploads/headimgurl/20190529/155909709936.png?x-oss-process=style/imageStyle
+         * token : 190696E1B6055A9044464FDAE5043837
          */
 
         private int dynamic_id;
+        private int uid;
         private int browse;
         private int praise;
         private int comments;
@@ -77,6 +80,14 @@ public class FindInfoBean implements Serializable {
 
         public void setDynamic_id(int dynamic_id) {
             this.dynamic_id = dynamic_id;
+        }
+
+        public int getUid() {
+            return uid;
+        }
+
+        public void setUid(int uid) {
+            this.uid = uid;
         }
 
         public int getBrowse() {
@@ -175,8 +186,32 @@ public class FindInfoBean implements Serializable {
             this.token = token;
         }
 
-        public static class ImagesBean implements Serializable {
+        public static class ImagesBean implements Serializable{
+            /**
+             * 574 : https://resource.golinkyou.com/public/uploads/dynamic/20190603/155955599597.png?x-oss-process=style/imageStyle
+             * 575 : https://resource.golinkyou.com/public/uploads/dynamic/20190603/155955599541.png?x-oss-process=style/imageStyle
+             */
 
+            @SerializedName("574")
+            private String _$574;
+            @SerializedName("575")
+            private String _$575;
+
+            public String get_$574() {
+                return _$574;
+            }
+
+            public void set_$574(String _$574) {
+                this._$574 = _$574;
+            }
+
+            public String get_$575() {
+                return _$575;
+            }
+
+            public void set_$575(String _$575) {
+                this._$575 = _$575;
+            }
         }
     }
 }

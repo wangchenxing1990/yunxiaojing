@@ -13,6 +13,7 @@ import com.android.volley.VolleyError;
 import com.yun.xiao.jing.ApiCode;
 import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.api.ApiConstants;
+import com.yun.xiao.jing.api.ApiParams;
 import com.yun.xiao.jing.api.SignStringRequest;
 import com.yun.xiao.jing.interfaces.RequestCallback;
 import com.yun.xiao.jing.util.LogUtil;
@@ -196,14 +197,13 @@ public class FindAction extends BaseAction {
         requestCreateUrl = ApiConstants.HOST + ApiConstants.PERSONAL_HOME_PAGE;
         final HashMap<String, String> headerMap = new HashMap<>();
 
-        headerMap.put("user-token", userToken);
-        headerMap.put("mobile-device", device);
-//        final HashMap<String, String> paramsMap = new HashMap<>();
-//        paramsMap.put("from_token", token);
+        headerMap.put(ApiParams.USER_TOKEN, userToken);
+        headerMap.put(ApiParams.MOBILE_DEVICE, device);
+
         SignStringRequest signRequest = new SignStringRequest(Request.Method.POST, requestCreateUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.i("wangyukui1990", response);
+                Log.i("个人主页信息", response);
                 try {
                     JSONObject json = new JSONObject(response);
                     int code = json.getInt("code");
@@ -408,7 +408,7 @@ public class FindAction extends BaseAction {
         SignStringRequest signRequest = new SignStringRequest(Request.Method.POST, requestCreateUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.i("wangyukui19903", response);
+                Log.i("发现界面返回的数据", response);
                 try {
                     JSONObject json = new JSONObject(response);
                     int code = json.getInt("code");

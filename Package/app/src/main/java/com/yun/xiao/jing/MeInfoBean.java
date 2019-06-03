@@ -1,13 +1,14 @@
 package com.yun.xiao.jing;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class MeInfoBean {
+public class MeInfoBean implements Serializable {
 
     /**
      * code : 320
      * msg : User data was successfully retrieved
-     * info : {"password":"fa9b5d7974e5e51c7eeb03ee963b41e6","mobile":"yes","mobile_device":"2443c65e814e1e11","status":0,"is_vip":0,"violations":0,"enable_superLike":0,"imaccount":"B0C6BC853C37F36F2D5841B99FAC0A3E","imtoken":"80b0436f4eb3a3dd0f2e649efca18d73","username":"123456","birthday":"1990-5-20","sex":1,"headimg":"","token":"69F92A318F8E9BC0E1B646FB1563BEB2","token_expired":1558958244,"images":[],"position":"","school":"","height":"","weight":"","info_complete":1,"dating_preferences":0,"dating_startage":18,"dating_endage":80,"personal_introduction":"","like_count":0,"seen_count":0,"focus_count":0}
+     * info : {"password":"5dcfb2c20d10b35ebb2636fab9e64708","imtoken":"d6064aa57c92681d4c47daeae119bd0a","mobile":"yes","status":0,"is_vip":0,"enable_superLike":0,"username":"dave2","birthday":"1991-09-25","sex":1,"headimg":"https://resource.devcgx.top/public/uploads/headimgurl/20190403/155428563552.png","token":"E64290AB6B8A6B3E075B4DD2B21955C1","token_expired":1556864989,"images":[{"img_id":26,"img_url":"https://resource.devcgx.top/public/uploads/headimgurl/20190403/155428563552.png"}],"position":"","school":"","height":"","weight":"","dating_preferences":1,"dating_startage":19,"dating_endage":79,"personal_introduction":"","like_count":2,"seen_count":2,"focus_count":1}
      */
 
     private int code;
@@ -38,47 +39,40 @@ public class MeInfoBean {
         this.info = info;
     }
 
-    public static class InfoBean {
+    public static class InfoBean implements Serializable{
         /**
-         * password : fa9b5d7974e5e51c7eeb03ee963b41e6
+         * password : 5dcfb2c20d10b35ebb2636fab9e64708
+         * imtoken : d6064aa57c92681d4c47daeae119bd0a
          * mobile : yes
-         * mobile_device : 2443c65e814e1e11
          * status : 0
          * is_vip : 0
-         * violations : 0
          * enable_superLike : 0
-         * imaccount : B0C6BC853C37F36F2D5841B99FAC0A3E
-         * imtoken : 80b0436f4eb3a3dd0f2e649efca18d73
-         * username : 123456
-         * birthday : 1990-5-20
+         * username : dave2
+         * birthday : 1991-09-25
          * sex : 1
-         * headimg :
-         * token : 69F92A318F8E9BC0E1B646FB1563BEB2
-         * token_expired : 1558958244
-         * images : []
+         * headimg : https://resource.devcgx.top/public/uploads/headimgurl/20190403/155428563552.png
+         * token : E64290AB6B8A6B3E075B4DD2B21955C1
+         * token_expired : 1556864989
+         * images : [{"img_id":26,"img_url":"https://resource.devcgx.top/public/uploads/headimgurl/20190403/155428563552.png"}]
          * position :
          * school :
          * height :
          * weight :
-         * info_complete : 1
-         * dating_preferences : 0
-         * dating_startage : 18
-         * dating_endage : 80
+         * dating_preferences : 1
+         * dating_startage : 19
+         * dating_endage : 79
          * personal_introduction :
-         * like_count : 0
-         * seen_count : 0
-         * focus_count : 0
+         * like_count : 2
+         * seen_count : 2
+         * focus_count : 1
          */
 
         private String password;
+        private String imtoken;
         private String mobile;
-        private String mobile_device;
         private int status;
         private int is_vip;
-        private int violations;
         private int enable_superLike;
-        private String imaccount;
-        private String imtoken;
         private String username;
         private String birthday;
         private int sex;
@@ -89,7 +83,6 @@ public class MeInfoBean {
         private String school;
         private String height;
         private String weight;
-        private int info_complete;
         private int dating_preferences;
         private int dating_startage;
         private int dating_endage;
@@ -97,7 +90,7 @@ public class MeInfoBean {
         private int like_count;
         private int seen_count;
         private int focus_count;
-        private List<?> images;
+        private List<ImagesBean> images;
 
         public String getPassword() {
             return password;
@@ -107,20 +100,20 @@ public class MeInfoBean {
             this.password = password;
         }
 
+        public String getImtoken() {
+            return imtoken;
+        }
+
+        public void setImtoken(String imtoken) {
+            this.imtoken = imtoken;
+        }
+
         public String getMobile() {
             return mobile;
         }
 
         public void setMobile(String mobile) {
             this.mobile = mobile;
-        }
-
-        public String getMobile_device() {
-            return mobile_device;
-        }
-
-        public void setMobile_device(String mobile_device) {
-            this.mobile_device = mobile_device;
         }
 
         public int getStatus() {
@@ -139,36 +132,12 @@ public class MeInfoBean {
             this.is_vip = is_vip;
         }
 
-        public int getViolations() {
-            return violations;
-        }
-
-        public void setViolations(int violations) {
-            this.violations = violations;
-        }
-
         public int getEnable_superLike() {
             return enable_superLike;
         }
 
         public void setEnable_superLike(int enable_superLike) {
             this.enable_superLike = enable_superLike;
-        }
-
-        public String getImaccount() {
-            return imaccount;
-        }
-
-        public void setImaccount(String imaccount) {
-            this.imaccount = imaccount;
-        }
-
-        public String getImtoken() {
-            return imtoken;
-        }
-
-        public void setImtoken(String imtoken) {
-            this.imtoken = imtoken;
         }
 
         public String getUsername() {
@@ -251,14 +220,6 @@ public class MeInfoBean {
             this.weight = weight;
         }
 
-        public int getInfo_complete() {
-            return info_complete;
-        }
-
-        public void setInfo_complete(int info_complete) {
-            this.info_complete = info_complete;
-        }
-
         public int getDating_preferences() {
             return dating_preferences;
         }
@@ -315,12 +276,38 @@ public class MeInfoBean {
             this.focus_count = focus_count;
         }
 
-        public List<?> getImages() {
+        public List<ImagesBean> getImages() {
             return images;
         }
 
-        public void setImages(List<?> images) {
+        public void setImages(List<ImagesBean> images) {
             this.images = images;
+        }
+
+        public static class ImagesBean implements Serializable{
+            /**
+             * img_id : 26
+             * img_url : https://resource.devcgx.top/public/uploads/headimgurl/20190403/155428563552.png
+             */
+
+            private int img_id;
+            private String img_url;
+
+            public int getImg_id() {
+                return img_id;
+            }
+
+            public void setImg_id(int img_id) {
+                this.img_id = img_id;
+            }
+
+            public String getImg_url() {
+                return img_url;
+            }
+
+            public void setImg_url(String img_url) {
+                this.img_url = img_url;
+            }
         }
     }
 }

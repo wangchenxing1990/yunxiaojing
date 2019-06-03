@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.FindInfoBean;
 import com.yun.xiao.jing.R;
 import com.yun.xiao.jing.action.FindAction;
+import com.yun.xiao.jing.activity.OtherFriendsDetailActivity;
 import com.yun.xiao.jing.adapter.FindAdapter;
 import com.yun.xiao.jing.interfaces.RequestCallback;
 import com.yun.xiao.jing.preference.UserPreferences;
@@ -42,7 +44,7 @@ public class FindFragment extends Fragment implements View.OnClickListener {
     private String userToken;
     private String device;
     private String type = "1";
-    private String p = "0";
+    private int p = 0;
     private String page = "10";
     private List<FindInfoBean.InfoBean> listData = new ArrayList();
     private FindAdapter findAdapter;
@@ -57,7 +59,7 @@ public class FindFragment extends Fragment implements View.OnClickListener {
     }
 
     private View rootView;
-    private RecyclerView recyclerView;
+    private RecyclerView mrecyclerView;
 
     @Nullable
     @Override
@@ -68,33 +70,66 @@ public class FindFragment extends Fragment implements View.OnClickListener {
 
     private ImageView image_view_left, image_view_two, image_view_message;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    LinearLayoutManager layoutManager;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         mSwipeRefreshLayout = rootView.findViewById(R.id.mSwipeRefreshLayout);
-        recyclerView = rootView.findViewById(R.id.recycler_view);
+        mrecyclerView = rootView.findViewById(R.id.recycler_view);
         image_view_left = rootView.findViewById(R.id.image_view_left);
         image_view_two = rootView.findViewById(R.id.image_view_two);
         image_view_message = rootView.findViewById(R.id.image_view_message);
         image_view_left.setOnClickListener(this);
         image_view_two.setOnClickListener(this);
         image_view_message.setOnClickListener(this);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(ChessApp.sAppContext));
-        recyclerView.setAdapter(findAdapter);
+        layoutManager = new LinearLayoutManager(ChessApp.sAppContext);
+        mrecyclerView.setLayoutManager(new LinearLayoutManager(ChessApp.sAppContext));
+        mrecyclerView.setAdapter(findAdapter);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 getDataFindInformation();
             }
         });
+        findAdapter.setOnItemClckListener(new FindAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(FindInfoBean.InfoBean infoBean) {
+                OtherFriendsDetailActivity.start(getActivity(), infoBean);
+            }
+        });
+
+        mrecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (isLoadMore || mSwipeRefreshLayout.isRefreshing()) {
+                    return;
+                }
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) mrecyclerView.getLayoutManager();
+                int firstVisibleItemPos = linearLayoutManager.findFirstVisibleItemPosition();
+                int lastVisibleItemPos = linearLayoutManager.findLastVisibleItemPosition();
+                int totalItemCount = linearLayoutManager.getItemCount();
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && totalItemCount >= 1 && lastVisibleItemPos + 5 >= totalItemCount && (lastVisibleItemPos - firstVisibleItemPos) != totalItemCount) {
+                    isLoadMore = true;
+                    getDataFindInformation();
+                    p++;
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
         getDataFindInformation();
     }
 
+    private boolean isLoadMore;
+
     private void getDataFindInformation() {
-        mAction.getFindDiscoveryData(userToken, device, type, p, page, new RequestCallback() {
+        mAction.getFindDiscoveryData(userToken, device, type, String.valueOf(p), page, new RequestCallback() {
             @Override
             public void onResult(int code, String result, Throwable var3) {
                 Gson gson = new Gson();
@@ -102,6 +137,7 @@ public class FindFragment extends Fragment implements View.OnClickListener {
                 if (mSwipeRefreshLayout.isRefreshing()) {
                     findAdapter.updateData(findInfoBean.getInfo(), false);
                     mSwipeRefreshLayout.setRefreshing(false);
+                    isLoadMore = false;
                 } else {
                     findAdapter.updateData(findInfoBean.getInfo(), true);
                 }

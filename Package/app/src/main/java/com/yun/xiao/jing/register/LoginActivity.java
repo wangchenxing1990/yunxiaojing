@@ -106,7 +106,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     UserPreferences.getInstance(ChessApp.sAppContext).setUserToken(token);
                     UserPreferences.getInstance(ChessApp.sAppContext).setUserIMAccount(imaccount);
                     UserPreferences.getInstance(ChessApp.sAppContext).setUserIMToken(imtoken);
-                    UserPreferences.getInstance(ChessApp.sAppContext).setUserToken(username);
+                    UserPreferences.getInstance(ChessApp.sAppContext).setUserName(username);
                     if (TextUtils.isEmpty(headImg)) {
                         AddUserHeaderImgActivity.start(LoginActivity.this);
                     } else if (TextUtils.isEmpty(username)) {

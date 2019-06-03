@@ -2,39 +2,74 @@ package com.yun.xiao.jing.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
+import android.text.TextUtils;
 
+import android.util.Log;
+
+import android.view.View;
+import android.widget.EditText;
+
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
+
+import com.alibaba.fastjson.JSONArray;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.R;
+import com.yun.xiao.jing.action.LoginAction;
 import com.yun.xiao.jing.adapter.GridImageAdapter;
+import com.yun.xiao.jing.api.ApiConstants;
+import com.yun.xiao.jing.api.Bitamp2Base64;
 import com.yun.xiao.jing.api.FullyGridLayoutManager;
+import com.yun.xiao.jing.interfaces.RequestCallback;
+import com.yun.xiao.jing.preference.UserPreferences;
 
+import org.json.JSONException;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.luck.picture.lib.tools.PictureFileUtils.getPath;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 
 public class PostInfoActivity extends AppCompatActivity implements View.OnClickListener {
+    private LoginAction loginAction;
+
     public static void start(Activity activity) {
         Intent intent = new Intent(activity, PostInfoActivity.class);
         activity.startActivity(intent);
     }
 
+    private String userToken = "";
+    private String device = "";
+    private String content = "";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ChessApp.addActivity(this);
+        userToken = UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
+        device = UserPreferences.getDevice();
+        loginAction = new LoginAction(this, null);
         setContentView(R.layout.activity_post_info);
         initView();
     }
@@ -42,13 +77,19 @@ public class PostInfoActivity extends AppCompatActivity implements View.OnClickL
     private ImageView imageView;
     private RecyclerView recyclerView;
     private GridImageAdapter adapter;
-    private FrameLayout frame_layout;
+    private RelativeLayout frame_layout;
+    private RelativeLayout frame_layout_post;
+    private EditText edit_text_view;
+
     private void initView() {
         imageView = findViewById(R.id.image_view);
         recyclerView = findViewById(R.id.recycler);
         frame_layout = findViewById(R.id.frame_layout);
+        frame_layout_post = findViewById(R.id.frame_layout_post);
+        edit_text_view = findViewById(R.id.edit_text_view);
         imageView.setOnClickListener(this);
         frame_layout.setOnClickListener(this);
+        frame_layout_post.setOnClickListener(this);
         FullyGridLayoutManager manager = new FullyGridLayoutManager(PostInfoActivity.this, 4, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
         adapter = new GridImageAdapter(PostInfoActivity.this, onAddPicClickListener);
@@ -78,7 +119,7 @@ public class PostInfoActivity extends AppCompatActivity implements View.OnClickL
                     .enableCrop(false)// 是否裁剪
                     .compress(true)// 是否压缩
                     .synOrAsy(true)//同步true或异步false 压缩 默认同步
-                    //.compressSavePath(getPath())//压缩图片保存地址
+                    .compressSavePath(getPath())//压缩图片保存地址
                     //.sizeMultiplier(0.5f)// glide 加载图片大小 0~1之间 如设置 .glideOverride()无效
                     .glideOverride(160, 160)// glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
                     .withAspectRatio(1, 1)// 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
@@ -106,16 +147,122 @@ public class PostInfoActivity extends AppCompatActivity implements View.OnClickL
         }
     };
 
+    /**
+     * 自定义压缩存储地址
+     *
+     * @return
+     */
+    private String getPath() {
+        String path = Environment.getExternalStorageDirectory() + "/Luban/image/";
+        File file = new File(path);
+        if (file.mkdirs()) {
+            return path;
+        }
+        return path;
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.frame_layout:
                 finish();
                 break;
+            case R.id.frame_layout_post:
+                submitTakePhoto();
+//                submitPostInDynamic();//发表动态
+                break;
         }
     }
 
+    /**
+     * 发表动态
+     */
+    private void submitPostInDynamic() {
+        String content = edit_text_view.getText().toString().trim();
+        if (TextUtils.isEmpty(content) && selectList.size() == 0) {
+            Toast.makeText(ChessApp.sAppContext, "请输入内容", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        loginAction.submitPostInDynamicToService(userToken, device, content, new RequestCallback() {
+
+            @Override
+            public void onResult(int code, String result, Throwable var3) {
+                Log.i("上传动态返回的数据", result);
+            }
+
+            @Override
+            public void onFailed() {
+
+            }
+        });
+
+    }
+
+    /**
+     * 上传头像
+     */
+    String str = "";
+    String strTwo = "";
+
+    private void submitTakePhoto() {
+        Log.i("发表动态", "000000000");
+//        StyledDialog.buildLoading().show();
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                String content = edit_text_view.getText().toString().trim();
+                if (TextUtils.isEmpty(content) && selectList.size() == 0) {
+                    Toast.makeText(ChessApp.sAppContext, "请输入发表的内容", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                JSONArray jsonArray = new JSONArray();
+                String jsonArrayTwo = "";
+                MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                for (int i = 0; i < selectList.size(); i++) {
+                    strTwo = "";
+                    strTwo = ApiConstants.BITMAP_TO_BASE_64 + Bitamp2Base64.bitmapToBase64(BitmapFactory.decodeFile(selectList.get(i).getCompressPath()));
+                    jsonArray.add(strTwo);
+                }
+                Log.i("jsonArray::::", "jsonArray::::" + jsonArray.toString());
+//                Log.i("jsonArray::::","jsonArray::::"+jsonArray.toString().length()/4);
+//                builder.addFormDataPart("images", jsonArray.toString());
+                builder.addFormDataPart("images", jsonArray.toString());
+                String userToken = UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
+                String device = UserPreferences.getDevice();
+                OkHttpClient okHttp = new OkHttpClient();
+                builder.addFormDataPart("content", content);
+                Request request = new Request.Builder()
+                        .url(ApiConstants.HOST + ApiConstants.USER_IN_DYNAMIC)
+                        .addHeader("user-token", userToken)
+                        .addHeader("mobile-device", device)
+                        .post(builder.build())
+                        .build();
+                Log.i("发表动态", "3333333333");
+                okHttp.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        if (e.getMessage() != null) {
+                            Log.i("发表动态失败", e.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        str = response.body().string();
+                        int code = response.code();
+                        Log.i("发表动态成功", "code:::::::" + code);
+                        Log.i("发表动态成功", str);
+//                        handler.sendEmptyMessage(133);
+                    }
+                });
+            }
+        }.start();
+    }
+
     List<LocalMedia> selectList = new ArrayList<>();
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

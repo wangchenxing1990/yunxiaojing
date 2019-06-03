@@ -36,15 +36,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(activity, MainActivity.class);
         activity.startActivity(intent);
     }
-    private static final String[] BASIC_PERMISSIONS = new String[]{
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.CAMERA,
-            Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
-    };
+
     private HomeTabItem discoveryTab;
     private HomeTabItem clubTab;
     private ImageView homeTab;
@@ -65,41 +57,13 @@ public class MainActivity extends AppCompatActivity {
                 PostInfoActivity.start(MainActivity.this);
             }
         });
-        requestBasicPermission();
-    }
-    private void requestBasicPermission() {
-        MPermission.printMPermissionResult(true, this, BASIC_PERMISSIONS);
-        MPermission.with(MainActivity.this)
-                .setRequestCode(BASIC_PERMISSION_REQUEST_CODE)
-                .permissions(BASIC_PERMISSIONS)
-                .request();
-    }
-    private static final int BASIC_PERMISSION_REQUEST_CODE = 100;
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        MPermission.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+
     }
 
-    @OnMPermissionGranted(BASIC_PERMISSION_REQUEST_CODE)
-    public void onBasicPermissionSuccess() {
-        try {
-            ToastHelper.showToast(this, "授权成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        MPermission.printMPermissionResult(false, this, BASIC_PERMISSIONS);
-    }
 
-    @OnMPermissionDenied(BASIC_PERMISSION_REQUEST_CODE)
-    @OnMPermissionNeverAskAgain(BASIC_PERMISSION_REQUEST_CODE)
-    public void onBasicPermissionFailed() {
-        try {
-            ToastHelper.showToast(this, "未全部授权，部分功能可能无法正常运行！");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        MPermission.printMPermissionResult(false, this, BASIC_PERMISSIONS);
-    }
+
+
+
     private void initFragments() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         if (conversationFragment == null) {
@@ -108,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
                 ft.add(R.id.frame_content, conversationFragment, FRAGMENT_GAME).commit();
             }
         }
-//        ft.commitAllowingStateLoss();
         mCurrentFragment = conversationFragment;
     }
 

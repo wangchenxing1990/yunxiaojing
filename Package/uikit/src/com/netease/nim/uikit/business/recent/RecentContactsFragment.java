@@ -1,5 +1,6 @@
 package com.netease.nim.uikit.business.recent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +8,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.netease.nim.uikit.common.ToastHelper;
@@ -21,6 +23,8 @@ import com.netease.nim.uikit.api.model.user.UserInfoObserver;
 import com.netease.nim.uikit.business.recent.adapter.RecentContactAdapter;
 import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
 import com.netease.nim.uikit.common.CommonUtil;
+import com.netease.nim.uikit.common.activity.ContactsActivity;
+import com.netease.nim.uikit.common.activity.SystemMessageActivity;
 import com.netease.nim.uikit.common.badger.Badger;
 import com.netease.nim.uikit.common.fragment.TFragment;
 import com.netease.nim.uikit.common.ui.dialog.CustomAlertDialog;
@@ -61,7 +65,7 @@ import static com.netease.nim.uikit.common.ui.dialog.CustomAlertDialog.onSeparat
  * <p/>
  * Created by huangjun on 2015/2/1.
  */
-public class RecentContactsFragment extends TFragment {
+public class RecentContactsFragment extends TFragment implements View.OnClickListener {
 
     // 置顶功能可直接使用，也可作为思路，供开发者充分利用RecentContact的tag字段
     public static final long RECENT_TAG_STICKY = 0x0000000000000001; // 联系人置顶tag
@@ -73,6 +77,8 @@ public class RecentContactsFragment extends TFragment {
 
     private TextView emptyHint;
 
+    private ImageView imageViewNotification;
+    private ImageView iamgeViewFriends;
     // data
     private List<RecentContact> items;
 
@@ -96,6 +102,8 @@ public class RecentContactsFragment extends TFragment {
         registerObservers(true);
         registerDropCompletedListener(true);
         registerOnlineStateChangeListener(true);
+        imageViewNotification.setOnClickListener(this);
+        iamgeViewFriends.setOnClickListener(this);
     }
 
     @Override
@@ -127,6 +135,8 @@ public class RecentContactsFragment extends TFragment {
         recyclerView = findView(R.id.recycler_view);
         emptyBg = findView(R.id.emptyBg);
         emptyHint = findView(R.id.message_list_empty_hint);
+        imageViewNotification = findView(R.id.image_view_notification);
+        iamgeViewFriends = findView(R.id.iamge_view_friends);
     }
 
     /**
@@ -699,5 +709,17 @@ public class RecentContactsFragment extends TFragment {
             }
         });
 
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        if (v.getId() == R.id.image_view_notification) {
+            Intent intent = new Intent(getActivity(), SystemMessageActivity.class);
+            getActivity().startActivity(intent);
+        } else if (v.getId() == R.id.iamge_view_friends) {
+            Intent intent = new Intent(getActivity(), ContactsActivity.class);
+            getActivity().startActivity(intent);
+        }
     }
 }

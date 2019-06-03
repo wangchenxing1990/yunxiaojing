@@ -144,7 +144,9 @@ public class OtherInformationActivity extends AppCompatActivity implements View.
             }
         });
     }
+
     InfoBeanTwo infoBeanTwo;
+
     private void getOtherFriendData() {
         Log.i("wangyukui1990", "usertoken:::::" + userToken + "   device::::" + device + "    token:::::" + token);
         findAction.getOtherInfo(userToken, device, token, new RequestCallback() {
@@ -152,7 +154,7 @@ public class OtherInformationActivity extends AppCompatActivity implements View.
             public void onResult(int code, String result, Throwable var3) {
                 Log.i("wangyukui1990", result);
                 Gson gson = new Gson();
-                infoBeanTwo= gson.fromJson(result, InfoBeanTwo.class);
+                infoBeanTwo = gson.fromJson(result, InfoBeanTwo.class);
                 updateView(infoBeanTwo);//更新view的数据
             }
 
@@ -176,8 +178,8 @@ public class OtherInformationActivity extends AppCompatActivity implements View.
         if (infoBeanTwo.getInfo().getFocus_on().equals("no")) {
             image_selection.setImageResource(R.mipmap.icon_selection);
         } else if (infoBeanTwo.getInfo().getFocus_on().equals("yes")) {
-            image_message.setImageResource(R.mipmap.icon_sellection_other);
-//            image_message.setClickable(false);
+            image_selection.setImageResource(R.mipmap.icon_sellection_other);
+            image_selection.setClickable(false);
         }
         for (int i = 0; i < infoBeanTwo.getInfo().getImages().size(); i++) {
             BannerItem item = new BannerItem();
@@ -237,7 +239,7 @@ public class OtherInformationActivity extends AppCompatActivity implements View.
                 NimUIKit.startP2PSession(this, infoBeanTwo.getInfo().getImaccount());
                 break;
             case R.id.image_selection://点击收藏
-                Toast.makeText(OtherInformationActivity.this,"ssssss", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(OtherInformationActivity.this,"ssssss", Toast.LENGTH_SHORT).show();
                 submitSelectUser();
                 break;
         }
@@ -247,8 +249,8 @@ public class OtherInformationActivity extends AppCompatActivity implements View.
      * 点击收藏
      */
     private void submitSelectUser() {
-        Log.i("TAGTAG","userToken:::"+userToken+"device:::::"+device+"token::::"+infoBeanTwo.getInfo().getToken());
-        findAction.submitSelectUserService(userToken,device,infoBeanTwo.getInfo().getToken(),new RequestCallback(){
+        Log.i("TAGTAG", "userToken:::" + userToken + "device:::::" + device + "token::::" + infoBeanTwo.getInfo().getToken());
+        findAction.submitSelectUserService(userToken, device, infoBeanTwo.getInfo().getToken(), new RequestCallback() {
 
             @Override
             public void onResult(int code, String result, Throwable var3) {

@@ -100,6 +100,7 @@
     <color name="color_activity_blue_bg">#f7389fff</color>
     <color name="color_b3b3b3">#b3b3b3</color>
     <color name="color_background">#ECF1F5</color>
+    <color name="color_background_f8">#f8f8f8</color>
     <color name="color_black_000000_88_transparent">#e0000000</color>
     <color name="color_black_333333">#333333</color>
     <color name="color_black_333333_90_transparent">#e5333333</color>
@@ -110,6 +111,7 @@
     <color name="color_blue_0888ff">#0888ff</color>
     <color name="color_cccccc">#cccccc</color>
     <color name="color_d5d5d5">#d5d5d5</color>
+    <color name="color_e5">#e5e5e5</color>
     <color name="color_eeeeee">#eeeeee</color>
     <color name="color_f1f1f2">#f1f1f2</color>
     <color name="color_gray_bfc2c5">#bfc2c5</color>
@@ -122,6 +124,7 @@
     <color name="color_grey_999999">#999999</color>
     <color name="color_grey_ababab">#ababab</color>
     <color name="color_grey_eaeaea">#eaeaea</color>
+    <color name="color_line">#bfbfbf</color>
     <color name="color_message_default_bg">#e9ecf0</color>
     <color name="color_red_ccfa3c55">#ccfa3c55</color>
     <color name="color_split_line_cccccc">#cccccc</color>
@@ -583,6 +586,11 @@
     <string name="team_transfer_without_member">没有可转移的群成员</string>
     <string name="team_update_cancel">取消更新</string>
     <string name="team_update_failed">群头像设置失败</string>
+    <string name="text_goog_friends_detail">好友详情</string>
+    <string name="text_goog_friends_list">好友列表</string>
+    <string name="text_message_content">Tommy主动向你打了招呼,快去看看吧</string>
+    <string name="text_message_system">系统消息</string>
+    <string name="text_message_time">1小时前</string>
     <string name="timer_default">00:00</string>
     <string name="trans_voice_failed">语音转化失败</string>
     <string name="transfer_team">转让群</string>
@@ -603,7 +611,7 @@
     <string name="withdrawn_msg">撤 回</string>
     <string name="without_content">暂无</string>
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/color_gray_d9d9d9</item>
         <item name="colorAccent">@color/color_blue_0888ff</item>
@@ -619,7 +627,7 @@
         <item name="windowNoTitle">true</item>
     </style>
     <style name="DarkTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        
         <item name="colorPrimary">@color/color_black_333333</item>
         <item name="colorPrimaryDark">@color/black</item>
         <item name="colorAccent">@color/color_blue_0888ff</item>
@@ -641,7 +649,7 @@
         <item name="colorPrimaryDark">@color/black</item>
     </style>
     <style name="LightBaseTheme" parent="Theme.AppCompat.NoActionBar">
-        <!-- Customize your theme here. -->
+        
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/white_opacity_80</item>
         <item name="colorAccent">@color/color_blue_0888ff</item>
@@ -727,17 +735,17 @@
     </style>
     <style name="easy_dialog_style" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
-        <!-- 边框 -->
+        
         <item name="android:windowIsFloating">true</item>
-        <!-- 是否浮现在activity之上 -->
+        
         <item name="android:windowIsTranslucent">true</item>
-        <!-- 半透明 -->
+        
         <item name="android:windowNoTitle">true</item>
-        <!-- 无标题 -->
+        
         <item name="android:windowBackground">@color/transparent</item>
-        <!-- 背景透明 -->
+        
         <item name="android:backgroundDimEnabled">true</item>
-        <!-- 后面的activity变暗 -->
+        
     </style>
     <style name="edit_text_style">
         <item name="android:textCursorDrawable">@color/black</item>
