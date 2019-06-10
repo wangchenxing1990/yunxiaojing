@@ -18,6 +18,7 @@ import com.yun.xiao.jing.action.LoginAction;
 import com.yun.xiao.jing.fragment.MeFragment;
 import com.yun.xiao.jing.interfaces.RequestCallback;
 import com.yun.xiao.jing.preference.UserPreferences;
+import com.yun.xiao.jing.register.PhoneNumberActivity;
 
 public class SettingActivity extends AppCompatActivity implements View.OnClickListener {
     public static void start(Activity activity) {
@@ -89,6 +90,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onResult(int code, String result, Throwable var3) {
                 finish();
+                PhoneNumberActivity.start(SettingActivity.this);
             }
 
             @Override
@@ -104,6 +106,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             public void onResult(int code, String result, Throwable var3) {
                 NIMClient.getService(AuthService.class).logout();
                 finish();
+                PhoneNumberActivity.start(SettingActivity.this);
             }
 
             @Override

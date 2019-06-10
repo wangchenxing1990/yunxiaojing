@@ -2,7 +2,10 @@ package com.yun.xiao.jing;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -37,16 +40,26 @@ public class MainActivity extends AppCompatActivity {
         activity.startActivity(intent);
     }
 
+    public static void start(Activity activity, String params) {
+        Intent intent = new Intent(activity, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra("params", params);
+        activity.startActivity(intent);
+    }
+
     private HomeTabItem discoveryTab;
     private HomeTabItem clubTab;
     private ImageView homeTab;
     private HomeTabItem recordTab;
     private HomeTabItem meTab;
     private ImageView image_view_home;
+    private String params;
+    MyBroadCast myBroadCast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        params = getIntent().getStringExtra("params");
         setContentView(R.layout.activity_main);
         image_view_home = findViewById(R.id.image_view_home);
         initHomeBottomTab();
@@ -57,12 +70,24 @@ public class MainActivity extends AppCompatActivity {
                 PostInfoActivity.start(MainActivity.this);
             }
         });
+        if (params != null && params.equals("postinfo")) {
+            if (findFragment != null) {
+                clubTab.performClick();
+                FindFragment fragment = (FindFragment) findFragment;
+                fragment.getDataFindInformation();
+            } else {
+                findFragment = FindFragment.newInstance();
+                clubTab.performClick();
+            }
+        } else {
+            discoveryTab.performClick();
+        }
 
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.yun.xiao.jing");
+        myBroadCast = new MyBroadCast();
+        registerReceiver(myBroadCast, intentFilter);
     }
-
-
-
-
 
     private void initFragments() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -181,5 +206,23 @@ public class MainActivity extends AppCompatActivity {
         }
 //            ft.addToBackStack("");
         ft.commitAllowingStateLoss();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (myBroadCast != null) {
+            unregisterReceiver(myBroadCast);
+        }
+    }
+
+    class MyBroadCast extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (conversationFragment != null) {
+                ((ConversationFragment) conversationFragment).updateList();
+            }
+        }
     }
 }

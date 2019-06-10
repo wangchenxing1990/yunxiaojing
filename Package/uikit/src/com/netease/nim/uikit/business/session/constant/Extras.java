@@ -30,6 +30,7 @@ public interface Extras {
     String EXTRA_ANCHOR = "anchor";
 
     String EXTRA_CUSTOMIZATION = "customization";
+    String EXTRA_NAME= "name";
     String EXTRA_BACK_TO_CLASS = "backToClass";
 
     //图片选自器

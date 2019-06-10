@@ -65,8 +65,13 @@ public class ApiCode {
     public static int TOTAL_STATISTICS=630;//用户主页浏览总量
     public static int HOME_BROWSING_IS_SUCCESSFULLY=620;//用户主页浏览总量
     public static int DYNAMIC_LIST_DATA=230;//用户主页浏览总量
+    public static int DYNAMIC_LIST_EMPTY=231;//用户主页浏览总量
     public static int FOUCS_ON_SUCCESS=200;//关注用户
     public static int DYNAMIC_RELEASE_SUCCESSFUL=220;//关注用户
+    public static int BLACKED_USER_DYNAMIC_SUCCESS=680;//Blocked user dynamic success";break;//屏蔽用户动态成功
+    public static int LIKE_USER_SUCCESS=180;//Blocked user dynamic success";break;//屏蔽用户动态成功
+    public static int LIKE_USER_ALREADY_LIKE_IT=188;//Blocked user dynamic success";break;//屏蔽用户动态成功
+    public static int ESTABLISHMENT_OF_IS_FRIENDSHIP=570;//Blocked user dynamic success";break;//好友关系成立
 
     public static String PHONE="phone";
 }

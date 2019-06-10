@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -191,11 +192,13 @@ public class MessageFragment extends TFragment implements ModuleProxy {
     Observer<List<IMMessage>> incomingMessageObserver = new Observer<List<IMMessage>>() {
         @Override
         public void onEvent(List<IMMessage> messages) {
+            Log.i("接收消息的观察者", "接收消息");
             onMessageIncoming(messages);
         }
     };
 
     private void onMessageIncoming(List<IMMessage> messages) {
+        Log.i("接收消息的观察者", "接收消息" + messages.get(0).getContent());
         if (CommonUtil.isEmpty(messages)) {
             return;
         }
@@ -380,8 +383,8 @@ public class MessageFragment extends TFragment implements ModuleProxy {
     protected List<BaseAction> getActionList() {
         List<BaseAction> actions = new ArrayList<>();
         actions.add(new ImageAction());
-        actions.add(new VideoAction());
-        actions.add(new LocationAction());
+//        actions.add(new VideoAction());
+//        actions.add(new LocationAction());
 
         if (customization != null && customization.actions != null) {
             actions.addAll(customization.actions);

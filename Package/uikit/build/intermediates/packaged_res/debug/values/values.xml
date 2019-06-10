@@ -129,6 +129,7 @@
     <color name="color_red_ccfa3c55">#ccfa3c55</color>
     <color name="color_split_line_cccccc">#cccccc</color>
     <color name="color_split_line_d9d9d9">#d9d9d9</color>
+    <color name="color_text_33">#333333</color>
     <color name="color_yellow_796413">#796413</color>
     <color name="color_yellow_b39729">#b39729</color>
     <color name="contact_letter_idx_bg">#33000000</color>
@@ -588,9 +589,11 @@
     <string name="team_update_failed">群头像设置失败</string>
     <string name="text_goog_friends_detail">好友详情</string>
     <string name="text_goog_friends_list">好友列表</string>
+    <string name="text_harmful_information">Pornographic/illega/harmful information</string>
     <string name="text_message_content">Tommy主动向你打了招呼,快去看看吧</string>
     <string name="text_message_system">系统消息</string>
     <string name="text_message_time">1小时前</string>
+    <string name="text_select_report_reason">Select report reason(s)</string>
     <string name="timer_default">00:00</string>
     <string name="trans_voice_failed">语音转化失败</string>
     <string name="transfer_team">转让群</string>

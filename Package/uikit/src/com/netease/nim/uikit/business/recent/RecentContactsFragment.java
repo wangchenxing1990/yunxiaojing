@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,6 +105,7 @@ public class RecentContactsFragment extends TFragment implements View.OnClickLis
         registerOnlineStateChangeListener(true);
         imageViewNotification.setOnClickListener(this);
         iamgeViewFriends.setOnClickListener(this);
+
     }
 
     @Override
@@ -194,6 +196,7 @@ public class RecentContactsFragment extends TFragment implements View.OnClickLis
                     NimUIKit.startTeamSession(getActivity(), recent.getContactId());
                 } else if (recent.getSessionType() == SessionTypeEnum.P2P) {
                     NimUIKit.startP2PSession(getActivity(), recent.getContactId());
+                    Log.i("recentrecent", recent.getContactId());
                 }
             }
 

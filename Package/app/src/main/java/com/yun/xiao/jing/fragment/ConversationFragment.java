@@ -16,9 +16,11 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.yun.xiao.jing.ApiCode;
 import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.PictureBean;
 import com.yun.xiao.jing.R;
@@ -116,7 +118,14 @@ public class ConversationFragment extends Fragment implements View.OnClickListen
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     String info = jsonObject.getString("info");
-                    text_view_number.setText(info);
+                    if (info.equals("0")) {
+                        text_view_number.setVisibility(View.INVISIBLE);
+                        image_view_left.setClickable(false);
+                    } else {
+                        text_view_number.setText(info);
+                        image_view_left.setClickable(true);
+                    }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -139,7 +148,7 @@ public class ConversationFragment extends Fragment implements View.OnClickListen
         adapter.setOnPictureClickListener(new PictureAdapter.OnPictureClickListener() {
             @Override
             public void onPictureClick(String token) {
-                OtherInformationActivity.start(getActivity(), token);
+                submitBrowserCount(token);
             }
         });
 
@@ -168,19 +177,40 @@ public class ConversationFragment extends Fragment implements View.OnClickListen
         });
     }
 
+    /**
+     * 提交浏览的次数
+     */
+    private void submitBrowserCount(final String toToken) {
+        mAction.getBrowseCount(token, device, toToken, new RequestCallback() {
+            @Override
+            public void onResult(int code, String result, Throwable var3) {
+                if (code == ApiCode.HOME_PAGE_BROWSING_SUCCESSFULLY) {
+                    OtherInformationActivity.start(getActivity(), toToken);
+                } else {
+                    Toast.makeText(ChessApp.sAppContext, "网络不好,稍后重试", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailed() {
+                Toast.makeText(ChessApp.sAppContext, "网络不好,稍后重试", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void getData() {
         mAction.getUserList(token, device, sex, String.valueOf(p), page, new RequestCallback() {
             @Override
             public void onResult(int code, String result, Throwable var3) {
                 Gson gson = new Gson();
-                PictureBean pictureBean = gson.fromJson(result, PictureBean.class);
-                if (mSwipeRefresh.isRefreshing()) {
-                    adapter.updateData(pictureBean.getInfo(), false);
-                    mSwipeRefresh.setRefreshing(false);
-                    isLoadMore = false;
-                } else {
-                    adapter.updateData(pictureBean.getInfo(), true);
-                }
+//                PictureBean pictureBean = gson.fromJson(result, PictureBean.class);
+//                if (mSwipeRefresh.isRefreshing()) {
+//                    adapter.updateData(pictureBean.getInfo(), false);
+//                    mSwipeRefresh.setRefreshing(false);
+//                    isLoadMore = false;
+//                } else {
+//                    adapter.updateData(pictureBean.getInfo(), true);
+//                }
             }
 
             @Override
@@ -199,5 +229,9 @@ public class ConversationFragment extends Fragment implements View.OnClickListen
             case R.id.image_view:
                 break;
         }
+    }
+
+    public void updateList() {
+        adapter.updateDataNew();
     }
 }

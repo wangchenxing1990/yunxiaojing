@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_popuwindd"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/view_line_background"
@@ -12,20 +13,23 @@
 
         <ImageView
             android:id="@+id/image_view_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dp_25"
+            android:layout_height="@dimen/dp_25"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp_20"
             android:layout_marginTop="@dimen/dp_20"
             android:src="@mipmap/icon_find_left" />
 
         <ImageView
             android:id="@+id/image_view_two"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dp_25"
+            android:layout_height="@dimen/dp_25"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp_25"
             android:layout_marginTop="@dimen/dp_20"
             android:layout_toRightOf="@+id/image_view_left"
-            android:src="@mipmap/icon_select_normal" />
+            android:src="@mipmap/icon_select_normal"
+            android:visibility="invisible" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -42,7 +46,8 @@
             android:layout_alignParentRight="true"
             android:layout_marginTop="@dimen/dp_20"
             android:layout_marginRight="@dimen/dp_25"
-            android:src="@mipmap/icon_select_normal" />
+            android:src="@mipmap/icon_select_normal"
+            android:visibility="invisible" />
     </RelativeLayout>
 
     <View
@@ -51,7 +56,6 @@
         android:layout_height="@dimen/dp_2"
         android:layout_below="@+id/image_view_left"
         android:background="@color/color_line_ec" />
-
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/mSwipeRefreshLayout"
@@ -66,4 +70,12 @@
             android:layout_marginTop="@dimen/dp_10" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
+    <TextView
+        android:id="@+id/text_view_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="现在没有数据"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dp_18"
+        android:visibility="invisible" />
 </LinearLayout>

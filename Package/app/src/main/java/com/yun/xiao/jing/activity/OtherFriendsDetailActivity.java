@@ -6,6 +6,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -15,18 +17,17 @@ import com.squareup.picasso.Picasso;
 import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.FindInfoBean;
 import com.yun.xiao.jing.R;
+import com.yun.xiao.jing.adapter.AdapterPicture;
 import com.yun.xiao.jing.defineView.CircleTransform;
 import com.yun.xiao.jing.util.DateTool;
 import com.yun.xiao.jing.util.NumberTool;
 
-import org.w3c.dom.Text;
-
 public class OtherFriendsDetailActivity extends AppCompatActivity implements View.OnClickListener {
     private FrameLayout frame_layout_back;
     private ImageView image_view_left;
-    private TextView text_name, text_time, text_content,text_fans,text_selection,text_message;
+    private TextView text_name, text_time, text_content, text_fans, text_selection, text_message;
 
-    public static void start(Activity activity, FindInfoBean.InfoBean infoBean) {
+    public static void start(Activity activity, FindInfoBean infoBean) {
         Intent intent = new Intent(activity, OtherFriendsDetailActivity.class);
 //        Bundle bundle=new Bundle();
 //        bundle.putSerializable("infoBean",infoBean);
@@ -34,15 +35,18 @@ public class OtherFriendsDetailActivity extends AppCompatActivity implements Vie
         activity.startActivity(intent);
     }
 
-    FindInfoBean.InfoBean infoBean;
+    FindInfoBean infoBean;
     private Drawable selectDrawable;
     private Drawable fansDrawable;
     private Drawable messageDrawable;
     private Drawable selectDrawableNormal;
+    private RecyclerView recycler_view;
+    private AdapterPicture adapterPicture;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        infoBean = (FindInfoBean.InfoBean) getIntent().getSerializableExtra("infoBean");
+        infoBean = (FindInfoBean) getIntent().getSerializableExtra("infoBean");
         setContentView(R.layout.activity_friends_detail);
         initDrawable();
         initView();
@@ -70,10 +74,11 @@ public class OtherFriendsDetailActivity extends AppCompatActivity implements Vie
         text_fans = findViewById(R.id.text_fans);
         text_selection = findViewById(R.id.text_selection);
         text_message = findViewById(R.id.text_message);
-
-
+        recycler_view = findViewById(R.id.recycler_view);
         frame_layout_back.setOnClickListener(this);
-
+        recycler_view.setLayoutManager(new GridLayoutManager(ChessApp.sAppContext, 3));
+        adapterPicture = new AdapterPicture(infoBean.getImages());
+        recycler_view.setAdapter(adapterPicture);
     }
 
     private void initData() {
@@ -87,8 +92,8 @@ public class OtherFriendsDetailActivity extends AppCompatActivity implements Vie
         text_message.setText(NumberTool.intToString(String.valueOf(infoBean.getComments())));
 
         text_selection.setCompoundDrawables(selectDrawableNormal, null, null, null);
-        text_selection.setCompoundDrawables(selectDrawableNormal, null, null, null);
-        text_selection.setCompoundDrawables(selectDrawable, null, null, null);
+        text_fans.setCompoundDrawables(fansDrawable, null, null, null);
+        text_message.setCompoundDrawables(messageDrawable, null, null, null);
 
         text_selection.setCompoundDrawablePadding(10);
         text_fans.setCompoundDrawablePadding(10);

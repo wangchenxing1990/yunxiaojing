@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relation_popu"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/relation_popu"
     android:gravity="bottom"
     android:orientation="vertical">
 
@@ -21,7 +21,8 @@
             android:gravity="center"
             android:text="上传照片"
             android:textColor="#aaaaaa"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            android:visibility="gone" />
 
         <View
             android:layout_width="match_parent"
@@ -56,12 +57,11 @@
         android:id="@+id/text_cancel"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:gravity="center"
-        android:text="取消"
         android:layout_margin="10dp"
         android:background="@drawable/shape_white_background"
+        android:gravity="center"
+        android:text="取消"
         android:textColor="#0044ff"
-        android:textSize="17dp"
-        />
+        android:textSize="17dp" />
 
 </LinearLayout>

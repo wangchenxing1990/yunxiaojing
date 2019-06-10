@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -27,6 +29,7 @@ import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.yun.xiao.jing.ChessApp;
+import com.yun.xiao.jing.MainActivity;
 import com.yun.xiao.jing.R;
 import com.yun.xiao.jing.action.LoginAction;
 import com.yun.xiao.jing.adapter.GridImageAdapter;
@@ -226,9 +229,9 @@ public class PostInfoActivity extends AppCompatActivity implements View.OnClickL
                     jsonArray.add(strTwo);
                 }
                 Log.i("jsonArray::::", "jsonArray::::" + jsonArray.toString());
-//                Log.i("jsonArray::::","jsonArray::::"+jsonArray.toString().length()/4);
-//                builder.addFormDataPart("images", jsonArray.toString());
-                builder.addFormDataPart("images", jsonArray.toString());
+                if (selectList.size() != 0) {
+                    builder.addFormDataPart("images", jsonArray.toString());
+                }
                 String userToken = UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
                 String device = UserPreferences.getDevice();
                 OkHttpClient okHttp = new OkHttpClient();
@@ -254,13 +257,24 @@ public class PostInfoActivity extends AppCompatActivity implements View.OnClickL
                         int code = response.code();
                         Log.i("发表动态成功", "code:::::::" + code);
                         Log.i("发表动态成功", str);
-//                        handler.sendEmptyMessage(133);
+                        handler.sendEmptyMessage(133);
                     }
                 });
             }
         }.start();
     }
 
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 133:
+                    MainActivity.start(PostInfoActivity.this, "postinfo");
+                    break;
+            }
+        }
+    };
     List<LocalMedia> selectList = new ArrayList<>();
 
     @Override

@@ -78,7 +78,7 @@ public class SetPasswordActivity extends AppCompatActivity implements View.OnCli
             return;
         }
         String token = UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
-        String device = Settings.System.getString(getContentResolver(), Settings.System.ANDROID_ID);
+        String device = UserPreferences.getDevice();
         Log.i("TAGTaG", "token::" + token + "device:::" + device);
         mAction.updatePasswordInfo(token, device, passwordCheck, new RequestCallback() {
             @Override
@@ -94,17 +94,19 @@ public class SetPasswordActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void parseData(String result) {
-            String imAccount = UserPreferences.getInstance(ChessApp.sAppContext).getKeyIMAccount();
-            String imToken = UserPreferences.getInstance(ChessApp.sAppContext).getKeyImToken();
-            loginNeteaseNim(imAccount, imToken);
+        String imAccount = UserPreferences.getInstance(ChessApp.sAppContext).getKeyIMAccount();
+        String imToken = UserPreferences.getInstance(ChessApp.sAppContext).getKeyImToken();
+        loginNeteaseNim(imAccount, imToken);
     }
 
     private void loginNeteaseNim(String imaccount, String imtoken) {
+        Log.i("登录云信", "imaccount:::" + imaccount + "imtoken:::::" + imtoken);
         LoginInfo loginInfo = new LoginInfo(imaccount, imtoken);
         com.netease.nimlib.sdk.RequestCallback<LoginInfo> callback = new com.netease.nimlib.sdk.RequestCallback<LoginInfo>() {
 
             @Override
             public void onSuccess(LoginInfo loginInfo) {
+                Log.i("登录云信成功", "imaccount:::" + loginInfo.getAppKey() + "imtoken:::::" + loginInfo.getToken() + "keykey::::" + loginInfo.getAccount());
                 MainActivity.start(SetPasswordActivity.this);
                 ChessApp.removeActivity(SetPasswordActivity.this);
                 finish();
@@ -112,7 +114,7 @@ public class SetPasswordActivity extends AppCompatActivity implements View.OnCli
 
             @Override
             public void onFailed(int i) {
-
+                Log.i("登录云信失败", "i:::" + i);
             }
 
             @Override

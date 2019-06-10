@@ -20,7 +20,7 @@ public abstract class AkPagerAdapter<T> extends PagerAdapter {
 
     public AkPagerAdapter(Activity c) {
         mActivity = c;
-        mInflater = (LayoutInflater)c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mInflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -38,12 +38,14 @@ public abstract class AkPagerAdapter<T> extends PagerAdapter {
         mData.add(item);
         notifyDataSetChanged();
     }
+
     public void addAll(final List<T> items) {
         if (items != null) {
             mData.addAll(items);
         }
         notifyDataSetChanged();
     }
+
     public void setData(final List<T> items) {
         mData.clear();
         if (items != null) {

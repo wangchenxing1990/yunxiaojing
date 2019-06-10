@@ -79,4 +79,5 @@ dependencies {
     //    implementation project(path: ':uikit')
     //    implementation 'com.huxq17.xrefreshview:xrefreshview:3.6.9'
     implementation files('libs/nrtc-sdk.jar')
+    implementation files('libs/jackson-all-1.9.2.jar')
 }

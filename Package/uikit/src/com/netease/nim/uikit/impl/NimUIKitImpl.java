@@ -329,9 +329,15 @@ public final class NimUIKitImpl {
     public static void startP2PSession(Context context, String account) {
         startP2PSession(context, account, null);
     }
+    public static void startP2PSession(Context context, String account,String age,String name) {
+        startP2PSession(context, account, null,age,name);
+    }
 
     public static void startP2PSession(Context context, String account, IMMessage anchor) {
         NimUIKitImpl.startChatting(context, account, SessionTypeEnum.P2P, commonP2PSessionCustomization, anchor);
+    }
+    public static void startP2PSession(Context context, String account, IMMessage anchor,String age,String name) {
+        NimUIKitImpl.startChatting(context, account, SessionTypeEnum.P2P, commonP2PSessionCustomization, anchor,name);
     }
 
     public static void startTeamSession(Context context, String tid) {
@@ -348,8 +354,17 @@ public final class NimUIKitImpl {
 
     public static void startChatting(Context context, String id, SessionTypeEnum sessionType, SessionCustomization
             customization, IMMessage anchor) {
+
         if (sessionType == SessionTypeEnum.P2P) {
             P2PMessageActivity.start(context, id, customization, anchor);
+        } else if (sessionType == SessionTypeEnum.Team) {
+            TeamMessageActivity.start(context, id, customization, null, anchor);
+        }
+    }
+    public static void startChatting(Context context, String id, SessionTypeEnum sessionType, SessionCustomization
+            customization, IMMessage anchor,String name) {
+        if (sessionType == SessionTypeEnum.P2P) {
+            P2PMessageActivity.start(context, id, customization, anchor,name);
         } else if (sessionType == SessionTypeEnum.Team) {
             TeamMessageActivity.start(context, id, customization, null, anchor);
         }

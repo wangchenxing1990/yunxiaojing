@@ -42,7 +42,7 @@ public class PictureAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
 
     }
-
+private int position=-1;
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int i) {
         Drawable drawable = ChessApp.sAppContext.getResources().getDrawable(R.drawable.icon_female);
@@ -69,6 +69,7 @@ public class PictureAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ((MyViewHolder) viewHolder).relative_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    position=i;
                     if (listener != null) {
                         listener.onPictureClick(listData.get(i).getToken());
                     }
@@ -89,6 +90,12 @@ public class PictureAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             this.listData.clear();
             this.listData = info;
         }
+        notifyDataSetChanged();
+    }
+    public void updateDataNew() {
+       if(listData.size()!=0&&position!=-1){
+           listData.remove(position);
+       }
         notifyDataSetChanged();
     }
 

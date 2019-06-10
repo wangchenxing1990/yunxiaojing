@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_popuwindd"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white_color">
@@ -8,7 +9,7 @@
     <FrameLayout
         android:id="@+id/view_pager_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_260"
+        android:layout_height="@dimen/dp_200"
         android:clickable="true"
         android:foreground="@drawable/fg_horde">
 
@@ -28,16 +29,16 @@
 
     <ImageView
         android:id="@+id/iamge_view_left"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/sp_20"
-        android:layout_marginTop="@dimen/sp_10"
+        android:layout_width="@dimen/dp_35"
+        android:layout_height="@dimen/dp_35"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_10"
         android:src="@mipmap/icon_back_finish" />
 
     <ImageView
         android:id="@+id/image_view_right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_30"
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/dp_10"
         android:layout_marginRight="@dimen/dp_20"
@@ -88,7 +89,8 @@
         android:paddingBottom="@dimen/dp_2"
         android:text="163cm"
         android:textColor="@color/white_color"
-        android:textSize="@dimen/sp_15" />
+        android:textSize="@dimen/sp_15"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/text_view_bachelor"
@@ -107,7 +109,8 @@
         android:paddingBottom="@dimen/dp_2"
         android:text="bachelor"
         android:textColor="@color/white_color"
-        android:textSize="@dimen/sp_15" />
+        android:textSize="@dimen/sp_15"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/text_view_some_time"
@@ -126,7 +129,8 @@
         android:paddingBottom="@dimen/dp_2"
         android:text="sometimes"
         android:textColor="@color/white_color"
-        android:textSize="@dimen/sp_15" />
+        android:textSize="@dimen/sp_15"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/text_view_school"
@@ -137,7 +141,8 @@
         android:layout_marginTop="@dimen/dp_15"
         android:text="我毕业于..."
         android:textColor="@color/black_color"
-        android:textSize="@dimen/sp_14" />
+        android:textSize="@dimen/sp_14"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/text_school_name"
@@ -149,7 +154,8 @@
         android:text="上海交通大学"
         android:textColor="@color/black_color"
         android:textSize="@dimen/sp_15"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:visibility="gone" />
 
     <View
         android:id="@+id/view_line"
@@ -197,7 +203,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/view_line"
-        android:layout_marginTop="@dimen/dp_20">
+        android:layout_marginTop="@dimen/dp_20"
+        android:visibility="invisible">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"

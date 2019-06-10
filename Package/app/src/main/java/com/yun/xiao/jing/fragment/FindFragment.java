@@ -1,5 +1,6 @@
 package com.yun.xiao.jing.fragment;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.renderscript.Script;
 import android.support.annotation.NonNull;
@@ -8,6 +9,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,18 +18,30 @@ import android.view.animation.Animation;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.netease.nim.uikit.common.ui.dialog.DialogMaker;
+import com.netease.nim.uikit.common.ui.dialog.EasyAlertDialogHelper;
 import com.netease.nimlib.sdk.uinfo.UserService;
+import com.yun.xiao.jing.ApiCode;
 import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.FindInfoBean;
+import com.yun.xiao.jing.ParseObjectToHaspMap;
 import com.yun.xiao.jing.R;
+import com.yun.xiao.jing.action.BlackAction;
 import com.yun.xiao.jing.action.FindAction;
 import com.yun.xiao.jing.activity.OtherFriendsDetailActivity;
+import com.yun.xiao.jing.activity.ReportUserActivity;
 import com.yun.xiao.jing.adapter.FindAdapter;
+import com.yun.xiao.jing.defineView.MyPopuwindown;
 import com.yun.xiao.jing.interfaces.RequestCallback;
 import com.yun.xiao.jing.preference.UserPreferences;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,12 +56,13 @@ public class FindFragment extends Fragment implements View.OnClickListener {
     }
 
     private FindAction mAction;
+    private BlackAction mBlackAction;
     private String userToken;
     private String device;
     private String type = "1";
     private int p = 0;
     private String page = "10";
-    private List<FindInfoBean.InfoBean> listData = new ArrayList();
+    private List<FindInfoBean> listData = new ArrayList();
     private FindAdapter findAdapter;
 
     @Override
@@ -55,6 +71,7 @@ public class FindFragment extends Fragment implements View.OnClickListener {
         userToken = UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
         device = UserPreferences.getDevice();
         mAction = new FindAction(getActivity(), null);
+        mBlackAction = new BlackAction(getActivity(), null);
         findAdapter = new FindAdapter(listData);
     }
 
@@ -70,23 +87,24 @@ public class FindFragment extends Fragment implements View.OnClickListener {
 
     private ImageView image_view_left, image_view_two, image_view_message;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    LinearLayoutManager layoutManager;
+    private String dynamic_id = "";
+    private TextView text_view_empty;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         mSwipeRefreshLayout = rootView.findViewById(R.id.mSwipeRefreshLayout);
         mrecyclerView = rootView.findViewById(R.id.recycler_view);
         image_view_left = rootView.findViewById(R.id.image_view_left);
         image_view_two = rootView.findViewById(R.id.image_view_two);
         image_view_message = rootView.findViewById(R.id.image_view_message);
+        text_view_empty = rootView.findViewById(R.id.text_view_empty);
         image_view_left.setOnClickListener(this);
         image_view_two.setOnClickListener(this);
         image_view_message.setOnClickListener(this);
-        layoutManager = new LinearLayoutManager(ChessApp.sAppContext);
         mrecyclerView.setLayoutManager(new LinearLayoutManager(ChessApp.sAppContext));
         mrecyclerView.setAdapter(findAdapter);
+        mSwipeRefreshLayout.setRefreshing(true);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -95,8 +113,16 @@ public class FindFragment extends Fragment implements View.OnClickListener {
         });
         findAdapter.setOnItemClckListener(new FindAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(FindInfoBean.InfoBean infoBean) {
+            public void onItemClick(FindInfoBean infoBean) {
                 OtherFriendsDetailActivity.start(getActivity(), infoBean);
+            }
+        });
+
+        findAdapter.setOnCancelClickListener(new FindAdapter.OnCancleClickListener() {
+            @Override
+            public void onCancelClick(FindInfoBean findInfoBean, int position) {
+                dynamic_id = String.valueOf(findInfoBean.getToken());
+                showPopuwindowPhoto();
             }
         });
 
@@ -128,19 +154,25 @@ public class FindFragment extends Fragment implements View.OnClickListener {
 
     private boolean isLoadMore;
 
-    private void getDataFindInformation() {
+    public void getDataFindInformation() {
         mAction.getFindDiscoveryData(userToken, device, type, String.valueOf(p), page, new RequestCallback() {
             @Override
             public void onResult(int code, String result, Throwable var3) {
-                Gson gson = new Gson();
-                FindInfoBean findInfoBean = gson.fromJson(result, FindInfoBean.class);
-                if (mSwipeRefreshLayout.isRefreshing()) {
-                    findAdapter.updateData(findInfoBean.getInfo(), false);
+                if (code == ApiCode.DYNAMIC_LIST_DATA) {
+                    List<FindInfoBean> list = ParseObjectToHaspMap.testJackson(result);
+                    if (mSwipeRefreshLayout.isRefreshing()) {
+                        findAdapter.updateData(list, false, false);
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        isLoadMore = false;
+                    } else {
+                        findAdapter.updateData(list, true, true);
+                    }
+                } else if (code == ApiCode.DYNAMIC_LIST_EMPTY) {
                     mSwipeRefreshLayout.setRefreshing(false);
-                    isLoadMore = false;
-                } else {
-                    findAdapter.updateData(findInfoBean.getInfo(), true);
+//                    text_view_empty.setVisibility(View.INVISIBLE);
+//                    mSwipeRefreshLayout.setVisibility(View.GONE);
                 }
+
             }
 
             @Override
@@ -168,6 +200,71 @@ public class FindFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.image_view_message:
                 break;
+            case R.id.text_take_photo://举报
+                ReportUserActivity.start(getActivity(), dynamic_id);
+                break;
+            case R.id.text_picture://屏蔽
+                myPopuwindown.dismiss();
+                EasyAlertDialogHelper.createOkCancelDiolag(getContext(), "", "你确定屏蔽该账号吗？", true, new EasyAlertDialogHelper.OnDialogActionListener() {
+
+                    @Override
+                    public void doCancelAction() {
+
+                    }
+
+                    @Override
+                    public void doOkAction() {
+                        blackUser();
+                    }
+                }).show();
+
+                break;
+            case R.id.text_cancel://取消
+                myPopuwindown.dismiss();
+                break;
         }
+    }
+
+    private void blackUser() {
+        mBlackAction.gainBlackUserDynamic(userToken, device, dynamic_id, new RequestCallback() {
+            @Override
+            public void onResult(int code, String result, Throwable var3) {
+                Toast.makeText(ChessApp.sAppContext, "屏蔽用户动态成功", Toast.LENGTH_SHORT).show();
+//                myPopuwindown.dismiss();
+                getDataFindInformation();
+            }
+
+            @Override
+            public void onFailed() {
+
+            }
+        });
+    }
+
+    /**
+     * 弹出修改头像的对话框
+     */
+    MyPopuwindown myPopuwindown;
+
+    private void showPopuwindowPhoto() {
+        myPopuwindown = new MyPopuwindown(getActivity(), R.layout.popuwindown_photo);
+        View view = myPopuwindown.getView();
+        ColorDrawable dw = new ColorDrawable(0xaa000000);
+        myPopuwindown.setBackgroundDrawable(dw);
+        myPopuwindown.showAtLocation(rootView.findViewById(R.id.ll_popuwindd), Gravity.BOTTOM, 0, 0);
+        myPopuwindown.setOutsideTouchable(false);
+
+        myPopuwindown.setAnimationStyle(R.style.popwin_anim_style);
+        TextView text_take_photo = view.findViewById(R.id.text_take_photo);
+        TextView text_picture = view.findViewById(R.id.text_picture);
+        TextView text_cancel = view.findViewById(R.id.text_cancel);
+
+        text_take_photo.setText("举报用户");
+        text_picture.setText("屏蔽用户");
+
+        text_take_photo.setOnClickListener(this);
+        text_picture.setOnClickListener(this);
+        text_cancel.setOnClickListener(this);
+
     }
 }

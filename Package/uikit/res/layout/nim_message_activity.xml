@@ -19,8 +19,37 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:titleTextAppearance="@style/Toolbar.TitleText"
-            app:subtitleTextAppearance="@style/Toolbar.SubTitleText"/>
+            app:subtitleTextAppearance="@style/Toolbar.SubTitleText"
+            app:titleTextAppearance="@style/Toolbar.TitleText" />
     </android.support.design.widget.AppBarLayout>
 
+    <RelativeLayout
+        android:id="@+id/relative_layout_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_size_48">
+
+        <RelativeLayout
+            android:id="@+id/frame_layout"
+            android:layout_width="@dimen/dp_size_48"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:paddingLeft="@dimen/dp_size_5"
+                android:src="@drawable/icon_left" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/text_view_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="姓名"
+            android:textColor="@color/color_text_33"
+            android:textSize="@dimen/sp_16" />
+
+    </RelativeLayout>
 </LinearLayout>

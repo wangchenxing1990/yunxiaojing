@@ -187,10 +187,10 @@ public class SessionHelper {
 //                actions.add(new AVChatAction(AVChatType.VIDEO));
             }
 //            actions.add(new RTSAction());
-            actions.add(new SnapChatAction());
-            actions.add(new GuessAction());
-            actions.add(new FileAction());
-            actions.add(new TipAction());
+//            actions.add(new SnapChatAction());
+//            actions.add(new GuessAction());
+//            actions.add(new FileAction());
+//            actions.add(new TipAction());
             if (NIMRedPacketClient.isEnable()) {
 //                actions.add(new RedPacketAction());
             }

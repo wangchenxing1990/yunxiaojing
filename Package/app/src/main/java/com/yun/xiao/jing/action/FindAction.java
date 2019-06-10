@@ -345,13 +345,14 @@ public class FindAction extends BaseAction {
         ChessApp.sRequestQueue.add(signRequest);
     }
 
-    public void getBrowseCount(String userToken, String device, final RequestCallback requestCallback) {
+    public void getBrowseCount(String userToken, String device,String token, final RequestCallback requestCallback) {
         requestCreateUrl = ApiConstants.HOST + ApiConstants.USER_PAGE_BROWSE;
         final HashMap<String, String> headerMap = new HashMap<>();
 
         headerMap.put("user-token", userToken);
         headerMap.put("mobile-device", device);
-
+        final HashMap<String,String> paramsMap=new HashMap();
+        paramsMap.put("browse_token",token);
         SignStringRequest signRequest = new SignStringRequest(Request.Method.POST, requestCreateUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -359,7 +360,7 @@ public class FindAction extends BaseAction {
                 try {
                     JSONObject json = new JSONObject(response);
                     int code = json.getInt("code");
-                    if (code == ApiCode.TOTAL_STATISTICS) {//账号离线成功
+                    if (code == ApiCode.HOME_PAGE_BROWSING_SUCCESSFULLY) {//账号离线成功
                         requestCallback.onResult(code, response, null);
                     } else {//账号离线失败
                         requestCallback.onFailed();
@@ -381,10 +382,10 @@ public class FindAction extends BaseAction {
                 }
             }
         }) {
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                return paramsMap;
-//            }
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return paramsMap;
+            }
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
@@ -414,7 +415,9 @@ public class FindAction extends BaseAction {
                     int code = json.getInt("code");
                     if (code == ApiCode.DYNAMIC_LIST_DATA) {//账号离线成功
                         requestCallback.onResult(code, response, null);
-                    } else {//账号离线失败
+                    } else if(code==ApiCode.DYNAMIC_LIST_EMPTY){
+                        requestCallback.onResult(code, response, null);
+                    }else{//账号离线失败
                         requestCallback.onFailed();
                     }
                 } catch (JSONException e) {

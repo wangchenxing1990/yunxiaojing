@@ -306,6 +306,9 @@ public class NimUIKit {
     public static void startP2PSession(Context context, String account) {
         NimUIKitImpl.startP2PSession(context, account);
     }
+    public static void startP2PSession(Context context, String account,String name) {
+        NimUIKitImpl.startP2PSession(context, account,"",name);
+    }
 
     /**
      * 同 {@link NimUIKitImpl#startP2PSession(Context, String)},同时聊天界面打开后，列表跳转至anchor位置

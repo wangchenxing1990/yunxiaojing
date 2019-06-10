@@ -14,12 +14,12 @@
         <item name="android:windowNoTitle">true</item>
     </style>
     <!--<style name="NewAppTheme" parent="Theme.AppCompat.NoActionBar">-->
-        <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
-        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
-        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
-        <!--<item name="colorAccent">@color/grayAccent</item>-->
-        <!--<item name="android:windowActionBar">false</item>-->
-        <!--<item name="android:windowNoTitle">true</item>-->
+    <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+    <!--<item name="colorPrimary">@color/colorPrimary</item>-->
+    <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+    <!--<item name="colorAccent">@color/grayAccent</item>-->
+    <!--<item name="android:windowActionBar">false</item>-->
+    <!--<item name="android:windowNoTitle">true</item>-->
     <!--</style>-->
     <style name="text_title_style">
         <item name="android:layout_width">match_parent</item>
@@ -29,6 +29,7 @@
         <item name="android:textSize">@dimen/sp_14</item>
         <item name="android:gravity">center</item>
     </style>
+
     <style name="button_title_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/dp_40</item>
@@ -53,4 +54,21 @@
         <item name="android:background">@drawable/common_column_bg</item>
     </style>
 
+    <style name="popwin_anim_style" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/pop_enter_anim</item>
+        <item name="android:windowExitAnimation">@anim/pop_exit_anim</item>
+    </style>
+
+    <style name="text_report">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">@dimen/dp_30</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/sp_12</item>
+        <item name="android:layout_marginTop">@dimen/dp_10</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginRight">@dimen/dp_10</item>
+        <item name="android:layout_marginLeft">@dimen/dp_10</item>
+        <item name="android:background">@drawable/drawable_background_report</item>
+    </style>
 </resources>

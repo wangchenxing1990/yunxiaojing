@@ -59,7 +59,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     /**
      * 初始化view
      */
-    private EditText edit_input_name, edit_input_password;
+    private TextView edit_input_name;
+    private EditText edit_input_password;
     private TextView text_view_login;
 
     private void initView() {

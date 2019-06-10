@@ -24,6 +24,10 @@ public class ApiConstants {
     public static String USER_PAGE_BROWSE_LIST="userPageBrowseList";// 关注用户
     public static String USER_IN_DYNAMIC="userInDynamic";// 发表动态
     public static String USER_HEAD_IMAGE_UPDATE="userHeadImageUpdate";//用户头像更新
+    public static String SHIELDING_USER_DYNAMIC="userShieldingOther";//临时屏蔽用户动态
+    public static String USER_LIKE="userLike";//喜欢用户
+    public static String USER_REPORT="userReport";//喜欢用户
+    public static String USER_SESSION="userSession";//喜欢用户
 
 
     public static String FILE_PROVIDER="com.yunxiaojing.fileprovider";

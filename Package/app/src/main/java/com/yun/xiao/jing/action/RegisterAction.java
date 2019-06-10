@@ -382,7 +382,7 @@ public class RegisterAction extends BaseAction {
                     }else if(code == ApiCode.USER_TIME_EXPIRATION){
                         requestCallback.onResult(code, response, null);
                     }else if(code == ApiCode.USER_ALREADY_OFFLINE){
-                        requestCallback.onFailed();
+                        requestCallback.onResult(code, response, null);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

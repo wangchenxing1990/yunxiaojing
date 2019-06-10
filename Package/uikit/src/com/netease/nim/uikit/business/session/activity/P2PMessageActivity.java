@@ -3,6 +3,11 @@ package com.netease.nim.uikit.business.session.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import com.netease.nim.uikit.common.ToastHelper;
 
 import com.alibaba.fastjson.JSON;
@@ -35,7 +40,7 @@ import java.util.Set;
  * <p/>
  * Created by huangjun on 2015/2/1.
  */
-public class P2PMessageActivity extends BaseMessageActivity {
+public class P2PMessageActivity extends BaseMessageActivity implements View.OnClickListener {
 
     private boolean isResume = false;
 
@@ -52,13 +57,38 @@ public class P2PMessageActivity extends BaseMessageActivity {
         context.startActivity(intent);
     }
 
+    public static void start(Context context, String contactId, SessionCustomization customization, IMMessage anchor, String name) {
+        Intent intent = new Intent();
+        intent.putExtra(Extras.EXTRA_ACCOUNT, contactId);
+        intent.putExtra(Extras.EXTRA_CUSTOMIZATION, customization);
+        intent.putExtra(Extras.EXTRA_NAME, name);
+        if (anchor != null) {
+            intent.putExtra(Extras.EXTRA_ANCHOR, anchor);
+        }
+        intent.setClass(context, P2PMessageActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        context.startActivity(intent);
+    }
+
+    private RelativeLayout frame_layout;
+    private TextView text_view_name;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // 单聊特例话数据，包括个人信息，
+        String name = getIntent().getStringExtra(Extras.EXTRA_NAME);
         requestBuddyInfo();
         displayOnlineState();
         registerObservers(true);
+        frame_layout = findViewById(R.id.frame_layout);
+        text_view_name = findViewById(R.id.text_view_name);
+        frame_layout.setOnClickListener(this);
+        if (name != null && !TextUtils.isEmpty(name)) {
+            text_view_name.setText(name);
+        }
+
     }
 
     @Override
@@ -211,5 +241,12 @@ public class P2PMessageActivity extends BaseMessageActivity {
     @Override
     protected boolean enableSensor() {
         return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.frame_layout) {
+            finish();
+        }
     }
 }

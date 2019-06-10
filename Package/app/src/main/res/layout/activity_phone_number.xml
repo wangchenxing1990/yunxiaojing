@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="invisible"
+    android:background="@mipmap/icon_login_bj">
+
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@mipmap/logo_login_sugretime" />
+
+    <TextView
+        android:id="@+id/text_view_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image_view"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@drawable/drawable_background_phone"
+        android:paddingLeft="@dimen/dp_13"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_13"
+        android:paddingBottom="@dimen/dp_10"
+        android:text="phoneNumber"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_15" />
+
+</RelativeLayout>

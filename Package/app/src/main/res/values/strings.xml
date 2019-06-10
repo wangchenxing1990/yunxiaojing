@@ -73,4 +73,19 @@
     <string name="input_panel_snapchat">阅后即焚</string>
     <string name="input_panel_tip">Tip</string>
     <string name="send_ack_msg">发送已读回执消息</string>
+    <string name="report_one">Pronographic,</string>
+    <string name="report_two">Politically senstive,</string>
+    <string name="report_three">Ilegal violence,</string>
+    <string name="report_fore">Illeegal items,</string>
+    <string name="report_five">Gambling,</string>
+    <string name="report_six">Stolrn photo,</string>
+    <string name="report_seven">Bloody violence,</string>
+    <string name="report_eight">False user,</string>
+    <string name="report_nine">oter...,</string>
+    <string name="report_ten">Financial fraud,</string>
+    <string name="report_elven">Part...fraud,</string>
+    <string name="report_zero">Other fraud,</string>
+    <string name="report_one_two">Advertisenment,</string>
+    <string name="report_one_three">Insult/abuse,</string>
+    <string name="report_one_fore">Other...</string>
 </resources>

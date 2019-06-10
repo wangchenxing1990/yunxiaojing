@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.util.Pools;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -33,6 +34,7 @@ public class DiscoveryBannerAdapter extends AkPagerAdapter implements View.OnCli
     private Pools.SimplePool<View> mPool = new Pools.SimplePool<View>(3);
     public int homeTabIndex = 0;
     public String homeTabDisplayname = "全部";
+
     public DiscoveryBannerAdapter(Activity activity, Context c) {
         super(activity);
     }
@@ -43,11 +45,11 @@ public class DiscoveryBannerAdapter extends AkPagerAdapter implements View.OnCli
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(final ViewGroup container, int position) {
         if (mData == null || mData.size() <= 0) {
             return null;
         }
-        int realPos = position % mData.size();
+        final int realPos = position % mData.size();
         OtherInformationActivity.BannerItem bannerItem = (OtherInformationActivity.BannerItem) mData.get(realPos);
 //        LogUtil.i("循环轮播viewpager：" + position + "  root:" + "   realPos:" + realPos);
         final FrameLayout root = newJuImageView(realPos);
@@ -57,7 +59,17 @@ public class DiscoveryBannerAdapter extends AkPagerAdapter implements View.OnCli
         ImageLoader.getInstance().displayImage(bannerItem.picUrl, new NonViewAware(new ImageSize(imageWidth, imageHeight), ViewScaleType.CROP), createImageOptions(), new SimpleImageLoadingListener() {
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                root.setBackgroundDrawable(new BitmapDrawable(loadedImage));
+//                int imageW = loadedImage.getWidth();
+//                int imageH = loadedImage.getHeight();
+//                ViewGroup.LayoutParams params = root.getLayoutParams();
+//                params.width = ScreenUtil.screenWidth;
+//                params.height = ScreenUtil.screenHeight * imageW / imageH;
+//                root.setLayoutParams(params);
+                Log.i("imageloadimageload","width::::"+loadedImage.getWidth()+"height::::"+loadedImage.getHeight());
+                Log.i("imageloadimageload","Screenwidth::::"+ScreenUtil.screenWidth+"Screenheight::::"+ScreenUtil.screenHeight);
+                Log.i("imageloadimageload","dp2px:::::"+ScreenUtil.dp2px(ChessApp.sAppContext,200));
+                Bitmap bitmap=ScreenUtil.scaleBitmap(loadedImage,ScreenUtil.screenWidth,ScreenUtil.dp2px(ChessApp.sAppContext,200));
+                root.setBackgroundDrawable(new BitmapDrawable(bitmap));
             }
         });
         root.setForeground(mActivity.getResources().getDrawable(R.drawable.fg_horde));

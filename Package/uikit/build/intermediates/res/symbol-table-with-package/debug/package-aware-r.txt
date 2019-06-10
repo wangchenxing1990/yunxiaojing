@@ -689,6 +689,7 @@ color color_picker_preview_selector
 color color_red_ccfa3c55
 color color_split_line_cccccc
 color color_split_line_d9d9d9
+color color_text_33
 color color_yellow_796413
 color color_yellow_b39729
 color contact_letter_idx_bg
@@ -1335,6 +1336,7 @@ drawable ic_mtrl_chip_close_circle
 drawable icon_find_more
 drawable icon_finish_back
 drawable icon_full
+drawable icon_left
 drawable icon_loading
 drawable icon_message_bell
 drawable icon_message_notification
@@ -1900,6 +1902,7 @@ id recycler_view
 id refresh_loading_indicator
 id refreshing_indicator
 id regular_team_nickname
+id relative_layout_title
 id retake
 id right
 id right_icon
@@ -2013,6 +2016,7 @@ id textViewName
 id textViewTime
 id text_input_password_toggle
 id text_view_content
+id text_view_name
 id text_view_time
 id text_view_title
 id textinput_counter
@@ -2566,9 +2570,11 @@ string team_update_cancel
 string team_update_failed
 string text_goog_friends_detail
 string text_goog_friends_list
+string text_harmful_information
 string text_message_content
 string text_message_system
 string text_message_time
+string text_select_report_reason
 string timer_default
 string trans_voice_failed
 string transfer_team

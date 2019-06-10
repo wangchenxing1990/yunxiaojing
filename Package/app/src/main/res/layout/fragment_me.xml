@@ -127,6 +127,7 @@
                 android:textSize="@dimen/sp_14" />
 
             <TextView
+                android:id="@+id/text_focus_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -174,6 +175,7 @@
                 android:textSize="@dimen/sp_14" />
 
             <TextView
+                android:id="@+id/text_fans_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -220,6 +222,7 @@
                 android:textSize="@dimen/sp_14" />
 
             <TextView
+                android:id="@+id/text_browser_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

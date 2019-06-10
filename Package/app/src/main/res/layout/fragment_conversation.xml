@@ -44,7 +44,8 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/dp_20"
         android:layout_marginRight="@dimen/dp_20"
-        android:src="@mipmap/icon_choice" />
+        android:src="@mipmap/icon_choice"
+        android:visibility="invisible" />
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/mSwipeRefresh"

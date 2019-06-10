@@ -1,6 +1,8 @@
 package com.yun.xiao.jing.register;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -41,6 +43,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private String token = "";
     private String device = "";
     private static final int BASIC_PERMISSION_REQUEST_CODE = 100;
+
+    public static void start(Context context) {
+        Intent intent = new Intent();
+        intent.setClass(context, RegisterActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.startActivity(intent);
+    }
+
     private static final String[] BASIC_PERMISSIONS = new String[]{
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -62,9 +72,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         initView();
         requestBasicPermission();
         Log.i("检测是否可以自动登录", "tokentoken:::" + token);
-        if (!TextUtils.isEmpty(token)) {//没有token//检测用户是否登录
-            checkUserLogin();
-        }
+
 
     }
 
@@ -84,7 +92,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     @OnMPermissionGranted(BASIC_PERMISSION_REQUEST_CODE)
     public void onBasicPermissionSuccess() {
         try {
-            ToastHelper.showToast(this, "授权成功");
+//            ToastHelper.showToast(this, "授权成功");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -95,54 +103,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     @OnMPermissionNeverAskAgain(BASIC_PERMISSION_REQUEST_CODE)
     public void onBasicPermissionFailed() {
         try {
-            ToastHelper.showToast(this, "未全部授权，部分功能可能无法正常运行！");
+//            ToastHelper.showToast(this, "未全部授权，部分功能可能无法正常运行！");
         } catch (Exception e) {
             e.printStackTrace();
         }
         MPermission.printMPermissionResult(false, this, BASIC_PERMISSIONS);
     }
 
-    private void checkUserLogin() {
-        mAction.checkUserLogin(token, device, new RequestCallback() {
-            @Override
-            public void onResult(int code, String result, Throwable var3) {
-                Log.i("检查是否自动登录", result);
-                if (code == ApiCode.USER_CODE_SUCCESSFULLY) {//token没有过期
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        JSONObject jsonInfo = jsonObject.getJSONObject("info");
-                        String token = jsonInfo.getString("token");
-                        String headImg = jsonInfo.getString("headimg");
-                        String username = jsonInfo.getString("username");
-                        String password = jsonInfo.getString("password");
-                        String imtoken = jsonInfo.getString("imtoken");
-                        String imaccount = jsonInfo.getString("imaccount");
 
-                        UserPreferences.getInstance(ChessApp.sAppContext).setUserToken(token);
-                        UserPreferences.getInstance(ChessApp.sAppContext).setUserIMToken(imtoken);
-                        UserPreferences.getInstance(ChessApp.sAppContext).setUserIMAccount(imaccount);
-                        UserPreferences.getInstance(ChessApp.sAppContext).setUserName(username);
-                        if (TextUtils.isEmpty(headImg)) {
-                            AddUserHeaderImgActivity.start(RegisterActivity.this);
-                        } else if (TextUtils.isEmpty(username)) {
-                            IntroduceActivity.start(RegisterActivity.this);
-                        } else if (TextUtils.isEmpty(password)) {
-                            SetPasswordActivity.start(RegisterActivity.this);
-                        } else {
-                            loginNeteaseNim(imaccount, imtoken);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailed() {
-
-            }
-        });
-    }
 
     private void loginNeteaseNim(String imaccount, String imtoken) {
         LoginInfo loginInfo = new LoginInfo(imaccount, imtoken);
@@ -210,6 +178,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                }else if(code==ApiCode.VERIFICATION_CODE){
+                    EnterCodeActivity.startActivity(RegisterActivity.this,edit_text_input.getText().toString().trim());
                 }
             }
 

@@ -31,7 +31,7 @@ public class EnterCodeActivity extends AppCompatActivity implements View.OnClick
     }
 
     private RegisterAction mAction;
-    private TextView text_button_view;
+    private TextView text_button_view, text_two;
     private NumKeyboard num_keyboard_layout;
     private GridPwdView join_game_grid_pwd_view;
     String phone = "";
@@ -44,7 +44,7 @@ public class EnterCodeActivity extends AppCompatActivity implements View.OnClick
         phone = getIntent().getStringExtra(ApiCode.PHONE);
         setContentView(R.layout.activity_enter_code);
         initView();
-
+        text_two.setText(phone);
     }
 
     private void getData() {
@@ -76,6 +76,7 @@ public class EnterCodeActivity extends AppCompatActivity implements View.OnClick
 
     private void initView() {
         text_button_view = findViewById(R.id.text_button_view);
+        text_two = findViewById(R.id.text_two);
         num_keyboard_layout = findViewById(R.id.num_keyboard_layout);
         join_game_grid_pwd_view = findViewById(R.id.join_game_grid_pwd_view);
         join_game_grid_pwd_view.setPasswordVisibility(true);

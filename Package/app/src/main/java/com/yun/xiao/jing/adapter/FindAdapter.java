@@ -4,9 +4,11 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,16 +16,20 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.FindInfoBean;
+import com.yun.xiao.jing.ParseObjectToHaspMap;
 import com.yun.xiao.jing.R;
+import com.yun.xiao.jing.bean.PictureUrlBean;
 import com.yun.xiao.jing.defineView.CircleTransform;
+import com.yun.xiao.jing.preference.UserPreferences;
 import com.yun.xiao.jing.util.DateTool;
 import com.yun.xiao.jing.util.NumberTool;
 import com.yun.xiao.jing.util.ScreenUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FindAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    List<FindInfoBean.InfoBean> infoData;
+    List<FindInfoBean> infoData;
     private String typeTwo = "";
     private Drawable selectDrawable;
     private Drawable fansDrawable;
@@ -32,7 +38,10 @@ public class FindAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private int FOOT_LOADING_ITEM = 1;
     private int NORMAL_ITEM = 0;
     private AdapterPicture adapterPicture;
-    public FindAdapter(List<FindInfoBean.InfoBean> info) {
+    private List<PictureUrlBean> listData = new ArrayList();
+    private int positions = -1;
+
+    public FindAdapter(List<FindInfoBean> info) {
         this.infoData = info;
         selectDrawable = ChessApp.sAppContext.getResources().getDrawable(R.drawable.icon_one);
         selectDrawableNormal = ChessApp.sAppContext.getResources().getDrawable(R.drawable.icon_one_normal);
@@ -42,7 +51,7 @@ public class FindAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         selectDrawable.setBounds(0, 0, 30, 30);
         fansDrawable.setBounds(0, 0, 30, 30);
         messageDrawable.setBounds(0, 0, 30, 30);
-        adapterPicture=new AdapterPicture();
+        adapterPicture = new AdapterPicture(listData);
     }
 
     @NonNull
@@ -66,7 +75,6 @@ public class FindAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else {
             return NORMAL_ITEM;
         }
-
     }
 
     @Override
@@ -106,22 +114,35 @@ public class FindAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ((FindViewHolder) findViewHolder).text_selection.setCompoundDrawablePadding(10);
                 ((FindViewHolder) findViewHolder).text_fans.setCompoundDrawablePadding(10);
                 ((FindViewHolder) findViewHolder).text_message.setCompoundDrawablePadding(10);
-//        if (infoData.get(i).getImages()){
-//
-//        }
-                ((FindViewHolder) findViewHolder).recycler_view.setLayoutManager(new GridLayoutManager(ChessApp.sAppContext, 3));
-                ((FindViewHolder) findViewHolder).recycler_view.setAdapter(adapterPicture);
-//                if (infoData.get(i).getImages()){
-//
-//                }
+
                 ((FindViewHolder) findViewHolder).text_fans.setCompoundDrawables(fansDrawable, null, null, null);
                 ((FindViewHolder) findViewHolder).text_message.setCompoundDrawables(messageDrawable, null, null, null);
+
+                if (infoData.get(i).getUsername().equals(UserPreferences.getInstance(ChessApp.sAppContext).getUserName())) {
+                    Log.i("UserName000000", UserPreferences.getInstance(ChessApp.sAppContext).getUserName());
+                    ((FindViewHolder) findViewHolder).frame_layout.setVisibility(View.INVISIBLE);
+                } else {
+                    Log.i("UserName111111", UserPreferences.getInstance(ChessApp.sAppContext).getUserName());
+                    ((FindViewHolder) findViewHolder).frame_layout.setVisibility(View.VISIBLE);
+                }
+                List<PictureUrlBean> list = infoData.get(i).getImages();
+                if (list != null) {
+                    adapterPicture = new AdapterPicture(list);
+                }
+                ((FindViewHolder) findViewHolder).recycler_view.setAdapter(adapterPicture);
                 ((FindViewHolder) findViewHolder).relative_layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (listener != null) {
-                            listener.onItemClick(infoData.get(position));
+                            listener.onItemClick(infoData.get(i));
                         }
+                    }
+                });
+                ((FindViewHolder) findViewHolder).frame_layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        positions = i;
+                        onCancleClickListener.onCancelClick(infoData.get(i), i);
                     }
                 });
             }
@@ -133,15 +154,22 @@ public class FindAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return infoData.size() + 1;
     }
 
-    public void updateData(List<FindInfoBean.InfoBean> info, boolean isMore) {
-
+    public void updateData(List<FindInfoBean> info, boolean isMore, boolean sheild) {
         if (isMore) {
-            infoData.addAll(info);
+            if (sheild) {
+                if (positions != -1) {
+                    infoData.remove(positions);
+                }
+            } else {
+                infoData.addAll(info);
+            }
         } else {
+            infoData.clear();
             this.infoData = info;
         }
         notifyDataSetChanged();
     }
+
 
     public void updateType(String type) {
         this.typeTwo = type;
@@ -149,7 +177,7 @@ public class FindAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public interface OnItemClickListener {
-        void onItemClick(FindInfoBean.InfoBean infoBean);
+        void onItemClick(FindInfoBean infoBean);
     }
 
     private OnItemClickListener listener;
@@ -158,9 +186,20 @@ public class FindAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.listener = listener;
     }
 
+    public interface OnCancleClickListener {
+        void onCancelClick(FindInfoBean findInfoBean, int position);
+    }
+
+    private OnCancleClickListener onCancleClickListener;
+
+    public void setOnCancelClickListener(OnCancleClickListener onCancleClickListener) {
+        this.onCancleClickListener = onCancleClickListener;
+    }
+
     public class FindViewHolder extends RecyclerView.ViewHolder {
         private ImageView image_view_left;
-        private TextView text_name, text_time, text_content, text_selection, text_fans, text_message, text_view_cancel;
+        private FrameLayout frame_layout;
+        private TextView text_name, text_time, text_content, text_selection, text_fans, text_message;
         private RecyclerView recycler_view;
         private RelativeLayout relative_layout;
 
@@ -174,7 +213,7 @@ public class FindAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             text_selection = itemView.findViewById(R.id.text_selection);
             text_fans = itemView.findViewById(R.id.text_fans);
             text_message = itemView.findViewById(R.id.text_message);
-            text_view_cancel = itemView.findViewById(R.id.text_view_cancel);
+            frame_layout = itemView.findViewById(R.id.frame_layout);
 
             recycler_view = itemView.findViewById(R.id.recycler_view);
             recycler_view.setLayoutManager(new GridLayoutManager(ChessApp.sAppContext, 3));
