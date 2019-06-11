@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.yun.xiao.jing.ApiCode;
 import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.R;
 import com.yun.xiao.jing.action.BlackAction;
@@ -19,10 +20,11 @@ import com.yun.xiao.jing.preference.UserPreferences;
 
 public class ReportUserActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static void start(Activity activity, String token) {
+    public static void start(Activity activity, String token, String type) {
         Intent intent = new Intent();
         intent.setClass(activity, ReportUserActivity.class);
         intent.putExtra("other_token", token);
+        intent.putExtra("type", type);
         activity.startActivity(intent);
     }
 
@@ -30,13 +32,16 @@ public class ReportUserActivity extends AppCompatActivity implements View.OnClic
     private String userToken = "";
     private String device = "";
     private String token = "";
+    private String type = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         blackAction = new BlackAction(this, null);
         userToken = UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
         device = UserPreferences.getDevice();
-        token = getIntent().getStringExtra("other_token");
+        Intent intent = getIntent();
+        token = intent.getStringExtra("other_token");
+        type = intent.getStringExtra("type");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_user);
         initView();
@@ -86,6 +91,7 @@ public class ReportUserActivity extends AppCompatActivity implements View.OnClic
         text_view_zero.setOnClickListener(this);
         text_view_submit.setOnClickListener(this);
         frame_layout_back.setOnClickListener(this);
+
     }
 
     boolean one, two, three, fore, five, six, seven, eight, nine, ten, eleven, zero, oneTwo, oneThree, oneFore;
@@ -245,7 +251,19 @@ public class ReportUserActivity extends AppCompatActivity implements View.OnClic
         blackAction.submitReportMessage(userToken, device, token, text, new RequestCallback() {
             @Override
             public void onResult(int code, String result, Throwable var3) {
-
+                if (code == ApiCode.USER_TO_REPORT_SUCCESS) {
+                    if (type != null && type.equals("otherInfo")) {
+                        Intent intent = new Intent();
+                        intent.setAction("com.yun.xiao.jing");
+                        sendBroadcast(intent);
+                        finish();
+                    } else {
+                        Intent intent = new Intent();
+                        intent.setAction(ApiCode.USER_TO_REPORT_SUCCESS_STRING);
+                        sendBroadcast(intent);
+                        finish();
+                    }
+                }
             }
 
             @Override

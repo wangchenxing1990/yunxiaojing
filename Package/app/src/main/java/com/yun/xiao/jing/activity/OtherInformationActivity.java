@@ -30,17 +30,24 @@ import com.netease.nim.uikit.api.model.team.TeamDataChangedObserver;
 import com.netease.nim.uikit.api.model.team.TeamMemberDataChangedObserver;
 import com.netease.nim.uikit.api.model.user.UserInfoObserver;
 import com.netease.nim.uikit.business.recent.TeamMemberAitHelper;
+import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
+import com.netease.nim.uikit.common.ToastHelper;
 import com.netease.nim.uikit.common.badger.Badger;
+import com.netease.nim.uikit.common.ui.dialog.DialogMaker;
 import com.netease.nim.uikit.common.ui.dialog.EasyAlertDialogHelper;
 import com.netease.nim.uikit.common.ui.drop.DropManager;
 import com.netease.nim.uikit.impl.NimUIKitImpl;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
+import com.netease.nimlib.sdk.friend.FriendService;
+import com.netease.nimlib.sdk.friend.constant.VerifyType;
+import com.netease.nimlib.sdk.friend.model.AddFriendData;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.netease.nimlib.sdk.team.model.Team;
 import com.netease.nimlib.sdk.team.model.TeamMember;
+import com.yun.xiao.jing.ApiCode;
 import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.FindInfoBean;
 import com.yun.xiao.jing.InfoBeanTwo;
@@ -269,32 +276,19 @@ public class OtherInformationActivity extends AppCompatActivity implements View.
                 showPopuwindowPhoto();
                 break;
             case R.id.image_message:
-                Log.i("recent", infoBeanTwo.getInfo().getImaccount());
-//                NimUIKit.startP2PSession(OtherInformationActivity.this, infoBeanTwo.getInfo().getImaccount(), infoBeanTwo.getInfo().getUsername());
-                createUserSessionInfo();
-                NimUIKit.startP2PSession(OtherInformationActivity.this, infoBeanTwo.getInfo().getImaccount(), infoBeanTwo.getInfo().getUsername());
+                if (!TextUtils.isEmpty(infoBeanTwo.getInfo().getImaccount())) {
+                    createUserSessionInfo();
+                }
                 break;
             case R.id.image_selection://点击收藏
-//                Toast.makeText(OtherInformationActivity.this,"ssssss", Toast.LENGTH_SHORT).show();
                 submitSelectUser();
                 break;
             case R.id.text_take_photo://举报用户
-                ReportUserActivity.start(this, token);
+                ReportUserActivity.start(this, token, "otherInfo");
                 break;
             case R.id.text_picture://拉黑用户
                 myPopuwindown.dismiss();
-                EasyAlertDialogHelper.createOkCancelDiolag(this, "", "你确定拉黑该用户吗？", true, new EasyAlertDialogHelper.OnDialogActionListener() {
-
-                    @Override
-                    public void doCancelAction() {
-
-                    }
-
-                    @Override
-                    public void doOkAction() {
-                        blackUser();
-                    }
-                }).show();
+                blackUserToService();
                 break;
             case R.id.text_cancel://取消
                 myPopuwindown.dismiss();
@@ -303,14 +297,59 @@ public class OtherInformationActivity extends AppCompatActivity implements View.
     }
 
     /**
-     *
+     * 拉黑用户向服务器
+     */
+    private void blackUserToService() {
+        EasyAlertDialogHelper.createOkCancelDiolag(this, "", "你确定拉黑该用户吗？", true, new EasyAlertDialogHelper.OnDialogActionListener() {
+
+            @Override
+            public void doCancelAction() {
+
+            }
+
+            @Override
+            public void doOkAction() {
+                blackUser();
+            }
+        }).show();
+    }
+
+    /**
+     * 添加好友向云信
+     */
+    private void addFriends() {
+        NIMClient.getService(FriendService.class).addFriend(new AddFriendData(infoBeanTwo.getInfo().getImtoken(), VerifyType.DIRECT_ADD, ""))
+                .setCallback(new com.netease.nimlib.sdk.RequestCallback<Void>() {
+                    @Override
+                    public void onSuccess(Void param) {
+                        NimUIKit.startP2PSession(OtherInformationActivity.this, infoBeanTwo.getInfo().getImtoken().toLowerCase(), infoBeanTwo.getInfo().getUsername());
+                    }
+
+                    @Override
+                    public void onFailed(int code) {
+                        DialogMaker.dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onException(Throwable exception) {
+                        DialogMaker.dismissProgressDialog();
+                    }
+                });
+    }
+
+    /**
+     * 告诉自己的服务器添加的好友
      */
     private void createUserSessionInfo() {
         blackAction.createUserSession(userToken, device, infoBeanTwo.getInfo().getToken(), new RequestCallback() {
 
             @Override
             public void onResult(int code, String result, Throwable var3) {
-
+                if (code == ApiCode.ESTABLISHMENT_ALREADY_FRIENDS) {
+                    NimUIKit.startP2PSession(OtherInformationActivity.this, infoBeanTwo.getInfo().getImaccount().toLowerCase(), infoBeanTwo.getInfo().getUsername());
+                } else if (code == ApiCode.ESTABLISHMENT_OF_IS_FRIENDSHIP) {
+                    addFriends();
+                }
             }
 
             @Override

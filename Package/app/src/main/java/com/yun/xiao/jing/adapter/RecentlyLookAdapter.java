@@ -1,6 +1,5 @@
 package com.yun.xiao.jing.adapter;
 
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.R;
 import com.yun.xiao.jing.bean.RecentlyBean;
 import com.yun.xiao.jing.defineView.CircleTransform;
-import com.yun.xiao.jing.util.ScreenUtil;
 
 import java.util.List;
 
@@ -36,8 +34,12 @@ public class RecentlyLookAdapter extends RecyclerView.Adapter<RecentlyLookAdapte
 
     @Override
     public void onBindViewHolder(@NonNull RecentlyViewHolder viewHolder, int i) {
-        if (info.size() >=1) {
-            Picasso.with(ChessApp.sAppContext).load(info.get(i).getHeadimg()).transform(new CircleTransform()).into(viewHolder.image_view_user);
+        if (info.size() >= 1) {
+            Picasso.with(ChessApp.sAppContext).load(info.get(i).getHeadimg())
+                    .placeholder(R.mipmap.default_male_head)
+                    .error(R.mipmap.default_male_head)
+                    .transform(new CircleTransform())
+                    .into(viewHolder.image_view_user);
             viewHolder.text_user_name.setText(info.get(i).getUsername());
         }
     }
@@ -62,15 +64,6 @@ public class RecentlyLookAdapter extends RecyclerView.Adapter<RecentlyLookAdapte
             relative_layout = itemView.findViewById(R.id.relative_layout);
             image_view_user = itemView.findViewById(R.id.image_view_user);
             text_user_name = itemView.findViewById(R.id.text_user_name);
-//            ViewGroup.LayoutParams layoutParams = relative_layout.getLayoutParams();
-//            layoutParams.width = relative_layout.getWidth();
-//            layoutParams.height = ScreenUtil.px2dip(109);
-//            relative_layout.setLayoutParams(layoutParams);
-
-//            ViewGroup.LayoutParams imageViewParams = image_view_user.getLayoutParams();
-//            imageViewParams.height = ScreenUtil.px2dip(70);
-//            imageViewParams.width = ScreenUtil.px2dip(70);
-//            image_view_user.setLayoutParams(imageViewParams);
         }
     }
 }

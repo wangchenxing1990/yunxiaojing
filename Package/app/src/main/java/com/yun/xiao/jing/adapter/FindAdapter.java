@@ -118,7 +118,7 @@ public class FindAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ((FindViewHolder) findViewHolder).text_fans.setCompoundDrawables(fansDrawable, null, null, null);
                 ((FindViewHolder) findViewHolder).text_message.setCompoundDrawables(messageDrawable, null, null, null);
 
-                if (infoData.get(i).getUsername().equals(UserPreferences.getInstance(ChessApp.sAppContext).getUserName())) {
+                if (infoData.get(i).getToken().equals(UserPreferences.getInstance(ChessApp.sAppContext).getUserToken())) {
                     Log.i("UserName000000", UserPreferences.getInstance(ChessApp.sAppContext).getUserName());
                     ((FindViewHolder) findViewHolder).frame_layout.setVisibility(View.INVISIBLE);
                 } else {

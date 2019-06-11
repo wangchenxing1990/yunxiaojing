@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.auth.AuthService;
+import com.yun.xiao.jing.ApiCode;
 import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.R;
 import com.yun.xiao.jing.action.LoginAction;
@@ -68,13 +69,13 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.text_about_us:
-                WebActivity.start(this, "");
+                WebActivity.start(this, ApiCode.WEB_ABOUT_US);
                 break;
             case R.id.text_terms_service:
-                WebActivity.start(this, "");
+                WebActivity.start(this, ApiCode.WEB_SUGER_PRIVACY);
                 break;
             case R.id.text_contanct_us:
-                WebActivity.start(this, "");
+                WebActivity.start(this, ApiCode.WEB_SUGER_PRIVACY);
                 break;
             case R.id.text_log_out:
                 loginOutAccount();//登出账号
@@ -89,6 +90,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         loginAction.deleteAccount(token, device, new RequestCallback() {
             @Override
             public void onResult(int code, String result, Throwable var3) {
+                UserPreferences.getInstance(ChessApp.sAppContext).setUserToken("");
                 finish();
                 PhoneNumberActivity.start(SettingActivity.this);
             }

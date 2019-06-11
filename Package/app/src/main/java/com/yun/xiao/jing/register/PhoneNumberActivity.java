@@ -110,6 +110,8 @@ public class PhoneNumberActivity extends AppCompatActivity implements View.OnCli
                     relative_layout.setVisibility(View.VISIBLE);
                 }else if(code == ApiCode.USER_TIME_EXPIRATION){
                     RegisterActivity.start(PhoneNumberActivity.this);
+                }else if(code==ApiCode.GET_USER_INFORMATION_FAILED){
+                    RegisterActivity.start(PhoneNumberActivity.this);
                 }
             }
 

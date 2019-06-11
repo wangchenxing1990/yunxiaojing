@@ -65,7 +65,6 @@ public class RecentlyLookActivity extends AppCompatActivity implements View.OnCl
         relative_layout.setOnClickListener(this);
         recycler_view.setLayoutManager(new LinearLayoutManager(ChessApp.sAppContext));
         recycler_view.setAdapter(adapter);
-
     }
 
     /**

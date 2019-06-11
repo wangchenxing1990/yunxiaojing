@@ -79,17 +79,17 @@
         <TextView
             android:id="@+id/text_view_one"
             style="@style/text_report"
-            android:text="Pronographic" />
+            android:text="Pornographic" />
 
         <TextView
             android:id="@+id/text_view_two"
             style="@style/text_report"
-            android:text="Pronographic" />
+            android:text="Politically sensitive" />
 
         <TextView
             android:id="@+id/text_view_three"
             style="@style/text_report"
-            android:text="Pronographic" />
+            android:text="Illegal violence" />
 
     </LinearLayout>
 
@@ -103,17 +103,17 @@
         <TextView
             android:id="@+id/text_view_fore"
             style="@style/text_report"
-            android:text="Pronographic" />
+            android:text="Illegal items" />
 
         <TextView
             android:id="@+id/text_view_five"
             style="@style/text_report"
-            android:text="Pronographic" />
+            android:text="Gambling" />
 
         <TextView
             android:id="@+id/text_view_six"
             style="@style/text_report"
-            android:text="Pronographic" />
+            android:text="Stolen photo" />
 
     </LinearLayout>
 
@@ -127,17 +127,17 @@
         <TextView
             android:id="@+id/text_view_seven"
             style="@style/text_report"
-            android:text="Pronographic" />
+            android:text="Bloody violence" />
 
         <TextView
             android:id="@+id/text_view_eight"
             style="@style/text_report"
-            android:text="Pronographic" />
+            android:text="False user" />
 
         <TextView
             android:id="@+id/text_view_nine"
             style="@style/text_report"
-            android:text="Pronographic" />
+            android:text="Other…" />
 
     </LinearLayout>
 
@@ -162,17 +162,17 @@
         <TextView
             android:id="@+id/text_view_ten"
             style="@style/text_report"
-            android:text="Pronographic" />
+            android:text="Financial fraud" />
 
         <TextView
             android:id="@+id/text_view_eleven"
             style="@style/text_report"
-            android:text="Pronographic" />
+            android:text="Part-time fraud" />
 
         <TextView
             android:id="@+id/text_view_zero"
             style="@style/text_report"
-            android:text="Pronographic" />
+            android:text="Other fraud" />
 
     </LinearLayout>
 
@@ -197,17 +197,17 @@
         <TextView
             android:id="@+id/text_view_one_two"
             style="@style/text_report"
-            android:text="Pronographic" />
+            android:text="Advertisement" />
 
         <TextView
             android:id="@+id/text_view_one_three"
             style="@style/text_report"
-            android:text="Pronographic" />
+            android:text="Insult/abuse" />
 
         <TextView
             android:id="@+id/text_view_one_fore"
             style="@style/text_report"
-            android:text="Pronographic" />
+            android:text="Other…" />
 
     </LinearLayout>
 

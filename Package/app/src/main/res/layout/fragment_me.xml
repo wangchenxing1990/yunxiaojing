@@ -18,7 +18,8 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dp_20"
-            android:text="@string/text_me" />
+            android:text="@string/text_me"
+            android:visibility="invisible" />
 
         <FrameLayout
             android:id="@+id/frame_layout_setting"
@@ -36,15 +37,16 @@
 
 
         <!--<com.yun.xiao.jing.defineView.HeadImageView-->
-            <!--android:id="@+id/iv_user_head"-->
-            <!--android:layout_width="@dimen/dp_80"-->
-            <!--android:layout_height="@dimen/dp_80"-->
-            <!--android:layout_below="@+id/text_fragment_me"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_marginLeft="@dimen/dp_40"-->
-            <!--android:layout_marginTop="@dimen/dp_30"-->
-            <!--android:layout_marginBottom="@dimen/dp_40"-->
-            <!--android:src="@mipmap/default_male_head" />-->
+        <!--android:id="@+id/iv_user_head"-->
+        <!--android:layout_width="@dimen/dp_80"-->
+        <!--android:layout_height="@dimen/dp_80"-->
+        <!--android:layout_below="@+id/text_fragment_me"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_marginLeft="@dimen/dp_40"-->
+        <!--android:layout_marginTop="@dimen/dp_30"-->
+        <!--android:layout_marginBottom="@dimen/dp_40"-->
+        <!--android:src="@mipmap/default_male_head" />-->
+
         <ImageView
             android:id="@+id/iv_user_head"
             android:layout_width="@dimen/dp_80"

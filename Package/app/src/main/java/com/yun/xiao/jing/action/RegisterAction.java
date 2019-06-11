@@ -62,7 +62,7 @@ public class RegisterAction extends BaseAction {
                         Toast.makeText(ChessApp.sAppContext, "", Toast.LENGTH_SHORT).show();
                         return;
                     } else if (code == ApiCode.PHONE_UMBER_IS_EMPTY) {//103手机号码不能为空
-                        Toast.makeText(ChessApp.sAppContext, R.string.text_phone_no_empty, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ChessApp.sAppContext, R.string.text_phone_no_empty, Toast.LENGTH_SHORT).show();
                         return;
                     } else if (code == ApiCode.MOBILE_DEVICE_EMPTY) {//104手机设备不能为空
                         Toast.makeText(ChessApp.sAppContext, R.string.text_device_no_empty, Toast.LENGTH_SHORT).show();
@@ -139,7 +139,7 @@ public class RegisterAction extends BaseAction {
                         Toast.makeText(ChessApp.sAppContext, "", Toast.LENGTH_SHORT).show();
                         return;
                     } else if (code == ApiCode.USER_CODE_SUCCESSFULLY) {//120获取用户信息成功
-                        Toast.makeText(ChessApp.sAppContext, R.string.text_phone_no_empty, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ChessApp.sAppContext, R.string.text_phone_no_empty, Toast.LENGTH_SHORT).show();
                         requestCallback.onResult(code, response, null);
                         return;
                     } else if (code == ApiCode.SYSTEM_CODE_WRITE_FAILED) {//121系统写入用户失败
@@ -377,11 +377,13 @@ public class RegisterAction extends BaseAction {
                         requestCallback.onFailed();
                     } else if (code == ApiCode.IMAGE_SERVICE_FAILED) {//账号在该设备已经离线
                         requestCallback.onFailed();
-                    }else if(code == ApiCode.USER_TIME_EXPIRED_UPDATE_FAILED){
+                    } else if (code == ApiCode.USER_TIME_EXPIRED_UPDATE_FAILED) {
                         requestCallback.onFailed();
-                    }else if(code == ApiCode.USER_TIME_EXPIRATION){
+                    } else if (code == ApiCode.USER_TIME_EXPIRATION) {
                         requestCallback.onResult(code, response, null);
-                    }else if(code == ApiCode.USER_ALREADY_OFFLINE){
+                    } else if (code == ApiCode.USER_ALREADY_OFFLINE) {
+                        requestCallback.onResult(code, response, null);
+                    } else if (code == ApiCode.GET_USER_INFORMATION_FAILED) {
                         requestCallback.onResult(code, response, null);
                     }
                 } catch (JSONException e) {

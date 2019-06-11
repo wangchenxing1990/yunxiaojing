@@ -72,8 +72,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         initView();
         requestBasicPermission();
         Log.i("检测是否可以自动登录", "tokentoken:::" + token);
-
-
     }
 
     private void requestBasicPermission() {
@@ -109,7 +107,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
         MPermission.printMPermissionResult(false, this, BASIC_PERMISSIONS);
     }
-
 
 
     private void loginNeteaseNim(String imaccount, String imtoken) {
@@ -160,6 +157,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         String password = jsonInfo.getString("password");
                         String imtoken = jsonInfo.getString("imtoken");
                         String imaccount = jsonInfo.getString("imaccount");
+
                         UserPreferences.getInstance(ChessApp.sAppContext).setUserToken(token);
                         UserPreferences.getInstance(ChessApp.sAppContext).setUserIMAccount(imaccount);
                         UserPreferences.getInstance(ChessApp.sAppContext).setUserIMToken(imtoken);
@@ -178,8 +176,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }else if(code==ApiCode.VERIFICATION_CODE){
-                    EnterCodeActivity.startActivity(RegisterActivity.this,edit_text_input.getText().toString().trim());
+                } else if (code == ApiCode.VERIFICATION_CODE) {
+                    EnterCodeActivity.startActivity(RegisterActivity.this, edit_text_input.getText().toString().trim());
                 }
             }
 

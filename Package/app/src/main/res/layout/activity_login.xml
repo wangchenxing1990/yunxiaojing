@@ -11,15 +11,16 @@
         android:layout_marginLeft="@dimen/dp_20"
         android:layout_marginTop="@dimen/dp_40"
         android:layout_marginRight="@dimen/dp_20"
-        android:background="@drawable/register_background">
+        android:background="@drawable/register_background"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/edit_input_name"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_40"
+            android:layout_marginLeft="@dimen/dp_10"
             android:layout_toRightOf="@+id/line_view"
             android:gravity="center_vertical"
-            android:layout_marginLeft="@dimen/dp_10"
             android:maxLength="11"
             android:paddingLeft="@dimen/dp_10"
             android:textColor="@color/line_color"
@@ -38,11 +39,11 @@
             android:id="@+id/edit_input_password"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_40"
+            android:layout_marginLeft="@dimen/dp_10"
             android:layout_toRightOf="@+id/line_view"
             android:background="@null"
             android:hint="@string/input_phone_name"
             android:inputType="textPassword"
-            android:layout_marginLeft="@dimen/dp_10"
             android:maxLength="11"
             android:paddingLeft="@dimen/dp_10"
             android:textColor="@color/line_color"

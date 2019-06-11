@@ -79,15 +79,15 @@ public class P2PMessageActivity extends BaseMessageActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         // 单聊特例话数据，包括个人信息，
         String name = getIntent().getStringExtra(Extras.EXTRA_NAME);
+        frame_layout = findViewById(R.id.frame_layout);
+        text_view_name = findViewById(R.id.text_view_name);
         requestBuddyInfo();
         displayOnlineState();
         registerObservers(true);
-        frame_layout = findViewById(R.id.frame_layout);
-        text_view_name = findViewById(R.id.text_view_name);
         frame_layout.setOnClickListener(this);
-        if (name != null && !TextUtils.isEmpty(name)) {
-            text_view_name.setText(name);
-        }
+//        if (name != null && !TextUtils.isEmpty(name)) {
+//            text_view_name.setText(name);
+//        }
 
     }
 
@@ -110,7 +110,8 @@ public class P2PMessageActivity extends BaseMessageActivity implements View.OnCl
     }
 
     private void requestBuddyInfo() {
-        setTitle(UserInfoHelper.getUserTitleName(sessionId, SessionTypeEnum.P2P));
+        text_view_name.setText(UserInfoHelper.getUserTitleName(sessionId, SessionTypeEnum.P2P));
+//        setTitle(UserInfoHelper.getUserTitleName(sessionId, SessionTypeEnum.P2P));
     }
 
     private void displayOnlineState() {

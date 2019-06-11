@@ -15,6 +15,7 @@
         android:id="@+id/text_two"
         style="@style/text_title_style"
         android:layout_below="@+id/text_one"
+        android:visibility="invisible"
         android:layout_marginTop="@dimen/dp_5"
         android:text="@string/text_phone_number" />
 

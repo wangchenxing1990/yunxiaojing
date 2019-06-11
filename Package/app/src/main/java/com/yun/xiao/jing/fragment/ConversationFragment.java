@@ -145,6 +145,7 @@ public class ConversationFragment extends Fragment implements View.OnClickListen
     private boolean isLoadMore;
 
     private void initAdapter() {
+
         adapter.setOnPictureClickListener(new PictureAdapter.OnPictureClickListener() {
             @Override
             public void onPictureClick(String token) {
@@ -203,14 +204,14 @@ public class ConversationFragment extends Fragment implements View.OnClickListen
             @Override
             public void onResult(int code, String result, Throwable var3) {
                 Gson gson = new Gson();
-//                PictureBean pictureBean = gson.fromJson(result, PictureBean.class);
-//                if (mSwipeRefresh.isRefreshing()) {
-//                    adapter.updateData(pictureBean.getInfo(), false);
-//                    mSwipeRefresh.setRefreshing(false);
-//                    isLoadMore = false;
-//                } else {
-//                    adapter.updateData(pictureBean.getInfo(), true);
-//                }
+                PictureBean pictureBean = gson.fromJson(result, PictureBean.class);
+                if (mSwipeRefresh.isRefreshing()) {
+                    adapter.updateData(pictureBean.getInfo(), false);
+                    mSwipeRefresh.setRefreshing(false);
+                    isLoadMore = false;
+                } else {
+                    adapter.updateData(pictureBean.getInfo(), true);
+                }
             }
 
             @Override

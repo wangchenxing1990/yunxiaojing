@@ -72,6 +72,12 @@ public class ApiCode {
     public static int LIKE_USER_SUCCESS=180;//Blocked user dynamic success";break;//屏蔽用户动态成功
     public static int LIKE_USER_ALREADY_LIKE_IT=188;//Blocked user dynamic success";break;//屏蔽用户动态成功
     public static int ESTABLISHMENT_OF_IS_FRIENDSHIP=570;//Blocked user dynamic success";break;//好友关系成立
+    public static int ESTABLISHMENT_ALREADY_FRIENDS=572;//already friends//好友关系成立
+    public static int USER_TO_REPORT_SUCCESS=710;//举报成功
+    public static int USER_ACCOUNT_DELETION_SUCCESS=390;//Account deletion succeeded//删除用户账号
 
     public static String PHONE="phone";
+    public static String USER_TO_REPORT_SUCCESS_STRING="com.yun.xiao.jing.report";
+    public static String WEB_ABOUT_US="https://www.devcgx.top/index/sugerAbout";
+    public static String WEB_SUGER_PRIVACY="https://www.devcgx.top/index/sugerPrivacy";
 }

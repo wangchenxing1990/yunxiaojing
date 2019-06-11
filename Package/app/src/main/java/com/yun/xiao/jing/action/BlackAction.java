@@ -103,7 +103,7 @@ public class BlackAction extends BaseAction {
                 try {
                     JSONObject json = new JSONObject(response);
                     int code = json.getInt("code");
-                    if (code == ApiCode.LIKE_USER_ALREADY_LIKE_IT) {//
+                    if (code == ApiCode.LIKE_USER_SUCCESS) {//
                         requestCallback.onResult(code, response, null);
                     } else {//账号离线失败
                         requestCallback.onFailed();
@@ -159,7 +159,7 @@ public class BlackAction extends BaseAction {
                 try {
                     JSONObject json = new JSONObject(response);
                     int code = json.getInt("code");
-                    if (code == ApiCode.LIKE_USER_ALREADY_LIKE_IT) {//
+                    if (code == ApiCode.USER_TO_REPORT_SUCCESS) {//
                         requestCallback.onResult(code, response, null);
                     } else {//账号离线失败
                         requestCallback.onFailed();
@@ -206,7 +206,7 @@ public class BlackAction extends BaseAction {
         headerMap.put("mobile-device", device);
         final HashMap<String, String> paramsMap = new HashMap<>();
         paramsMap.put("to_token", token);
-        Log.i("获取的数据","     "+userToken+"    device::::"+device+"   token"+token);
+        Log.i("获取的数据", "" + userToken + "    device::::" + device + "   token");
         SignStringRequest signRequest = new SignStringRequest(Request.Method.POST, requestCreateUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -215,6 +215,8 @@ public class BlackAction extends BaseAction {
                     JSONObject json = new JSONObject(response);
                     int code = json.getInt("code");
                     if (code == ApiCode.ESTABLISHMENT_OF_IS_FRIENDSHIP) {//
+                        requestCallback.onResult(code, response, null);
+                    } else if (code == ApiCode.ESTABLISHMENT_ALREADY_FRIENDS) {
                         requestCallback.onResult(code, response, null);
                     } else {//账号离线失败
                         requestCallback.onFailed();

@@ -94,9 +94,9 @@ public class LoginAction extends BaseAction {
                 try {
                     JSONObject json = new JSONObject(response);
                     int code = json.getInt("code");
-                    if (code == ApiCode.ACCOUNT_OFF_LINE_SUCCESSFULLY) {//账号离线成功
+                    if (code == ApiCode.USER_ACCOUNT_DELETION_SUCCESS) {//账号离线成功
                         requestCallback.onResult(code, response, null);
-                    } else if (code == ApiCode.ACCOUNT_OFF_LINE_FAILED) {//账号离线失败
+                    } else {//账号离线失败
                         requestCallback.onFailed();
                     }
                 } catch (JSONException e) {

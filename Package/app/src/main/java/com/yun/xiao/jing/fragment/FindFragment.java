@@ -1,5 +1,9 @@
 package com.yun.xiao.jing.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.renderscript.Script;
@@ -64,7 +68,7 @@ public class FindFragment extends Fragment implements View.OnClickListener {
     private String page = "10";
     private List<FindInfoBean> listData = new ArrayList();
     private FindAdapter findAdapter;
-
+    private MyBroadCast myBroadCast;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +77,10 @@ public class FindFragment extends Fragment implements View.OnClickListener {
         mAction = new FindAction(getActivity(), null);
         mBlackAction = new BlackAction(getActivity(), null);
         findAdapter = new FindAdapter(listData);
+        IntentFilter intentFilter=new IntentFilter();
+        intentFilter.addAction(ApiCode.USER_TO_REPORT_SUCCESS_STRING);
+        myBroadCast=new MyBroadCast();
+        getActivity().registerReceiver(myBroadCast,intentFilter);
     }
 
     private View rootView;
@@ -111,6 +119,7 @@ public class FindFragment extends Fragment implements View.OnClickListener {
                 getDataFindInformation();
             }
         });
+
         findAdapter.setOnItemClckListener(new FindAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(FindInfoBean infoBean) {
@@ -201,7 +210,8 @@ public class FindFragment extends Fragment implements View.OnClickListener {
             case R.id.image_view_message:
                 break;
             case R.id.text_take_photo://举报
-                ReportUserActivity.start(getActivity(), dynamic_id);
+                myPopuwindown.dismiss();
+                ReportUserActivity.start(getActivity(), dynamic_id,"");
                 break;
             case R.id.text_picture://屏蔽
                 myPopuwindown.dismiss();
@@ -266,5 +276,21 @@ public class FindFragment extends Fragment implements View.OnClickListener {
         text_picture.setOnClickListener(this);
         text_cancel.setOnClickListener(this);
 
+    }
+
+    class MyBroadCast extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            getDataFindInformation();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (myBroadCast!=null){
+            getActivity().unregisterReceiver(myBroadCast);
+        }
     }
 }
