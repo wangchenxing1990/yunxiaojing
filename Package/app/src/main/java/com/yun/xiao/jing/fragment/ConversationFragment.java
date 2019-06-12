@@ -20,6 +20,10 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.yun.xiao.jing.ApiCode;
 import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.PictureBean;
@@ -80,7 +84,7 @@ public class ConversationFragment extends Fragment implements View.OnClickListen
     private String sex = "0";
     private int p = 1;
     private String page = "10";
-    private SwipeRefreshLayout mSwipeRefresh;
+    private SmartRefreshLayout mSwipeRefresh;
     private TextView text_view_number;
 
     @Override
@@ -97,15 +101,29 @@ public class ConversationFragment extends Fragment implements View.OnClickListen
         mRecyclerView.setAdapter(adapter);
         imageView.setOnClickListener(this);
         image_view_left.setOnClickListener(this);
-        mSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getData();
-            }
-        });
+
+        initSmartRefreshLayout();
         initAdapter();
         getData();
         getDataBrowse();//浏览记录
+    }
+
+    private void initSmartRefreshLayout() {
+        mSwipeRefresh.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                refreshlayout.finishRefresh(1000/*,false*/);//传入false表示刷新失败
+                getData();
+            }
+        });
+        mSwipeRefresh.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                refreshlayout.finishLoadmore(1000/*,false*/);//传入false表示加载失败
+                isLoadMore = true;
+                getData();
+            }
+        });
     }
 
     private void getDataBrowse() {
@@ -145,35 +163,10 @@ public class ConversationFragment extends Fragment implements View.OnClickListen
     private boolean isLoadMore;
 
     private void initAdapter() {
-
         adapter.setOnPictureClickListener(new PictureAdapter.OnPictureClickListener() {
             @Override
             public void onPictureClick(String token) {
                 submitBrowserCount(token);
-            }
-        });
-
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (isLoadMore || mSwipeRefresh.isRefreshing()) {
-                    return;
-                }
-                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
-                int firstVisibleItemPos = linearLayoutManager.findFirstVisibleItemPosition();
-                int lastVisibleItemPos = linearLayoutManager.findLastVisibleItemPosition();
-                int totalItemCount = linearLayoutManager.getItemCount();
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && totalItemCount >= 1 && lastVisibleItemPos + 5 >= totalItemCount && (lastVisibleItemPos - firstVisibleItemPos) != totalItemCount) {
-                    isLoadMore = true;
-                    getData();
-                    p++;
-                }
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
             }
         });
     }
@@ -200,18 +193,19 @@ public class ConversationFragment extends Fragment implements View.OnClickListen
     }
 
     private void getData() {
-        mAction.getUserList(token, device, sex, String.valueOf(p), page, new RequestCallback() {
+        mAction.getUserList(token, device, sex, String.valueOf(p+1), page, new RequestCallback() {
             @Override
             public void onResult(int code, String result, Throwable var3) {
                 Gson gson = new Gson();
                 PictureBean pictureBean = gson.fromJson(result, PictureBean.class);
-                if (mSwipeRefresh.isRefreshing()) {
-                    adapter.updateData(pictureBean.getInfo(), false);
-                    mSwipeRefresh.setRefreshing(false);
-                    isLoadMore = false;
-                } else {
+                if (isLoadMore){
                     adapter.updateData(pictureBean.getInfo(), true);
+                    p++;
+                }else{
+                    adapter.updateData(pictureBean.getInfo(), false);
                 }
+
+                isLoadMore = false;
             }
 
             @Override

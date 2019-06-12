@@ -236,7 +236,6 @@ public class OtherInformationActivity extends AppCompatActivity implements View.
         } else {
             view_pager_auto_notice.setCurrentItem(mNoticeData.size() == 1 ? 0 : 500);
         }
-
         initAutoNextHandler(mNoticeData);
 //        text_view_height.setText(infoBeanTwo.getInfo().get());
     }
@@ -251,10 +250,10 @@ public class OtherInformationActivity extends AppCompatActivity implements View.
             public void onResult(int code, String result, Throwable var3) {
                 List<FindInfoBean> findInfoBean = ParseObjectToHaspMap.testJackson(result);
                 if (mSwipeRefresh.isRefreshing()) {
-                    findAdapter.updateData(findInfoBean, false, false);
+                    findAdapter.updateData(findInfoBean, false);
                     mSwipeRefresh.setRefreshing(false);
                 } else {
-                    findAdapter.updateData(findInfoBean, true, false);
+                    findAdapter.updateData(findInfoBean, true);
                 }
             }
 
@@ -284,6 +283,7 @@ public class OtherInformationActivity extends AppCompatActivity implements View.
                 submitSelectUser();
                 break;
             case R.id.text_take_photo://举报用户
+                myPopuwindown.dismiss();
                 ReportUserActivity.start(this, token, "otherInfo");
                 break;
             case R.id.text_picture://拉黑用户
@@ -318,20 +318,23 @@ public class OtherInformationActivity extends AppCompatActivity implements View.
      * 添加好友向云信
      */
     private void addFriends() {
-        NIMClient.getService(FriendService.class).addFriend(new AddFriendData(infoBeanTwo.getInfo().getImtoken(), VerifyType.DIRECT_ADD, ""))
+        NIMClient.getService(FriendService.class).addFriend(new AddFriendData(infoBeanTwo.getInfo().getImaccount(), VerifyType.DIRECT_ADD, null))
                 .setCallback(new com.netease.nimlib.sdk.RequestCallback<Void>() {
                     @Override
                     public void onSuccess(Void param) {
-                        NimUIKit.startP2PSession(OtherInformationActivity.this, infoBeanTwo.getInfo().getImtoken().toLowerCase(), infoBeanTwo.getInfo().getUsername());
+                        Log.i("添加好友成功", "添加好友成功");
+                        NimUIKit.startP2PSession(OtherInformationActivity.this, infoBeanTwo.getInfo().getImaccount().toLowerCase(), infoBeanTwo.getInfo().getUsername());
                     }
 
                     @Override
                     public void onFailed(int code) {
+                        Log.i("添加好友成功", "添加好友失败::::::" + code);
                         DialogMaker.dismissProgressDialog();
                     }
 
                     @Override
                     public void onException(Throwable exception) {
+                        Log.i("添加好友成功", "添加好友异常::::::" + exception);
                         DialogMaker.dismissProgressDialog();
                     }
                 });
@@ -369,6 +372,7 @@ public class OtherInformationActivity extends AppCompatActivity implements View.
                 Intent intent = new Intent();
                 intent.setAction("com.yun.xiao.jing");
                 sendBroadcast(intent);
+                finish();
             }
 
             @Override
@@ -409,7 +413,6 @@ public class OtherInformationActivity extends AppCompatActivity implements View.
      * 点击收藏
      */
     private void submitSelectUser() {
-        Log.i("TAGTAG", "userToken:::" + userToken + "device:::::" + device + "token::::" + infoBeanTwo.getInfo().getToken());
         findAction.submitSelectUserService(userToken, device, infoBeanTwo.getInfo().getToken(), new RequestCallback() {
 
             @Override

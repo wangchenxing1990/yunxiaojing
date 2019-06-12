@@ -54,6 +54,7 @@ public class ApiCode {
 
     public static int ACCOUNT_OFF_LINE_SUCCESSFULLY=500;//账号离线成功
     public static int PASSWORD_IS_CORRECT=530;//密码正确
+    public static int PASSWORD_IS_MISTAKE=532;//密码正确
     public static int ACCOUNT_OFF_LINE_FAILED=501;//账号离线失败
 
 

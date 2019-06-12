@@ -23,7 +23,7 @@
         android:background="@mipmap/icon_red_point"
         android:gravity="center"
         android:padding="@dimen/dp_1"
-        android:text="23"
+        android:text=""
         android:textColor="@color/white_color"
         android:textSize="@dimen/sp_10" />
 
@@ -47,10 +47,10 @@
         android:src="@mipmap/icon_choice"
         android:visibility="invisible" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/mSwipeRefresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/text_fragment_conversation"
         android:layout_marginTop="@dimen/dp_10">
 
@@ -58,5 +58,6 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </RelativeLayout>

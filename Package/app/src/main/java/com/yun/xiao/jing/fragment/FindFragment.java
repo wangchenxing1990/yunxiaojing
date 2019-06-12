@@ -24,10 +24,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.netease.nim.uikit.common.ui.dialog.DialogMaker;
 import com.netease.nim.uikit.common.ui.dialog.EasyAlertDialogHelper;
 import com.netease.nimlib.sdk.uinfo.UserService;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.yun.xiao.jing.ApiCode;
 import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.FindInfoBean;
@@ -69,6 +71,7 @@ public class FindFragment extends Fragment implements View.OnClickListener {
     private List<FindInfoBean> listData = new ArrayList();
     private FindAdapter findAdapter;
     private MyBroadCast myBroadCast;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,10 +80,10 @@ public class FindFragment extends Fragment implements View.OnClickListener {
         mAction = new FindAction(getActivity(), null);
         mBlackAction = new BlackAction(getActivity(), null);
         findAdapter = new FindAdapter(listData);
-        IntentFilter intentFilter=new IntentFilter();
+        IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ApiCode.USER_TO_REPORT_SUCCESS_STRING);
-        myBroadCast=new MyBroadCast();
-        getActivity().registerReceiver(myBroadCast,intentFilter);
+        myBroadCast = new MyBroadCast();
+        getActivity().registerReceiver(myBroadCast, intentFilter);
     }
 
     private View rootView;
@@ -94,14 +97,17 @@ public class FindFragment extends Fragment implements View.OnClickListener {
     }
 
     private ImageView image_view_left, image_view_two, image_view_message;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    //    private SwipeRefreshLayout mSwipeRefreshLayout;
     private String dynamic_id = "";
     private TextView text_view_empty;
+    //    private XRefreshView xRefreshView;
+    private SmartRefreshLayout refreshLayout;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mSwipeRefreshLayout = rootView.findViewById(R.id.mSwipeRefreshLayout);
+
+        refreshLayout = rootView.findViewById(R.id.refreshLayout);
         mrecyclerView = rootView.findViewById(R.id.recycler_view);
         image_view_left = rootView.findViewById(R.id.image_view_left);
         image_view_two = rootView.findViewById(R.id.image_view_two);
@@ -110,16 +116,11 @@ public class FindFragment extends Fragment implements View.OnClickListener {
         image_view_left.setOnClickListener(this);
         image_view_two.setOnClickListener(this);
         image_view_message.setOnClickListener(this);
-        mrecyclerView.setLayoutManager(new LinearLayoutManager(ChessApp.sAppContext));
+        mrecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mrecyclerView.setAdapter(findAdapter);
-        mSwipeRefreshLayout.setRefreshing(true);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getDataFindInformation();
-            }
-        });
+        mrecyclerView.setHasFixedSize(true);
 
+        initSmartXRefreshView();
         findAdapter.setOnItemClckListener(new FindAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(FindInfoBean infoBean) {
@@ -134,50 +135,48 @@ public class FindFragment extends Fragment implements View.OnClickListener {
                 showPopuwindowPhoto();
             }
         });
+        getDataFindInformation();
+    }
 
-        mrecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+    private void initSmartXRefreshView() {
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (isLoadMore || mSwipeRefreshLayout.isRefreshing()) {
-                    return;
-                }
-                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) mrecyclerView.getLayoutManager();
-                int firstVisibleItemPos = linearLayoutManager.findFirstVisibleItemPosition();
-                int lastVisibleItemPos = linearLayoutManager.findLastVisibleItemPosition();
-                int totalItemCount = linearLayoutManager.getItemCount();
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && totalItemCount >= 1 && lastVisibleItemPos + 5 >= totalItemCount && (lastVisibleItemPos - firstVisibleItemPos) != totalItemCount) {
-                    isLoadMore = true;
-                    getDataFindInformation();
-                    p++;
-                }
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
+            public void onRefresh(RefreshLayout refreshlayout) {
+                refreshlayout.finishRefresh(1000/*,false*/);//传入false表示刷新失败
+                getDataFindInformation();
             }
         });
-        getDataFindInformation();
+        refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                refreshlayout.finishLoadmore(1000/*,false*/);//传入false表示加载失败
+                isLoadMore = true;
+                getDataFindInformation();
+            }
+        });
+
     }
 
     private boolean isLoadMore;
 
     public void getDataFindInformation() {
-        mAction.getFindDiscoveryData(userToken, device, type, String.valueOf(p), page, new RequestCallback() {
+        mAction.getFindDiscoveryData(userToken, device, type, String.valueOf(p + 1), page, new RequestCallback() {
             @Override
             public void onResult(int code, String result, Throwable var3) {
                 if (code == ApiCode.DYNAMIC_LIST_DATA) {
                     List<FindInfoBean> list = ParseObjectToHaspMap.testJackson(result);
-                    if (mSwipeRefreshLayout.isRefreshing()) {
-                        findAdapter.updateData(list, false, false);
-                        mSwipeRefreshLayout.setRefreshing(false);
+                    if (isLoadMore) {
+                        findAdapter.updateData(list, true);
                         isLoadMore = false;
+                        p++;
                     } else {
-                        findAdapter.updateData(list, true, true);
+                        findAdapter.updateData(list, false);
+                        p = 0;
                     }
+                    isLoadMore = false;
                 } else if (code == ApiCode.DYNAMIC_LIST_EMPTY) {
-                    mSwipeRefreshLayout.setRefreshing(false);
+
+//                    mSwipeRefreshLayout.setRefreshing(false);
 //                    text_view_empty.setVisibility(View.INVISIBLE);
 //                    mSwipeRefreshLayout.setVisibility(View.GONE);
                 }
@@ -211,7 +210,7 @@ public class FindFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.text_take_photo://举报
                 myPopuwindown.dismiss();
-                ReportUserActivity.start(getActivity(), dynamic_id,"");
+                ReportUserActivity.start(getActivity(), dynamic_id, "");
                 break;
             case R.id.text_picture://屏蔽
                 myPopuwindown.dismiss();
@@ -240,7 +239,6 @@ public class FindFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onResult(int code, String result, Throwable var3) {
                 Toast.makeText(ChessApp.sAppContext, "屏蔽用户动态成功", Toast.LENGTH_SHORT).show();
-//                myPopuwindown.dismiss();
                 getDataFindInformation();
             }
 
@@ -278,10 +276,11 @@ public class FindFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    class MyBroadCast extends BroadcastReceiver{
+    class MyBroadCast extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            p=-1;
             getDataFindInformation();
         }
     }
@@ -289,7 +288,7 @@ public class FindFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (myBroadCast!=null){
+        if (myBroadCast != null) {
             getActivity().unregisterReceiver(myBroadCast);
         }
     }

@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.hss01248.dialog.StyledDialog;
+import com.netease.nim.uikit.common.util.media.BitmapUtil;
 import com.yun.xiao.jing.ApiCode;
 import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.api.ApiConstants;
@@ -30,6 +33,7 @@ public class LoginAction extends BaseAction {
     }
 
     public void loginOutAccount(String userToken, String device, final RequestCallback requestCallback) {
+        StyledDialog.buildLoading().show();
         requestCreateUrl = ApiConstants.HOST + ApiConstants.ACCOUNT_IS_OFF_LINE;
         Log.i("wangyukui1990", requestCreateUrl);
         final HashMap<String, String> headerMap = new HashMap<>();
@@ -54,6 +58,7 @@ public class LoginAction extends BaseAction {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                StyledDialog.dismissLoading();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -64,6 +69,7 @@ public class LoginAction extends BaseAction {
                 if (requestCallback != null) {
                     requestCallback.onFailed();
                 }
+                StyledDialog.dismissLoading();
             }
         }) {
             @Override
@@ -81,6 +87,7 @@ public class LoginAction extends BaseAction {
     }
 
     public void deleteAccount(String userToken, String device, final RequestCallback requestCallback) {
+        StyledDialog.buildLoading().show();
         requestCreateUrl = ApiConstants.HOST + ApiConstants.USER_DELETE_ACCOUNT;
         Log.i("wangyukui1990", requestCreateUrl);
         final HashMap<String, String> headerMap = new HashMap<>();
@@ -102,6 +109,7 @@ public class LoginAction extends BaseAction {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                StyledDialog.dismissLoading();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -127,6 +135,7 @@ public class LoginAction extends BaseAction {
 
     public void loginUserQueryInformation(String mobile, String mobile_prefix, String password, String mobile_type, String userToken, String device, final RequestCallback requestCallback) {
         requestCreateUrl = ApiConstants.HOST + ApiConstants.VERIFY_LOGIN_PASSWORD;
+        StyledDialog.buildLoading().show();
         Log.i("wangyukui1990", requestCreateUrl);
         final HashMap<String, String> paramsMap = new HashMap<>();
 
@@ -145,12 +154,16 @@ public class LoginAction extends BaseAction {
                     int code = json.getInt("code");
                     if (code == ApiCode.PASSWORD_IS_CORRECT) {//登陆成功
                         requestCallback.onResult(code, response, null);
+                    } else if (code == ApiCode.PASSWORD_IS_MISTAKE) {
+//                        requestCallback.onResult(code, response, null);
+                        Toast.makeText(ChessApp.sAppContext, "密码错误 ", Toast.LENGTH_SHORT).show();
                     } else {//登陆失败
                         requestCallback.onFailed();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                StyledDialog.dismissLoading();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -158,8 +171,7 @@ public class LoginAction extends BaseAction {
                 if (!TextUtils.isEmpty(error.getMessage())) {
                     LogUtil.i(TAG, error.getMessage());
                 }
-//                Toast.makeText(ChessApp.sAppContext, R.string.club_create_failed, Toast.LENGTH_SHORT).show();
-//                DialogMaker.dismissProgressDialog();
+                StyledDialog.dismissLoading();
                 if (requestCallback != null) {
                     requestCallback.onFailed();
                 }

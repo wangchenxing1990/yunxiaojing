@@ -24,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONArray;
+import com.hss01248.dialog.StyledDialog;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -209,59 +210,52 @@ public class PostInfoActivity extends AppCompatActivity implements View.OnClickL
     String strTwo = "";
 
     private void submitTakePhoto() {
-        Log.i("发表动态", "000000000");
-//        StyledDialog.buildLoading().show();
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                String content = edit_text_view.getText().toString().trim();
-                if (TextUtils.isEmpty(content) && selectList.size() == 0) {
-                    Toast.makeText(ChessApp.sAppContext, "请输入发表的内容", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                JSONArray jsonArray = new JSONArray();
-                String jsonArrayTwo = "";
-                MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-                for (int i = 0; i < selectList.size(); i++) {
-                    strTwo = "";
-                    strTwo = ApiConstants.BITMAP_TO_BASE_64 + Bitamp2Base64.bitmapToBase64(BitmapFactory.decodeFile(selectList.get(i).getCompressPath()));
-                    jsonArray.add(strTwo);
-                }
-                Log.i("jsonArray::::", "jsonArray::::" + jsonArray.toString());
-                if (selectList.size() != 0) {
-                    builder.addFormDataPart("images", jsonArray.toString());
-                }
-                String userToken = UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
-                String device = UserPreferences.getDevice();
-                OkHttpClient okHttp = new OkHttpClient();
-                builder.addFormDataPart("content", content);
-                Request request = new Request.Builder()
-                        .url(ApiConstants.HOST + ApiConstants.USER_IN_DYNAMIC)
-                        .addHeader("user-token", userToken)
-                        .addHeader("mobile-device", device)
-                        .post(builder.build())
-                        .build();
-                Log.i("发表动态", "3333333333");
-                okHttp.newCall(request).enqueue(new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        if (e.getMessage() != null) {
-                            Log.i("发表动态失败", e.getMessage());
-                        }
-                    }
 
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        str = response.body().string();
-                        int code = response.code();
-                        Log.i("发表动态成功", "code:::::::" + code);
-                        Log.i("发表动态成功", str);
-                        handler.sendEmptyMessage(133);
-                    }
-                });
+        StyledDialog.buildLoading().show();
+        String content = edit_text_view.getText().toString().trim();
+        if (TextUtils.isEmpty(content) && selectList.size() == 0) {
+            Toast.makeText(ChessApp.sAppContext, "请输入发表的内容", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        JSONArray jsonArray = new JSONArray();
+        String jsonArrayTwo = "";
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        for (int i = 0; i < selectList.size(); i++) {
+            strTwo = "";
+            strTwo = ApiConstants.BITMAP_TO_BASE_64 + Bitamp2Base64.bitmapToBase64(BitmapFactory.decodeFile(selectList.get(i).getCompressPath()));
+            jsonArray.add(strTwo);
+        }
+        Log.i("jsonArray::::", "jsonArray::::" + jsonArray.toString());
+        if (selectList.size() != 0) {
+            builder.addFormDataPart("images", jsonArray.toString());
+        }
+        String userToken = UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
+        String device = UserPreferences.getDevice();
+        OkHttpClient okHttp = new OkHttpClient();
+        builder.addFormDataPart("content", content);
+        Request request = new Request.Builder()
+                .url(ApiConstants.HOST + ApiConstants.USER_IN_DYNAMIC)
+                .addHeader("user-token", userToken)
+                .addHeader("mobile-device", device)
+                .post(builder.build())
+                .build();
+        Log.i("发表动态", "3333333333");
+        okHttp.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                if (e.getMessage() != null) {
+                    Log.i("发表动态失败", e.getMessage());
+                }
+                StyledDialog.dismissLoading();
             }
-        }.start();
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                str = response.body().string();
+                int code = response.code();
+                handler.sendEmptyMessage(133);
+            }
+        });
     }
 
     private Handler handler = new Handler() {
@@ -270,6 +264,7 @@ public class PostInfoActivity extends AppCompatActivity implements View.OnClickL
             super.handleMessage(msg);
             switch (msg.what) {
                 case 133:
+                    StyledDialog.dismissLoading();
                     MainActivity.start(PostInfoActivity.this, "postinfo");
                     break;
             }

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.netease.nim.uikit.common.ui.dialog.DialogMaker;
 import com.yun.xiao.jing.ApiCode;
 import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.R;
@@ -251,19 +252,20 @@ public class ReportUserActivity extends AppCompatActivity implements View.OnClic
         blackAction.submitReportMessage(userToken, device, token, text, new RequestCallback() {
             @Override
             public void onResult(int code, String result, Throwable var3) {
-                if (code == ApiCode.USER_TO_REPORT_SUCCESS) {
-                    if (type != null && type.equals("otherInfo")) {
-                        Intent intent = new Intent();
-                        intent.setAction("com.yun.xiao.jing");
-                        sendBroadcast(intent);
-                        finish();
-                    } else {
-                        Intent intent = new Intent();
-                        intent.setAction(ApiCode.USER_TO_REPORT_SUCCESS_STRING);
-                        sendBroadcast(intent);
-                        finish();
-                    }
-                }
+                finish();
+//                if (code == ApiCode.USER_TO_REPORT_SUCCESS) {
+//                    if (type != null && type.equals("otherInfo")) {
+//                        Intent intent = new Intent();
+//                        intent.setAction("com.yun.xiao.jing");
+//                        sendBroadcast(intent);
+//                        finish();
+//                    } else {
+//                        Intent intent = new Intent();
+//                        intent.setAction(ApiCode.USER_TO_REPORT_SUCCESS_STRING);
+//                        sendBroadcast(intent);
+//                        finish();
+//                    }
+//                }
             }
 
             @Override

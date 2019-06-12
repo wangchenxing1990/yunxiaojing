@@ -7,8 +7,8 @@
         <!--<item name="colorPrimary">@color/colorPrimary</item>-->
         <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
         <!--<item name="colorAccent">@color/colorAccent</item>-->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/white_color</item>
+        <item name="colorPrimaryDark">@color/grayAccent</item>
         <item name="colorAccent">@color/grayAccent</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
@@ -62,7 +62,7 @@
     <style name="text_report">
         <item name="android:layout_weight">1</item>
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">@dimen/dp_30</item>
+        <item name="android:layout_height">@dimen/dp_48</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/sp_12</item>
         <item name="android:layout_marginTop">@dimen/dp_10</item>

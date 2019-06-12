@@ -49,7 +49,7 @@ public class ParseObjectToHaspMap {
             findInfoBean.setSex(jsonObject.getInt("sex"));
             findInfoBean.setHeadimg(jsonObject.getString("headimg"));
             findInfoBean.setToken(jsonObject.getString("token"));
-            findInfoBean.setImages(praseImages(jsonObject.getString("images")));
+            findInfoBean.setImages(praseImages(jsonObject.getString("images_new")));
             list.add(findInfoBean);
         }
         return list;

@@ -10,10 +10,12 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.volley.RequestQueue;
+import com.hss01248.dialog.StyledDialog;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.api.UIKitOptions;
 import com.netease.nim.uikit.business.contact.core.query.PinYin;
 import com.netease.nim.uikit.business.contact.core.util.ContactHelper;
+import com.netease.nim.uikit.impl.cache.DataCacheManager;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.SDKOptions;
 import com.netease.nimlib.sdk.StatusBarNotificationConfig;
@@ -29,6 +31,14 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreater;
+import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreater;
+import com.scwang.smartrefresh.layout.api.RefreshFooter;
+import com.scwang.smartrefresh.layout.api.RefreshHeader;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.yun.xiao.jing.api.HttpManager;
 import com.yun.xiao.jing.preference.UserPreferences;
 import com.yun.xiao.jing.session.SessionHelper;
@@ -49,6 +59,7 @@ public class ChessApp extends MultiDexApplication {
         sAppContext = this;
         sRequestQueue = HttpManager.getInstance(sAppContext);
         DemoCache.setContext(this);
+        StyledDialog.init(this);
         NIMClient.init(this, getLoginInfo(), options());
         if (NIMUtil.isMainProcess(this)) {
             // 注意：以下操作必须在主进程中进行
@@ -62,27 +73,35 @@ public class ChessApp extends MultiDexApplication {
         }
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(ChessApp.sAppContext));
     }
+
     //初始化系统消息缓存
     private void initSystemMessageCache() {
+        DataCacheManager.observeSDKDataChanged(true);
 //        MessageDataCache.getInstance().registerObservers(true);
         if (!TextUtils.isEmpty(NimUIKit.getAccount())) {
-//            MessageDataCache.getInstance().clearCache();
-//            MessageDataCache.getInstance().buildCache();
+            DataCacheManager.clearDataCache();
+            DataCacheManager.buildDataCache();
         }
     }
-    /**
-     * 初始化UiKit
-     */
-//    private void initUiKit() {
-//        // 设置用户资料提供者（必须）,通讯录提供者（必须）
-////        NimUIKit.init(this, infoProvider, contactProvider, UniversalImageLoaderUtil.getDefaultConfig(getApplicationContext()), BuildConfig.DEBUG);
-//        // 设置地理位置提供者。如果需要发送地理位置消息，该参数必须提供。如果不需要，可以忽略。
-////        NimUIKit.setLocationProvider(new NimDemoLocationProvider());
-//        //会话窗口的定制初始化
-//        SessionHelper.init();
-//        // 通讯录列表定制初始化
-//        ContactHelper.init();
-//    }
+    static {
+        //设置全局的Header构建器
+        SmartRefreshLayout.setDefaultRefreshHeaderCreater(new DefaultRefreshHeaderCreater() {
+            @Override
+            public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
+                layout.setPrimaryColorsId(R.color.grayAccent, android.R.color.white);//全局设置主题颜色
+                return new ClassicsHeader(context);//.setTimeFormat(new DynamicTimeFormat("更新于 %s"));//指定为经典Header，默认是 贝塞尔雷达Header
+            }
+        });
+        //设置全局的Footer构建器
+        SmartRefreshLayout.setDefaultRefreshFooterCreater(new DefaultRefreshFooterCreater() {
+            @Override
+            public RefreshFooter createRefreshFooter(Context context, RefreshLayout layout) {
+                //指定为经典Footer，默认是 BallPulseFooter
+                return new ClassicsFooter(context).setDrawableSize(20);
+            }
+        });
+    }
+
     private void initUIKit() {
         // 初始化
         NimUIKit.init(this, buildUIKitOptions());
@@ -188,7 +207,7 @@ public class ChessApp extends MultiDexApplication {
                 activity.finish();
             }
         }
-        ActivityManager activityMgr = (ActivityManager)sAppContext.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager activityMgr = (ActivityManager) sAppContext.getSystemService(Context.ACTIVITY_SERVICE);
         activityMgr.killBackgroundProcesses(sAppContext.getPackageName());
         System.exit(0);
     }

@@ -3,29 +3,51 @@
     android:id="@+id/relative_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="invisible"
-    android:background="@mipmap/icon_login_bj">
+    android:background="@mipmap/icon_login_bj"
+    android:visibility="invisible">
 
-    <ImageView
-        android:id="@+id/image_view"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/relative_layout_two"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@mipmap/logo_login_sugretime" />
+        android:layout_marginTop="@dimen/dp_50"
+        >
+
+        <ImageView
+            android:id="@+id/image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/logo_login_sugretime" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_below="@+id/image_view"
+            android:paddingTop="@dimen/dp_50"
+            android:text="Suger time"
+            android:textColor="@color/tab_color_true"
+            android:textSize="@dimen/sp_18" />
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/text_view_phone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/image_view"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="@dimen/dp_10"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_45"
+        android:layout_below="@+id/relative_layout_two"
+        android:gravity="center"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_80"
+        android:layout_marginRight="@dimen/dp_20"
         android:background="@drawable/drawable_background_phone"
         android:paddingLeft="@dimen/dp_13"
         android:paddingTop="@dimen/dp_10"
         android:paddingRight="@dimen/dp_13"
         android:paddingBottom="@dimen/dp_10"
-        android:text="phoneNumber"
+        android:text="Phone  Number"
         android:textColor="@color/black"
         android:textSize="@dimen/sp_15" />
 

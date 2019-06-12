@@ -33,9 +33,9 @@ android {
         }
     }
     packagingOptions {
-    exclude 'META-INF/rxjava.properties'
+        exclude 'META-INF/rxjava.properties'
     }
-    compileOptions{
+    compileOptions {
         incremental = false
     }
     lintOptions {
@@ -77,7 +77,9 @@ dependencies {
     implementation project(path: ':uikit')
     implementation 'com.android.support:multidex:1.0.3'
     //    implementation project(path: ':uikit')
-    //    implementation 'com.huxq17.xrefreshview:xrefreshview:3.6.9'
+//    implementation 'com.huxq17.xrefreshview:xrefreshview:3.6.9'
     implementation files('libs/nrtc-sdk.jar')
     implementation files('libs/jackson-all-1.9.2.jar')
+    implementation 'com.github.hss01248:DialogUtil:1.1.6'
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
 }

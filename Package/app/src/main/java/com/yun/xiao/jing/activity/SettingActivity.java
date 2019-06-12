@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.netease.nim.uikit.impl.cache.DataCacheManager;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.auth.AuthService;
 import com.yun.xiao.jing.ApiCode;
@@ -91,6 +92,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onResult(int code, String result, Throwable var3) {
                 UserPreferences.getInstance(ChessApp.sAppContext).setUserToken("");
+                DataCacheManager.clearDataCache();
                 finish();
                 PhoneNumberActivity.start(SettingActivity.this);
             }

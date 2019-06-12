@@ -10,6 +10,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.hss01248.dialog.StyledDialog;
 import com.yun.xiao.jing.ApiCode;
 import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.R;
@@ -39,6 +40,7 @@ public class RegisterAction extends BaseAction {
 //        if (!NetworkUtil.isNetAvailable(ChessApp.sAppContext)) {
 //            return;
 //        }
+        StyledDialog.buildLoading().show();
         requestCreateUrl = ApiConstants.HOST + ApiConstants.CHECK_LOGIN;
         Log.i("wangyukui1990", requestCreateUrl);
 //        final HashMap<String, String> paramsMap = NetWork.getRequestCommonParams(ChessApp.sAppContext);
@@ -57,7 +59,8 @@ public class RegisterAction extends BaseAction {
                     if (code == ApiCode.TOKEN_NO_EXIST) {//100token不存在或无效token
                         Toast.makeText(ChessApp.sAppContext, "", Toast.LENGTH_SHORT).show();
                     } else if (code == ApiCode.TOKEN_NO_QUERY) {//101token未查询到用户信息请重新登录
-                        Toast.makeText(ChessApp.sAppContext, "", Toast.LENGTH_SHORT).show();
+                        requestCallback.onResult(code, response, null);
+//                        Toast.makeText(ChessApp.sAppContext, "", Toast.LENGTH_SHORT).show();
                     } else if (code == ApiCode.PHONE_IS_EMPTY) {//102手机号码参数为空
                         Toast.makeText(ChessApp.sAppContext, "", Toast.LENGTH_SHORT).show();
                         return;
@@ -89,6 +92,7 @@ public class RegisterAction extends BaseAction {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                StyledDialog.dismissLoading();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -96,8 +100,7 @@ public class RegisterAction extends BaseAction {
                 if (!TextUtils.isEmpty(error.getMessage())) {
                     LogUtil.i(TAG, error.getMessage());
                 }
-//                Toast.makeText(ChessApp.sAppContext, R.string.club_create_failed, Toast.LENGTH_SHORT).show();
-//                DialogMaker.dismissProgressDialog();
+                StyledDialog.dismissLoading();
                 if (requestCallback != null) {
                     requestCallback.onFailed();
                 }
@@ -192,7 +195,7 @@ public class RegisterAction extends BaseAction {
     }
 
     public void updateInformation(String username, String birthday, int sex, String token, String device, final RequestCallback requestCallback) {
-
+        StyledDialog.buildLoading().show();
         requestCreateUrl = ApiConstants.HOST + ApiConstants.UPDATE_USER_INFO;
         Log.i("wangyukui1990", requestCreateUrl);
         final HashMap<String, String> headerMap = new HashMap<>();
@@ -220,6 +223,7 @@ public class RegisterAction extends BaseAction {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                StyledDialog.dismissLoading();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -227,8 +231,7 @@ public class RegisterAction extends BaseAction {
                 if (!TextUtils.isEmpty(error.getMessage())) {
                     LogUtil.i(TAG, error.getMessage());
                 }
-//                Toast.makeText(ChessApp.sAppContext, R.string.club_create_failed, Toast.LENGTH_SHORT).show();
-//                DialogMaker.dismissProgressDialog();
+                StyledDialog.dismissLoading();
                 if (requestCallback != null) {
                     requestCallback.onFailed();
                 }
@@ -250,6 +253,7 @@ public class RegisterAction extends BaseAction {
 
     public void updatePasswordInfo(String userToken, String device, String password, final RequestCallback requestCallback) {
         requestCreateUrl = ApiConstants.HOST + ApiConstants.ADD_USER_PASSWORD;
+        StyledDialog.buildLoading().show();
         Log.i("wangyukui1990", requestCreateUrl);
         final HashMap<String, String> headerMap = new HashMap<>();
         final HashMap<String, String> paramsMap = new HashMap<>();
@@ -274,6 +278,7 @@ public class RegisterAction extends BaseAction {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                StyledDialog.dismissLoading();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -281,11 +286,10 @@ public class RegisterAction extends BaseAction {
                 if (!TextUtils.isEmpty(error.getMessage())) {
                     LogUtil.i(TAG, error.getMessage());
                 }
-//                Toast.makeText(ChessApp.sAppContext, R.string.club_create_failed, Toast.LENGTH_SHORT).show();
-//                DialogMaker.dismissProgressDialog();
                 if (requestCallback != null) {
                     requestCallback.onFailed();
                 }
+                StyledDialog.dismissLoading();
             }
         }) {
             @Override
@@ -384,6 +388,8 @@ public class RegisterAction extends BaseAction {
                     } else if (code == ApiCode.USER_ALREADY_OFFLINE) {
                         requestCallback.onResult(code, response, null);
                     } else if (code == ApiCode.GET_USER_INFORMATION_FAILED) {
+                        requestCallback.onResult(code, response, null);
+                    } else if (code == ApiCode.TOKEN_NO_QUERY) {
                         requestCallback.onResult(code, response, null);
                     }
                 } catch (JSONException e) {

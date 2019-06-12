@@ -31,6 +31,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hss01248.dialog.StyledDialog;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -116,27 +117,6 @@ public class AddUserHeaderImgActivity extends AppCompatActivity implements View.
                 break;
         }
     }
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == RESULT_OK) {
-//            switch (requestCode) {
-//                case PictureConfig.CHOOSE_REQUEST:
-//                    // 图片、视频、音频选择结果回调
-//
-//                    // 例如 LocalMedia 里面返回三种path
-//                    // 1.media.getPath(); 为原图path
-//                    // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true  注意：音视频除外
-//                    // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true  注意：音视频除外
-//                    // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
-//                    // selectList.get(0).getCompressPath();
-//
-//
-//                    break;
-//            }
-//        }
-//    }
-
 
     List<LocalMedia> selectListTwo = new ArrayList<>();
 
@@ -530,60 +510,40 @@ public class AddUserHeaderImgActivity extends AppCompatActivity implements View.
 
     private void submitTakePhoto(final Bitmap bitmap) {
         Log.i("1111111111", "333333333333");
-//        StyledDialog.buildLoading().show();
-        new Thread() {
+        StyledDialog.buildLoading().show();
+        String strTwo = Bitamp2Base64.bitmapToBase64(bitmap);
+        String userToken = UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
+        String device = UserPreferences.getDevice();
+        okhttp3.OkHttpClient okhttp = new okhttp3.OkHttpClient();
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("imgurl", strTwo);
+        builder.addFormDataPart("imgtype", "png");
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                .url(ApiConstants.HOST + ApiConstants.ADD_USER_HEADER_IMG)
+                .addHeader(ApiParams.USER_TOKEN, userToken)
+                .addHeader(ApiParams.MOBILE_DEVICE, device)
+                .post(builder.build())
+                .build();
+
+        okhttp.newCall(request).enqueue(new okhttp3.Callback() {
             @Override
-            public void run() {
-                super.run();
-                String strTwo = Bitamp2Base64.bitmapToBase64(bitmap);
-                String userToken = UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
-                String device = UserPreferences.getDevice();
-                okhttp3.OkHttpClient okhttp = new okhttp3.OkHttpClient();
-                MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-                builder.addFormDataPart("imgurl", strTwo);
-                builder.addFormDataPart("imgtype", "png");
-                okhttp3.Request request = new okhttp3.Request.Builder()
-                        .url(ApiConstants.HOST + ApiConstants.ADD_USER_HEADER_IMG)
-                        .addHeader(ApiParams.USER_TOKEN, userToken)
-                        .addHeader(ApiParams.MOBILE_DEVICE, device)
-                        .post(builder.build())
-                        .build();
-
-                okhttp.newCall(request).enqueue(new okhttp3.Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        if (e.getMessage() != null) {
-                            Log.i("vvvvvv", e.getMessage());
-                        }
-                    }
-
-                    @Override
-                    public void onResponse(Call call, okhttp3.Response response) throws IOException {
-                        str = response.body().string();
-                        int code = response.code();
-                        Log.i("aaaaaaaa", str);
-                        handler.sendEmptyMessage(133);
-                    }
-                });
+            public void onFailure(Call call, IOException e) {
+                if (e.getMessage() != null) {
+                    Log.i("vvvvvv", e.getMessage());
+                }
+                StyledDialog.dismissLoading();
             }
-        }.start();
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                str = response.body().string();
+                int code = response.code();
+                Log.i("aaaaaaaa", str);
+                handler.sendEmptyMessage(133);
+            }
+        });
     }
 
-//    private static class MyHandler extends Handler{
-//        private WeakReference<AddUserHeaderImgActivity> mActivity;
-//        public MyHandler(AddUserHeaderImgActivity activity){
-//             mActivity= new WeakReference<>(activity);
-//        }
-//
-//        @Override
-//        public void handleMessage(Message msg) {
-//            super.handleMessage(msg);
-//            switch (msg.what) {
-//                case 133:
-//                    break;
-//            }
-//        }
-//    }
 
     private Handler handler = new Handler() {
         @Override
@@ -592,11 +552,11 @@ public class AddUserHeaderImgActivity extends AppCompatActivity implements View.
             switch (msg.what) {
                 case 133:
                     IntroduceActivity.start(AddUserHeaderImgActivity.this);
+                    StyledDialog.dismissLoading();
                     break;
             }
         }
     };
-
 
 
     public void update(final Bitmap bitmap) {

@@ -58,7 +58,11 @@ public class EnterCodeActivity extends AppCompatActivity implements View.OnClick
                     JSONObject json = new JSONObject(result);
                     JSONObject info = json.getJSONObject("info");
                     String token = info.getString("token");
+                    String imaccount = info.getString("imaccount");
+                    String imtoken = info.getString("imtoken");
                     UserPreferences.getInstance(ChessApp.sAppContext).setUserToken(token);
+                    UserPreferences.getInstance(ChessApp.sAppContext).setUserIMAccount(imaccount);
+                    UserPreferences.getInstance(ChessApp.sAppContext).setUserIMToken(imtoken);
 //                    IntroduceActivity.start(EnterCodeActivity.this);
 //                    SetPasswordActivity.start(EnterCodeActivity.this);
                     AddUserHeaderImgActivity.start(EnterCodeActivity.this);

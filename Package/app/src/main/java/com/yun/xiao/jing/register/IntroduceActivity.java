@@ -164,7 +164,7 @@ public class IntroduceActivity extends AppCompatActivity implements View.OnClick
         }
         String token = UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
         String device = Settings.System.getString(getContentResolver(), Settings.System.ANDROID_ID);
-        Log.i("tagtag", "token:::  " + token + "device::: " + device);
+
         mAction.updateInformation(username, birthday, sex, token, device, new RequestCallback() {
 
             @Override

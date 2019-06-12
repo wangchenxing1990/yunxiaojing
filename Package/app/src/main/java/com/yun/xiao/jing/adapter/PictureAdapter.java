@@ -21,8 +21,6 @@ import java.util.List;
 
 public class PictureAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<PictureBean.InfoBean> listData;
-    private int FOOT_LOADING_ITEM = 1;
-    private int NORMAL_ITEM = 0;
 
     public PictureAdapter(List<PictureBean.InfoBean> listData) {
         this.listData = listData;
@@ -31,18 +29,15 @@ public class PictureAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        if (i == NORMAL_ITEM) {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_picture, viewGroup, false);
-            MyViewHolder viewHolder = new MyViewHolder(view);
-            return viewHolder;
-        } else {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_footer_loading, viewGroup, false);
-            FootViewHolder viewHolderFoot = new FootViewHolder(view);
-            return viewHolderFoot;
-        }
 
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_picture, viewGroup, false);
+        MyViewHolder viewHolder = new MyViewHolder(view);
+
+        return viewHolder;
     }
-private int position=-1;
+
+    private int position = -1;
+
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int i) {
         Drawable drawable = ChessApp.sAppContext.getResources().getDrawable(R.drawable.icon_female);
@@ -69,7 +64,7 @@ private int position=-1;
             ((MyViewHolder) viewHolder).relative_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    position=i;
+                    position = i;
                     if (listener != null) {
                         listener.onPictureClick(listData.get(i).getToken());
                     }
@@ -92,22 +87,12 @@ private int position=-1;
         }
         notifyDataSetChanged();
     }
+
     public void updateDataNew() {
-       if(listData.size()!=0&&position!=-1){
-           listData.remove(position);
-       }
-        notifyDataSetChanged();
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        if (position == listData.size()) {
-            return FOOT_LOADING_ITEM;
-        } else {
-            return NORMAL_ITEM;
-
+        if (listData.size() != 0 && position != -1) {
+            listData.remove(position);
         }
-
+        notifyDataSetChanged();
     }
 
     private OnPictureClickListener listener;
@@ -139,10 +124,4 @@ private int position=-1;
         }
     }
 
-    class FootViewHolder extends RecyclerView.ViewHolder {
-
-        public FootViewHolder(@NonNull View itemView) {
-            super(itemView);
-        }
-    }
 }

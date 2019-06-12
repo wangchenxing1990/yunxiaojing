@@ -85,9 +85,9 @@ public class P2PMessageActivity extends BaseMessageActivity implements View.OnCl
         displayOnlineState();
         registerObservers(true);
         frame_layout.setOnClickListener(this);
-//        if (name != null && !TextUtils.isEmpty(name)) {
-//            text_view_name.setText(name);
-//        }
+        if (name != null && !TextUtils.isEmpty(name)) {
+            text_view_name.setText(name);
+        }
 
     }
 
@@ -110,7 +110,9 @@ public class P2PMessageActivity extends BaseMessageActivity implements View.OnCl
     }
 
     private void requestBuddyInfo() {
-        text_view_name.setText(UserInfoHelper.getUserTitleName(sessionId, SessionTypeEnum.P2P));
+        if (sessionId != null) {
+            text_view_name.setText(UserInfoHelper.getUserTitleName(sessionId, SessionTypeEnum.P2P));
+        }
 //        setTitle(UserInfoHelper.getUserTitleName(sessionId, SessionTypeEnum.P2P));
     }
 

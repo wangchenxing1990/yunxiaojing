@@ -93,6 +93,7 @@
         android:layout_marginTop="@dimen/dp_10"
         android:layout_marginBottom="@dimen/dp_5"
         android:layout_toRightOf="@+id/text_fans"
+        android:visibility="invisible"
         android:text="1.5K"
         android:textColor="@color/color_text_cc"
         android:textSize="@dimen/sp_13" />

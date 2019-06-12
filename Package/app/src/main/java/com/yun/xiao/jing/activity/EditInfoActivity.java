@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.hss01248.dialog.StyledDialog;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -171,22 +172,22 @@ public class EditInfoActivity extends AppCompatActivity implements View.OnClickL
                     // selectList.get(0).getCompressPath();
                     if (index == R.id.image_one) {
                         selectListOne = PictureSelector.obtainMultipleResult(data);
-                        indexId = meInfoBean.getInfo().getImages().size() >=1 ? meInfoBean.getInfo().getImages().get(0).getImg_id() : 0;
+                        indexId = meInfoBean.getInfo().getImages().size() >= 1 ? meInfoBean.getInfo().getImages().get(0).getImg_id() : 0;
                         submitTakePhoto(selectListOne);
 //                        displayImage(imageOne, selectListOne);
                     } else if (index == R.id.image_two) {
                         selectListTwo = PictureSelector.obtainMultipleResult(data);
-                        indexId = meInfoBean.getInfo().getImages().size() >=2 ? meInfoBean.getInfo().getImages().get(1).getImg_id() : 0;
+                        indexId = meInfoBean.getInfo().getImages().size() >= 2 ? meInfoBean.getInfo().getImages().get(1).getImg_id() : 0;
                         submitTakePhoto(selectListTwo);
 //                        displayImage(imageTwo, selectListTwo);
                     } else if (index == R.id.image_three) {
                         selectListThree = PictureSelector.obtainMultipleResult(data);
-                        indexId = meInfoBean.getInfo().getImages().size() >=3 ? meInfoBean.getInfo().getImages().get(2).getImg_id() : 0;
+                        indexId = meInfoBean.getInfo().getImages().size() >= 3 ? meInfoBean.getInfo().getImages().get(2).getImg_id() : 0;
                         submitTakePhoto(selectListThree);
 //                        displayImage(imageThree, selectListThree);
                     } else if (index == R.id.image_fore) {
                         selectListFore = PictureSelector.obtainMultipleResult(data);
-                        indexId = meInfoBean.getInfo().getImages().size() >=4 ? meInfoBean.getInfo().getImages().get(3).getImg_id() : 0;
+                        indexId = meInfoBean.getInfo().getImages().size() >= 4 ? meInfoBean.getInfo().getImages().get(3).getImg_id() : 0;
                         submitTakePhoto(selectListFore);
 //                        displayImage(imageFore, selectListFore);
                     } else if (index == R.id.image_five) {
@@ -215,6 +216,7 @@ public class EditInfoActivity extends AppCompatActivity implements View.OnClickL
                 .load(list.get(0).getCompressPath())
                 .apply(options)
                 .into(imageView);
+        StyledDialog.dismissLoading();
     }
 
     private void displayUpdateImage(ImageView imageView, MeInfoBean.InfoBean.ImagesBean imagesBean) {
@@ -291,50 +293,50 @@ public class EditInfoActivity extends AppCompatActivity implements View.OnClickL
     String str = "";
 
     private void submitTakePhoto(final List<LocalMedia> selectList) {
-//        StyledDialog.buildLoading().show();
-        new Thread() {
+        StyledDialog.buildLoading().show();
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                super.run();
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart(ApiParams.PARAMS_IMAGE_DATA, ApiConstants.BITMAP_TO_BASE_64 + Bitamp2Base64.bitmapToBase64(BitmapFactory.decodeFile(selectList.get(0).getCompressPath())));
+        if (indexId != 0) {
+            builder.addFormDataPart(ApiParams.PARAMS_IMAGE_ID, "" + indexId);
+        } else {
+            builder.addFormDataPart(ApiParams.PARAMS_IMAGE_ID, "");
+        }
+
+        Log.i("codecodecode", "codecodecode:::::::" + ApiConstants.BITMAP_TO_BASE_64 + Bitamp2Base64.bitmapToBase64(BitmapFactory.decodeFile(selectList.get(0).getCompressPath())));
+        okhttp3.OkHttpClient okHttp = new okhttp3.OkHttpClient();
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                .url(ApiConstants.HOST + ApiConstants.USER_HEAD_IMAGE_UPDATE)
+                .addHeader(ApiParams.USER_TOKEN, userToken)
+                .addHeader(ApiParams.MOBILE_DEVICE, device)
+                .post(builder.build())
+                .build();
+        Log.i("修改用户头像动态", "3333333333");
+        okHttp.newCall(request).enqueue(new okhttp3.Callback() {
             @Override
-            public void run() {
-                super.run();
-                MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-                builder.addFormDataPart(ApiParams.PARAMS_IMAGE_DATA, ApiConstants.BITMAP_TO_BASE_64 + Bitamp2Base64.bitmapToBase64(BitmapFactory.decodeFile(selectList.get(0).getCompressPath())));
-                if (indexId != 0) {
-                    builder.addFormDataPart(ApiParams.PARAMS_IMAGE_ID, "" + indexId);
-                } else {
-                    builder.addFormDataPart(ApiParams.PARAMS_IMAGE_ID, "");
+            public void onFailure(Call call, IOException e) {
+                if (e.getMessage() != null) {
+                    Log.i("修改用户头像动态失败", e.getMessage());
                 }
-
-                Log.i("codecodecode", "codecodecode:::::::" + ApiConstants.BITMAP_TO_BASE_64 + Bitamp2Base64.bitmapToBase64(BitmapFactory.decodeFile(selectList.get(0).getCompressPath())));
-                okhttp3.OkHttpClient okHttp = new okhttp3.OkHttpClient();
-                okhttp3.Request request = new okhttp3.Request.Builder()
-                        .url(ApiConstants.HOST + ApiConstants.USER_HEAD_IMAGE_UPDATE)
-                        .addHeader(ApiParams.USER_TOKEN, userToken)
-                        .addHeader(ApiParams.MOBILE_DEVICE, device)
-                        .post(builder.build())
-                        .build();
-                Log.i("修改用户头像动态", "3333333333");
-                okHttp.newCall(request).enqueue(new okhttp3.Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        if (e.getMessage() != null) {
-                            Log.i("修改用户头像动态失败", e.getMessage());
-                        }
-                    }
-
-                    @Override
-                    public void onResponse(Call call, okhttp3.Response response) throws IOException {
-                        str = response.body().string();
-                        int code = response.code();
-                        Log.i("修改用户头像动态成功", str);
-                        Message message = new Message();
-                        message.arg1 = 133;
-//                        message.obj = selectList.get(0).getCompressPath();
-                        message.obj = selectList;
-                        handler.sendMessage(message);
-                    }
-                });
             }
-        }.start();
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                str = response.body().string();
+                int code = response.code();
+                Log.i("修改用户头像动态成功", str);
+                Message message = new Message();
+                message.arg1 = 133;
+//                        message.obj = selectList.get(0).getCompressPath();
+                message.obj = selectList;
+                handler.sendMessage(message);
+            }
+        });
+//            }
+//        }.start();
     }
 
     class MyHandler extends Handler {

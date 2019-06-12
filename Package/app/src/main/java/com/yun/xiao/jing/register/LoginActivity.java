@@ -83,10 +83,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void clickLoginUser() {
         name = edit_input_name.getText().toString().trim();
         String password = edit_input_password.getText().toString().trim();
-        if (TextUtils.isEmpty(name)) {
-            Toast.makeText(LoginActivity.this, "用户名不能为空", Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        if (TextUtils.isEmpty(name)) {
+//            Toast.makeText(LoginActivity.this, "用户名不能为空", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
         if (TextUtils.isEmpty(password)) {
             Toast.makeText(LoginActivity.this, "请输入密码", Toast.LENGTH_SHORT).show();
             return;

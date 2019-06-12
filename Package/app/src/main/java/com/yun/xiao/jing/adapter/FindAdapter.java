@@ -35,11 +35,8 @@ public class FindAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Drawable fansDrawable;
     private Drawable messageDrawable;
     private Drawable selectDrawableNormal;
-    private int FOOT_LOADING_ITEM = 1;
-    private int NORMAL_ITEM = 0;
     private AdapterPicture adapterPicture;
     private List<PictureUrlBean> listData = new ArrayList();
-    private int positions = -1;
 
     public FindAdapter(List<FindInfoBean> info) {
         this.infoData = info;
@@ -57,116 +54,92 @@ public class FindAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        if (viewType == NORMAL_ITEM) {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_find_information, viewGroup, false);
-            FindViewHolder holder = new FindViewHolder(view);
-            return holder;
-        } else {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_footer_loading, viewGroup, false);
-            FootViewHolder holderFoot = new FootViewHolder(view);
-            return holderFoot;
-        }
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_find_information, viewGroup, false);
+        FindViewHolder holder = new FindViewHolder(view);
+        return holder;
     }
 
     @Override
-    public int getItemViewType(int position) {
-        if (position == infoData.size()) {
-            return FOOT_LOADING_ITEM;
-        } else {
-            return NORMAL_ITEM;
-        }
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder findViewHolder, final int i) {
-
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder findViewHolder, final int position) {
         if (infoData.size() >= 1) {
-            if (findViewHolder instanceof FindViewHolder) {
-                final int position = i;
-                Picasso
-                        .with(ChessApp.sAppContext)
-                        .load(infoData.get(position)
-                                .getHeadimg())
-                        .transform(new CircleTransform())
-                        .into(((FindViewHolder) findViewHolder).image_view_left);
-                if (infoData.get(position).getSex() == 1) {
-                    ((FindViewHolder) findViewHolder).text_name.setTextColor(ChessApp.sAppContext.getResources().getColor(R.color.text_red_me));
-                } else if (infoData.get(position).getSex() == 2) {
-                    ((FindViewHolder) findViewHolder).text_name.setTextColor(ChessApp.sAppContext.getResources().getColor(R.color.black_color));
-                }
-                ((FindViewHolder) findViewHolder).text_name.setText(infoData.get(position).getUsername());
-                ((FindViewHolder) findViewHolder).text_time.setText(DateTool.stampToDate(String.valueOf(infoData.get(position).getCreate_time())));
-                ((FindViewHolder) findViewHolder).text_content.setText(infoData.get(position).getContent());
-
-                ((FindViewHolder) findViewHolder).text_fans.setText(NumberTool.intToString(String.valueOf(infoData.get(position).getPraise())));
-                ((FindViewHolder) findViewHolder).text_selection.setText(NumberTool.intToString(String.valueOf(infoData.get(position).getBrowse())));
-                ((FindViewHolder) findViewHolder).text_message.setText(NumberTool.intToString(String.valueOf(infoData.get(position).getComments())));
-                if (typeTwo.equals("1")) {
-                    ((FindViewHolder) findViewHolder).text_selection.setTextColor(ChessApp.sAppContext.getResources().getColor(R.color.line_color));
-                    ((FindViewHolder) findViewHolder).text_selection.setCompoundDrawables(selectDrawableNormal, null, null, null);
-                } else if (typeTwo.equals("2")) {
-                    ((FindViewHolder) findViewHolder).text_selection.setTextColor(ChessApp.sAppContext.getResources().getColor(R.color.text_red_me));
-                    ((FindViewHolder) findViewHolder).text_selection.setCompoundDrawables(selectDrawable, null, null, null);
-                } else {
-                    ((FindViewHolder) findViewHolder).text_selection.setTextColor(ChessApp.sAppContext.getResources().getColor(R.color.line_color));
-                    ((FindViewHolder) findViewHolder).text_selection.setCompoundDrawables(selectDrawableNormal, null, null, null);
-                }
-                ((FindViewHolder) findViewHolder).text_selection.setCompoundDrawablePadding(10);
-                ((FindViewHolder) findViewHolder).text_fans.setCompoundDrawablePadding(10);
-                ((FindViewHolder) findViewHolder).text_message.setCompoundDrawablePadding(10);
-
-                ((FindViewHolder) findViewHolder).text_fans.setCompoundDrawables(fansDrawable, null, null, null);
-                ((FindViewHolder) findViewHolder).text_message.setCompoundDrawables(messageDrawable, null, null, null);
-
-                if (infoData.get(i).getToken().equals(UserPreferences.getInstance(ChessApp.sAppContext).getUserToken())) {
-                    Log.i("UserName000000", UserPreferences.getInstance(ChessApp.sAppContext).getUserName());
-                    ((FindViewHolder) findViewHolder).frame_layout.setVisibility(View.INVISIBLE);
-                } else {
-                    Log.i("UserName111111", UserPreferences.getInstance(ChessApp.sAppContext).getUserName());
-                    ((FindViewHolder) findViewHolder).frame_layout.setVisibility(View.VISIBLE);
-                }
-                List<PictureUrlBean> list = infoData.get(i).getImages();
-                if (list != null) {
-                    adapterPicture = new AdapterPicture(list);
-                }
-                ((FindViewHolder) findViewHolder).recycler_view.setAdapter(adapterPicture);
-                ((FindViewHolder) findViewHolder).relative_layout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (listener != null) {
-                            listener.onItemClick(infoData.get(i));
-                        }
-                    }
-                });
-                ((FindViewHolder) findViewHolder).frame_layout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        positions = i;
-                        onCancleClickListener.onCancelClick(infoData.get(i), i);
-                    }
-                });
+            Picasso
+                    .with(ChessApp.sAppContext)
+                    .load(infoData.get(position)
+                            .getHeadimg())
+                    .transform(new CircleTransform())
+                    .into(((FindViewHolder) findViewHolder).image_view_left);
+            if (infoData.get(position).getSex() == 1) {
+                ((FindViewHolder) findViewHolder).text_name.setTextColor(ChessApp.sAppContext.getResources().getColor(R.color.text_red_me));
+            } else if (infoData.get(position).getSex() == 2) {
+                ((FindViewHolder) findViewHolder).text_name.setTextColor(ChessApp.sAppContext.getResources().getColor(R.color.black_color));
             }
+            ((FindViewHolder) findViewHolder).text_name.setText(infoData.get(position).getUsername());
+            ((FindViewHolder) findViewHolder).text_time.setText(DateTool.stampToDate(String.valueOf(infoData.get(position).getCreate_time())));
+            ((FindViewHolder) findViewHolder).text_content.setText(infoData.get(position).getContent());
+
+            ((FindViewHolder) findViewHolder).text_fans.setText(NumberTool.intToString(String.valueOf(infoData.get(position).getPraise())));
+            ((FindViewHolder) findViewHolder).text_selection.setText(NumberTool.intToString(String.valueOf(infoData.get(position).getBrowse())));
+            ((FindViewHolder) findViewHolder).text_message.setText(NumberTool.intToString(String.valueOf(infoData.get(position).getComments())));
+            if (typeTwo.equals("1")) {
+                ((FindViewHolder) findViewHolder).text_selection.setTextColor(ChessApp.sAppContext.getResources().getColor(R.color.line_color));
+                ((FindViewHolder) findViewHolder).text_selection.setCompoundDrawables(selectDrawableNormal, null, null, null);
+            } else if (typeTwo.equals("2")) {
+                ((FindViewHolder) findViewHolder).text_selection.setTextColor(ChessApp.sAppContext.getResources().getColor(R.color.text_red_me));
+                ((FindViewHolder) findViewHolder).text_selection.setCompoundDrawables(selectDrawable, null, null, null);
+            } else {
+                ((FindViewHolder) findViewHolder).text_selection.setTextColor(ChessApp.sAppContext.getResources().getColor(R.color.line_color));
+                ((FindViewHolder) findViewHolder).text_selection.setCompoundDrawables(selectDrawableNormal, null, null, null);
+            }
+            ((FindViewHolder) findViewHolder).text_selection.setCompoundDrawablePadding(10);
+            ((FindViewHolder) findViewHolder).text_fans.setCompoundDrawablePadding(10);
+            ((FindViewHolder) findViewHolder).text_message.setCompoundDrawablePadding(10);
+
+            ((FindViewHolder) findViewHolder).text_fans.setCompoundDrawables(fansDrawable, null, null, null);
+            ((FindViewHolder) findViewHolder).text_message.setCompoundDrawables(messageDrawable, null, null, null);
+
+            if (infoData.get(position).getToken().equals(UserPreferences.getInstance(ChessApp.sAppContext).getUserToken())) {
+                Log.i("UserName000000", UserPreferences.getInstance(ChessApp.sAppContext).getUserName());
+                ((FindViewHolder) findViewHolder).frame_layout.setVisibility(View.INVISIBLE);
+            } else {
+                Log.i("UserName111111", UserPreferences.getInstance(ChessApp.sAppContext).getUserName());
+                ((FindViewHolder) findViewHolder).frame_layout.setVisibility(View.VISIBLE);
+            }
+            List<PictureUrlBean> list = infoData.get(position).getImages();
+            if (list != null) {
+                adapterPicture = new AdapterPicture(list);
+            }
+            ((FindViewHolder) findViewHolder).recycler_view.setAdapter(adapterPicture);
+            ((FindViewHolder) findViewHolder).relative_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        listener.onItemClick(infoData.get(position));
+                    }
+                }
+            });
+            ((FindViewHolder) findViewHolder).frame_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onCancleClickListener.onCancelClick(infoData.get(position), position);
+                }
+            });
         }
     }
 
     @Override
     public int getItemCount() {
-        return infoData.size() + 1;
+        return infoData.size();
     }
 
-    public void updateData(List<FindInfoBean> info, boolean isMore, boolean sheild) {
+
+    public void updateData(List<FindInfoBean> info, boolean isMore) {
         if (isMore) {
-            if (sheild) {
-                if (positions != -1) {
-                    infoData.remove(positions);
-                }
-            } else {
-                infoData.addAll(info);
-            }
+            infoData.addAll(info);
         } else {
             infoData.clear();
-            this.infoData = info;
+            infoData.addAll(info);
         }
+
         notifyDataSetChanged();
     }
 
@@ -221,10 +194,4 @@ public class FindAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    class FootViewHolder extends RecyclerView.ViewHolder {
-
-        public FootViewHolder(@NonNull View itemView) {
-            super(itemView);
-        }
-    }
 }

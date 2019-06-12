@@ -112,6 +112,8 @@ public class PhoneNumberActivity extends AppCompatActivity implements View.OnCli
                     RegisterActivity.start(PhoneNumberActivity.this);
                 }else if(code==ApiCode.GET_USER_INFORMATION_FAILED){
                     RegisterActivity.start(PhoneNumberActivity.this);
+                }else if(code==ApiCode.TOKEN_NO_QUERY){
+                    RegisterActivity.start(PhoneNumberActivity.this);
                 }
             }
 
@@ -127,6 +129,7 @@ public class PhoneNumberActivity extends AppCompatActivity implements View.OnCli
         com.netease.nimlib.sdk.RequestCallback<LoginInfo> call = new com.netease.nimlib.sdk.RequestCallback<LoginInfo>() {
             @Override
             public void onSuccess(LoginInfo loginInfo) {
+                Log.i("登录云信成功","登录云信成功");
                 MainActivity.start(PhoneNumberActivity.this);
                 finish();
             }
