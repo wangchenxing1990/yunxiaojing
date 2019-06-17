@@ -284,8 +284,10 @@ public class ScreenUtil {
         float scaleWidth = ((float) newWidth) / width;
         float scaleHeight = ((float) newHeight) / height;
         Matrix matrix = new Matrix();
-        matrix.postScale(scaleHeight, scaleHeight);// 使用后乘
-        Bitmap newBM = Bitmap.createBitmap(origin, 0, 0, width, height, matrix, false);
+        matrix.postScale(scaleWidth, scaleHeight);// 使用后乘
+        Bitmap newBM = Bitmap.createBitmap(origin, 0, 0, width, height, matrix, true);
+        Bitmap.createBitmap(origin, 0, 0, width, height, matrix, false);
+
         if (!origin.isRecycled()) {
             origin.recycle();
         }

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.gson.JsonObject;
+import com.hss01248.dialog.StyledDialog;
 import com.yun.xiao.jing.ApiCode;
 import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.R;
@@ -39,7 +40,7 @@ public class EnterCodeActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ChessApp.addActivity(this);
+//        ChessApp.addActivity(this);
         mAction = new RegisterAction(this, null);
         phone = getIntent().getStringExtra(ApiCode.PHONE);
         setContentView(R.layout.activity_enter_code);
@@ -66,6 +67,7 @@ public class EnterCodeActivity extends AppCompatActivity implements View.OnClick
 //                    IntroduceActivity.start(EnterCodeActivity.this);
 //                    SetPasswordActivity.start(EnterCodeActivity.this);
                     AddUserHeaderImgActivity.start(EnterCodeActivity.this);
+                    StyledDialog.dismissLoading();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

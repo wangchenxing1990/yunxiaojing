@@ -128,9 +128,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                     changeFragment(conversationFragment, FRAGMENT_DISCOVERY);
                 } else if (v == clubTab) {
-                    if (findFragment == null) {
-                        findFragment = FindFragment.newInstance();
-                    }
+//                    if (findFragment == null) {
+                        findFragment = new FindFragment();
+//                    }
                     changeFragment(findFragment, FRAGMENT_RECENTCONTACTS);
                 } else if (v == homeTab) {
                     Log.i("11111111111", "1441414444114");

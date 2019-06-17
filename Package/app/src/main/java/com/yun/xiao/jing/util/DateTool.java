@@ -1,11 +1,14 @@
 package com.yun.xiao.jing.util;
 
+import android.text.TextUtils;
 import android.util.Log;
 
+import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
+
+import java.util.Locale;
 
 public class DateTool {
     public static String getTime(Date date) {//可根据需要自行截取数据显示
@@ -27,6 +30,50 @@ public class DateTool {
         Date date = new Date(lt);
         res = simpleDateFormat.format(date);
         return res;
+    }
+
+
+    /*
+     * 将时间戳转换为时间
+     */
+    public static String stampToDateTwo(long time){
+//        String res;
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        long lt = new Long(s);
+//        Date date = new Date(lt);
+//        res = simpleDateFormat.format(date);
+//            format = "yyyy-MM-dd HH:mm:ss";
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        return sdf.format(time);
+        return sdf.format(new Date(time));
+//        return res;
+    }
+
+    /**
+     * 将时间戳转换指定的时间字符串
+     *
+     * @param timeStamp 时间戳(单位：毫秒)
+     * @param format    转换的时间格式，比如"yyyy-MM-dd HH:mm:ss"
+     * @return 返回指定格式的时间字符串
+     */
+    public static Locale s_timeStyle = Locale.CHINA;
+    public static String formatTimestampToStr(long timeStamp, String format) {
+        String formats="yyyy-MM-dd HH:mm:ss";
+        if (!TextUtils.isEmpty(formats) && timeStamp > 0) {
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat(formats, s_timeStyle);
+                synchronized (dateFormat) {
+                    // SimpleDateFormat is not thread safe
+                    Date date = new Date(timeStamp*1000);
+                    return dateFormat.format(date);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return "";
     }
     /*
      * 将时间转换为时间戳

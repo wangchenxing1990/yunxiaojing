@@ -184,7 +184,7 @@ public class PostInfoActivity extends AppCompatActivity implements View.OnClickL
     private void submitPostInDynamic() {
         String content = edit_text_view.getText().toString().trim();
         if (TextUtils.isEmpty(content) && selectList.size() == 0) {
-            Toast.makeText(ChessApp.sAppContext, "请输入内容", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ChessApp.sAppContext, "Please enter content", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -214,7 +214,7 @@ public class PostInfoActivity extends AppCompatActivity implements View.OnClickL
         StyledDialog.buildLoading().show();
         String content = edit_text_view.getText().toString().trim();
         if (TextUtils.isEmpty(content) && selectList.size() == 0) {
-            Toast.makeText(ChessApp.sAppContext, "请输入发表的内容", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ChessApp.sAppContext, "Please enter the published content", Toast.LENGTH_SHORT).show();
             return;
         }
         JSONArray jsonArray = new JSONArray();

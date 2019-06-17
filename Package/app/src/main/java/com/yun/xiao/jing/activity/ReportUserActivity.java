@@ -260,10 +260,10 @@ public class ReportUserActivity extends AppCompatActivity implements View.OnClic
 //                        sendBroadcast(intent);
 //                        finish();
 //                    } else {
-//                        Intent intent = new Intent();
-//                        intent.setAction(ApiCode.USER_TO_REPORT_SUCCESS_STRING);
-//                        sendBroadcast(intent);
-//                        finish();
+                        Intent intent = new Intent();
+                        intent.setAction(ApiCode.USER_TO_REPORT_SUCCESS_STRING);
+                        sendBroadcast(intent);
+                        finish();
 //                    }
 //                }
             }

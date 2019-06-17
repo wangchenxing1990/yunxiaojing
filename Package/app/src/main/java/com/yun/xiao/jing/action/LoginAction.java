@@ -33,7 +33,7 @@ public class LoginAction extends BaseAction {
     }
 
     public void loginOutAccount(String userToken, String device, final RequestCallback requestCallback) {
-        StyledDialog.buildLoading().show();
+        StyledDialog.buildLoading("").show();
         requestCreateUrl = ApiConstants.HOST + ApiConstants.ACCOUNT_IS_OFF_LINE;
         Log.i("wangyukui1990", requestCreateUrl);
         final HashMap<String, String> headerMap = new HashMap<>();
@@ -87,7 +87,7 @@ public class LoginAction extends BaseAction {
     }
 
     public void deleteAccount(String userToken, String device, final RequestCallback requestCallback) {
-        StyledDialog.buildLoading().show();
+        StyledDialog.buildLoading("").show();
         requestCreateUrl = ApiConstants.HOST + ApiConstants.USER_DELETE_ACCOUNT;
         Log.i("wangyukui1990", requestCreateUrl);
         final HashMap<String, String> headerMap = new HashMap<>();
@@ -135,7 +135,7 @@ public class LoginAction extends BaseAction {
 
     public void loginUserQueryInformation(String mobile, String mobile_prefix, String password, String mobile_type, String userToken, String device, final RequestCallback requestCallback) {
         requestCreateUrl = ApiConstants.HOST + ApiConstants.VERIFY_LOGIN_PASSWORD;
-        StyledDialog.buildLoading().show();
+        StyledDialog.buildLoading("").show();
         Log.i("wangyukui1990", requestCreateUrl);
         final HashMap<String, String> paramsMap = new HashMap<>();
 
@@ -225,8 +225,6 @@ public class LoginAction extends BaseAction {
                 if (!TextUtils.isEmpty(error.getMessage())) {
                     LogUtil.i(TAG, error.getMessage());
                 }
-//                Toast.makeText(ChessApp.sAppContext, R.string.club_create_failed, Toast.LENGTH_SHORT).show();
-//                DialogMaker.dismissProgressDialog();
                 if (requestCallback != null) {
                     requestCallback.onFailed();
                 }

@@ -33,7 +33,7 @@ public class BlackAction extends BaseAction {
     String requestCreateUrl = "";
 
     public void gainBlackUserDynamic(String userToken, String device, String dynamicToken, final RequestCallback requestCallback) {
-        StyledDialog.buildLoading().show();
+        StyledDialog.buildLoading("").show();
         requestCreateUrl = ApiConstants.HOST + ApiConstants.SHIELDING_USER_DYNAMIC;
         final HashMap<String, String> headerMap = new HashMap<>();
 
@@ -91,7 +91,7 @@ public class BlackAction extends BaseAction {
      * 拉黑用户
      */
     public void otherBlackUser(String userToken, String device, String followToken, String follow_super, String like, final RequestCallback requestCallback) {
-        StyledDialog.buildLoading().show();
+        StyledDialog.buildLoading("").show();
         requestCreateUrl = ApiConstants.HOST + ApiConstants.USER_LIKE;
         final HashMap<String, String> headerMap = new HashMap<>();
 
@@ -150,7 +150,7 @@ public class BlackAction extends BaseAction {
      *
      */
     public void submitReportMessage(String userToken, String device, String token, String text, final RequestCallback requestCallback) {
-        StyledDialog.buildLoading().show();
+        StyledDialog.buildLoading("").show();
         requestCreateUrl = ApiConstants.HOST + ApiConstants.USER_REPORT;
         final HashMap<String, String> headerMap = new HashMap<>();
 
@@ -210,8 +210,7 @@ public class BlackAction extends BaseAction {
      */
     public void createUserSession(String userToken, String device, String token, final RequestCallback requestCallback) {
         requestCreateUrl = ApiConstants.HOST + ApiConstants.USER_SESSION;
-        DialogMaker.isShowing();
-        StyledDialog.buildLoading().show();
+        StyledDialog.buildLoading("").show();
         final HashMap<String, String> headerMap = new HashMap<>();
 
         headerMap.put("user-token", userToken);

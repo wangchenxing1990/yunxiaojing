@@ -32,6 +32,7 @@ public class ApiConstants {
 
     public static String FILE_PROVIDER="com.yunxiaojing.fileprovider";
     public static String BITMAP_TO_BASE_64="data:image/png;base64,";
+    public static String URL_EMAIL="mailto:go_sugertime@163.com";
 
 
 }

@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -61,13 +62,14 @@ public class EditInfoActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         meInfoBean = (MeInfoBean) getIntent().getSerializableExtra(ApiParams.PARAMS_EDIT_BEAN);
-        ChessApp.addActivity(this);
+//        ChessApp.addActivity(this);
         userToken = UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
         device = UserPreferences.getDevice();
         setContentView(R.layout.activity_edit_info);
         initView();
         updateViewData();//更新显示的数据
         handler = new MyHandler(this);
+        textPersonalName.setText(meInfoBean.getInfo().getUsername());
     }
 
     /**
@@ -101,6 +103,7 @@ public class EditInfoActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private ImageView imageOne, imageTwo, imageThree, imageFore, imageFive, imageSix;
+    private TextView textPersonalName;
 
     private void initView() {
 
@@ -111,6 +114,7 @@ public class EditInfoActivity extends AppCompatActivity implements View.OnClickL
         imageFore = findViewById(R.id.image_fore);
         imageFive = findViewById(R.id.image_five);
         imageSix = findViewById(R.id.image_six);
+        textPersonalName = findViewById(R.id.text_personal_name);
 
         frameLayoutBack.setOnClickListener(this);
         imageTwo.setOnClickListener(this);
@@ -294,10 +298,6 @@ public class EditInfoActivity extends AppCompatActivity implements View.OnClickL
 
     private void submitTakePhoto(final List<LocalMedia> selectList) {
         StyledDialog.buildLoading().show();
-//        new Thread() {
-//            @Override
-//            public void run() {
-//                super.run();
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart(ApiParams.PARAMS_IMAGE_DATA, ApiConstants.BITMAP_TO_BASE_64 + Bitamp2Base64.bitmapToBase64(BitmapFactory.decodeFile(selectList.get(0).getCompressPath())));
         if (indexId != 0) {
@@ -330,7 +330,6 @@ public class EditInfoActivity extends AppCompatActivity implements View.OnClickL
                 Log.i("修改用户头像动态成功", str);
                 Message message = new Message();
                 message.arg1 = 133;
-//                        message.obj = selectList.get(0).getCompressPath();
                 message.obj = selectList;
                 handler.sendMessage(message);
             }
@@ -352,6 +351,9 @@ public class EditInfoActivity extends AppCompatActivity implements View.OnClickL
             switch (msg.arg1) {
                 case 133:
                     displayImage(imageViewIndex, (List<LocalMedia>) msg.obj);
+                    Intent intent = new Intent();
+                    intent.setAction("com.yun.xiao.jing.fresh");
+                    sendBroadcast(intent);
                     break;
             }
         }

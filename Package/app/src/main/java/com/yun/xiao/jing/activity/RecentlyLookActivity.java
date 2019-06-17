@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.yun.xiao.jing.ApiCode;
 import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.R;
 import com.yun.xiao.jing.action.FindAction;
@@ -57,11 +58,13 @@ public class RecentlyLookActivity extends AppCompatActivity implements View.OnCl
     private FrameLayout relative_layout;
     private TextView text_title;
     private RecyclerView recycler_view;
+    private RelativeLayout relative_data_empty;
 
     private void initView() {
         relative_layout = findViewById(R.id.frame_layout_back);
         text_title = findViewById(R.id.text_title);
         recycler_view = findViewById(R.id.recycler_view);
+        relative_data_empty = findViewById(R.id.relative_data_empty);
         relative_layout.setOnClickListener(this);
         recycler_view.setLayoutManager(new LinearLayoutManager(ChessApp.sAppContext));
         recycler_view.setAdapter(adapter);
@@ -74,9 +77,21 @@ public class RecentlyLookActivity extends AppCompatActivity implements View.OnCl
         findAction.gainUserPageBrowseList(userToken, device, p, page, new RequestCallback() {
             @Override
             public void onResult(int code, String result, Throwable var3) {
-                Gson gson = new Gson();
-                RecentlyBean recentlyBean = gson.fromJson(result, RecentlyBean.class);
-                adapter.update(recentlyBean.getInfo());
+                if (code == ApiCode.HOME_BROWSING_IS_SUCCESSFULLY){
+                    Gson gson = new Gson();
+                    RecentlyBean recentlyBean = gson.fromJson(result, RecentlyBean.class);
+                    if (recentlyBean.getInfo().size() == 0) {
+                        recycler_view.setVisibility(View.INVISIBLE);
+                        relative_data_empty.setVisibility(View.VISIBLE);
+                    } else {
+                        adapter.update(recentlyBean.getInfo());
+                        recycler_view.setVisibility(View.VISIBLE);
+                    }
+                }else{
+                    recycler_view.setVisibility(View.INVISIBLE);
+                    relative_data_empty.setVisibility(View.VISIBLE);
+                }
+
             }
 
             @Override

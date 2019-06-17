@@ -658,6 +658,7 @@ color color_aaaaaa_content_text
 color color_activity_blue_bg
 color color_b3b3b3
 color color_background
+color color_background_f8
 color color_black_000000_88_transparent
 color color_black_333333
 color color_black_333333_90_transparent
@@ -668,6 +669,7 @@ color color_black_ff999999
 color color_blue_0888ff
 color color_cccccc
 color color_d5d5d5
+color color_e5
 color color_eeeeee
 color color_f1f1f2
 color color_gray_bfc2c5
@@ -681,11 +683,13 @@ color color_grey_555555
 color color_grey_999999
 color color_grey_ababab
 color color_grey_eaeaea
+color color_line
 color color_message_default_bg
 color color_picker_preview_selector
 color color_red_ccfa3c55
 color color_split_line_cccccc
 color color_split_line_d9d9d9
+color color_text_33
 color color_yellow_796413
 color color_yellow_b39729
 color contact_letter_idx_bg
@@ -1329,8 +1333,14 @@ drawable ic_capture_switch
 drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
+drawable icon_find_more
+drawable icon_finish_back
 drawable icon_full
+drawable icon_left
 drawable icon_loading
+drawable icon_message_bell
+drawable icon_message_notification
+drawable icon_people_friends
 drawable icon_photo_normal
 drawable icon_video
 drawable image_choose_normal
@@ -1711,6 +1721,9 @@ id fm_robot_link
 id footer_bar
 id forever
 id frameLayoutHead
+id frame_layout
+id frame_layout_back
+id frame_layout_title
 id ghost_view
 id gridview
 id group_divider
@@ -1718,6 +1731,7 @@ id head_layout
 id height
 id holder
 id home
+id iamge_view_friends
 id icon
 id icon_group
 id identity_container
@@ -1728,6 +1742,8 @@ id imageViewDeleteTag
 id imageViewHeader
 id imageViewOwner
 id imageViewPreview
+id image_view
+id image_view_notification
 id imgEmoji
 id imgSelect
 id img_head
@@ -1886,6 +1902,7 @@ id recycler_view
 id refresh_loading_indicator
 id refreshing_indicator
 id regular_team_nickname
+id relative_layout_title
 id retake
 id right
 id right_icon
@@ -1998,6 +2015,10 @@ id textViewAlreadyRead
 id textViewName
 id textViewTime
 id text_input_password_toggle
+id text_view_content
+id text_view_name
+id text_view_time
+id text_view_title
 id textinput_counter
 id textinput_error
 id textinput_helper_text
@@ -2116,6 +2137,8 @@ layout abc_search_dropdown_item_icons_2line
 layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
+layout activity_contacts
+layout activity_system_messge
 layout design_bottom_navigation_item
 layout design_bottom_sheet_dialog
 layout design_layout_snackbar
@@ -2130,6 +2153,7 @@ layout design_navigation_item_subheader
 layout design_navigation_menu
 layout design_navigation_menu_item
 layout design_text_input_password_icon
+layout item_system_adapter
 layout mtrl_layout_snackbar
 layout mtrl_layout_snackbar_include
 layout nim_action_bar_custom_view
@@ -2544,6 +2568,13 @@ string team_transfer_success
 string team_transfer_without_member
 string team_update_cancel
 string team_update_failed
+string text_goog_friends_detail
+string text_goog_friends_list
+string text_harmful_information
+string text_message_content
+string text_message_system
+string text_message_time
+string text_select_report_reason
 string timer_default
 string trans_voice_failed
 string transfer_team

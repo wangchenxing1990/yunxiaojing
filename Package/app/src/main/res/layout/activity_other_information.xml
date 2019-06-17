@@ -9,7 +9,7 @@
     <FrameLayout
         android:id="@+id/view_pager_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_200"
+        android:layout_height="@dimen/dp_300"
         android:clickable="true"
         android:foreground="@drawable/fg_horde">
 
@@ -26,6 +26,14 @@
             android:layout_gravity="center_horizontal|bottom"
             android:layout_marginBottom="4dp" />
     </FrameLayout>
+
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_230"
+        android:visibility="invisible"
+        android:scaleType="matrix"
+        />
 
     <ImageView
         android:id="@+id/iamge_view_left"

@@ -30,6 +30,7 @@ import com.yun.xiao.jing.defineView.CircleTransform;
 import com.yun.xiao.jing.defineView.HeadImageView;
 import com.yun.xiao.jing.interfaces.RequestCallback;
 import com.yun.xiao.jing.preference.UserPreferences;
+import com.yun.xiao.jing.util.DateTool;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,15 +69,18 @@ public class MeFragment extends Fragment implements View.OnClickListener {
     }
 
     private RelativeLayout relative_layout_setting;
-    //    private HeadImageView iv_user_head;
     private ImageView iv_user_head;
     private FrameLayout frame_layout_setting;
     private ImageView image_view_edit_info;
     private TextView text_sex, text_name, text_browser_count, text_focus_count, text_fans_count;
+    private MyPicBroadCast myFreshCast;
+    private Drawable drawableFemale;
+    private Drawable drawableMale;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         iv_user_head = rootView.findViewById(R.id.iv_user_head);
         frame_layout_setting = rootView.findViewById(R.id.frame_layout_setting);
         image_view_edit_info = rootView.findViewById(R.id.image_view_edit_info);
@@ -85,9 +89,10 @@ public class MeFragment extends Fragment implements View.OnClickListener {
         text_browser_count = rootView.findViewById(R.id.text_browser_count);
         text_focus_count = rootView.findViewById(R.id.text_focus_count);
         text_fans_count = rootView.findViewById(R.id.text_fans_count);
-        Drawable drawable = getActivity().getResources().getDrawable(R.drawable.icon_female);
-        drawable.setBounds(0, 0, 20, 20);
-        text_sex.setCompoundDrawables(drawable, null, null, null);
+        drawableFemale = getActivity().getResources().getDrawable(R.drawable.icon_female);
+        drawableFemale.setBounds(0, 0, 20, 20);
+        drawableMale = getActivity().getResources().getDrawable(R.mipmap.icon_male_normal);
+        drawableMale.setBounds(0, 0, 20, 20);
         iv_user_head.setOnClickListener(this);
         frame_layout_setting.setOnClickListener(this);
         image_view_edit_info.setOnClickListener(this);
@@ -97,10 +102,16 @@ public class MeFragment extends Fragment implements View.OnClickListener {
         mySendBroadCast = new MySendBroadCast();
         getActivity().registerReceiver(mySendBroadCast, intentFilter);
 
+        IntentFilter intentFile = new IntentFilter();
+        intentFile.addAction("com.yun.xiao.jing.fresh");
+        myFreshCast = new MyPicBroadCast();
+        getActivity().registerReceiver(myFreshCast, intentFile);
+
         getDataInformation();//获取个人信息的接口
         getDataMeConcern();//获取关注量
         getDataFansConcern();//获取粉丝的数量
         getDataBrowseCount();//进来访客
+
     }
 
     /**
@@ -193,19 +204,23 @@ public class MeFragment extends Fragment implements View.OnClickListener {
         });
     }
 
+    /**
+     * 更新显示的数据
+     *
+     * @param meInfoBean
+     */
     private void updateView(MeInfoBean.InfoBean meInfoBean) {
         text_name.setText(meInfoBean.getUsername());
-//        text_sex.setText(meInfoBean.get);
         if (meInfoBean.getSex() == 1) {
-
+            text_sex.setCompoundDrawables(drawableFemale, null, null, null);
         } else if (meInfoBean.getSex() == 2) {
-
+            text_sex.setCompoundDrawables(drawableMale, null, null, null);
         }
-
+        text_sex.setText(String.valueOf(DateTool.compareTime(meInfoBean.getBirthday())));
         if (TextUtils.isEmpty(meInfoBean.getHeadimg())) {
-            Picasso.with(ChessApp.sAppContext).load(R.mipmap.default_male_head).transform(new CircleTransform()).into(iv_user_head);
+            Picasso.with(ChessApp.sAppContext).load(R.mipmap.default_male_head).placeholder(R.mipmap.icon_head_me).error(R.mipmap.icon_head_me).transform(new CircleTransform()).into(iv_user_head);
         } else {
-            Picasso.with(ChessApp.sAppContext).load(meInfoBean.getHeadimg()).transform(new CircleTransform()).into(iv_user_head);
+            Picasso.with(ChessApp.sAppContext).load(meInfoBean.getHeadimg()).placeholder(R.mipmap.icon_head_me).error(R.mipmap.icon_head_me).transform(new CircleTransform()).into(iv_user_head);
         }
 
     }
@@ -218,11 +233,22 @@ public class MeFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    class MyPicBroadCast extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            getDataInformation();
+        }
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         if (mySendBroadCast != null) {
             getActivity().unregisterReceiver(mySendBroadCast);
+        }
+        if (myFreshCast != null) {
+            getActivity().unregisterReceiver(myFreshCast);
         }
     }
 

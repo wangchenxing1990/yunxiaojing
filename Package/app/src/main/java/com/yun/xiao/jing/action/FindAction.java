@@ -46,7 +46,7 @@ public class FindAction extends BaseAction {
         SignStringRequest signRequest = new SignStringRequest(Request.Method.POST, requestCreateUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.i("wangyukui1990", response);
+                Log.i("wangyukui1990首页界面返回的数据", response);
                 try {
                     JSONObject json = new JSONObject(response);
                     int code = json.getInt("code");
@@ -325,18 +325,11 @@ public class FindAction extends BaseAction {
                 if (!TextUtils.isEmpty(error.getMessage())) {
                     LogUtil.i(TAG, error.getMessage());
                 }
-//                Toast.makeText(ChessApp.sAppContext, R.string.club_create_failed, Toast.LENGTH_SHORT).show();
-//                DialogMaker.dismissProgressDialog();
                 if (requestCallback != null) {
                     requestCallback.onFailed();
                 }
             }
         }) {
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                return paramsMap;
-//            }
-
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 return headerMap;
@@ -347,7 +340,7 @@ public class FindAction extends BaseAction {
     }
 
     public void getBrowseCount(String userToken, String device, String token, final RequestCallback requestCallback) {
-        StyledDialog.buildLoading().show();
+        StyledDialog.buildLoading("").show();
         requestCreateUrl = ApiConstants.HOST + ApiConstants.USER_PAGE_BROWSE;
         final HashMap<String, String> headerMap = new HashMap<>();
 
@@ -398,16 +391,8 @@ public class FindAction extends BaseAction {
         ChessApp.sRequestQueue.add(signRequest);
     }
 
-    public void getFindDiscoveryData(String userToken, String device, String type, String p, String page, final RequestCallback requestCallback) {
+    public void getFindDiscoveryData(final String userToken, final String device, final String type, final String p, final String page, final RequestCallback requestCallback) {
         requestCreateUrl = ApiConstants.HOST + ApiConstants.USER_DYNAMIC_LISTS;
-        final HashMap<String, String> headerMap = new HashMap<>();
-
-        headerMap.put("user-token", userToken);
-        headerMap.put("mobile-device", device);
-        final HashMap<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("type", type);
-        paramsMap.put("p", p);
-        paramsMap.put("page", page);
         SignStringRequest signRequest = new SignStringRequest(Request.Method.POST, requestCreateUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -432,8 +417,6 @@ public class FindAction extends BaseAction {
                 if (!TextUtils.isEmpty(error.getMessage())) {
                     LogUtil.i(TAG, error.getMessage());
                 }
-//                Toast.makeText(ChessApp.sAppContext, R.string.club_create_failed, Toast.LENGTH_SHORT).show();
-//                DialogMaker.dismissProgressDialog();
                 if (requestCallback != null) {
                     requestCallback.onFailed();
                 }
@@ -441,11 +424,19 @@ public class FindAction extends BaseAction {
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> paramsMap = new HashMap<>();
+                paramsMap.put("type", type);
+                paramsMap.put("p", p);
+                paramsMap.put("page", page);
                 return paramsMap;
             }
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headerMap = new HashMap<>();
+
+                headerMap.put("user-token", userToken);
+                headerMap.put("mobile-device", device);
                 return headerMap;
             }
         };
@@ -454,7 +445,7 @@ public class FindAction extends BaseAction {
     }
 
     public void submitSelectUserService(String userToken, String device, String token, final RequestCallback requestCallback) {
-        StyledDialog.buildLoading().show();
+        StyledDialog.buildLoading("").show();
         requestCreateUrl = ApiConstants.HOST + ApiConstants.USER_FOCUS_ON;
         final HashMap<String, String> headerMap = new HashMap<>();
 
@@ -509,7 +500,7 @@ public class FindAction extends BaseAction {
     public void gainUserPageBrowseList(String userToken, String device, String p, String page, final RequestCallback requestCallback) {
         requestCreateUrl = ApiConstants.HOST + ApiConstants.USER_PAGE_BROWSE_LIST;
         final HashMap<String, String> headerMap = new HashMap<>();
-        StyledDialog.buildLoading().show();
+        StyledDialog.buildLoading("").show();
         headerMap.put("user-token", userToken);
         headerMap.put("mobile-device", device);
         final HashMap<String, String> paramsMap = new HashMap<>();
@@ -526,7 +517,7 @@ public class FindAction extends BaseAction {
                     if (code == ApiCode.HOME_BROWSING_IS_SUCCESSFULLY) {
                         requestCallback.onResult(code, response, null);
                     } else {//账号离线失败
-                        requestCallback.onFailed();
+                        requestCallback.onResult(code, response, null);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

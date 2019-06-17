@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.AbsListView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +44,7 @@ import com.yun.xiao.jing.adapter.FindAdapter;
 import com.yun.xiao.jing.defineView.MyPopuwindown;
 import com.yun.xiao.jing.interfaces.RequestCallback;
 import com.yun.xiao.jing.preference.UserPreferences;
+import com.yun.xiao.jing.util.BToast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,7 +68,7 @@ public class FindFragment extends Fragment implements View.OnClickListener {
     private String userToken;
     private String device;
     private String type = "1";
-    private int p = 0;
+    private int p = 1;
     private String page = "10";
     private List<FindInfoBean> listData = new ArrayList();
     private FindAdapter findAdapter;
@@ -97,11 +99,11 @@ public class FindFragment extends Fragment implements View.OnClickListener {
     }
 
     private ImageView image_view_left, image_view_two, image_view_message;
-    //    private SwipeRefreshLayout mSwipeRefreshLayout;
     private String dynamic_id = "";
-    private TextView text_view_empty;
-    //    private XRefreshView xRefreshView;
+    private RelativeLayout relative_recycler;
+    private RelativeLayout relative_data_empty;
     private SmartRefreshLayout refreshLayout;
+    private int index = -1;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -112,7 +114,8 @@ public class FindFragment extends Fragment implements View.OnClickListener {
         image_view_left = rootView.findViewById(R.id.image_view_left);
         image_view_two = rootView.findViewById(R.id.image_view_two);
         image_view_message = rootView.findViewById(R.id.image_view_message);
-        text_view_empty = rootView.findViewById(R.id.text_view_empty);
+        relative_recycler = rootView.findViewById(R.id.relative_recycler);
+        relative_data_empty = rootView.findViewById(R.id.relative_data_empty);
         image_view_left.setOnClickListener(this);
         image_view_two.setOnClickListener(this);
         image_view_message.setOnClickListener(this);
@@ -132,6 +135,8 @@ public class FindFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onCancelClick(FindInfoBean findInfoBean, int position) {
                 dynamic_id = String.valueOf(findInfoBean.getToken());
+                Log.i("dynamic_id", "dynamic_id:::::" + dynamic_id + "countcount:::" + findAdapter.getItemCount());
+                index = position;
                 showPopuwindowPhoto();
             }
         });
@@ -150,17 +155,18 @@ public class FindFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 refreshlayout.finishLoadmore(1000/*,false*/);//传入false表示加载失败
+                p++;
                 isLoadMore = true;
                 getDataFindInformation();
             }
         });
-
     }
 
     private boolean isLoadMore;
 
     public void getDataFindInformation() {
-        mAction.getFindDiscoveryData(userToken, device, type, String.valueOf(p + 1), page, new RequestCallback() {
+        Log.i("pppppppp", "ppppppp::::" + p);
+        mAction.getFindDiscoveryData(userToken, device, type, String.valueOf(p), page, new RequestCallback() {
             @Override
             public void onResult(int code, String result, Throwable var3) {
                 if (code == ApiCode.DYNAMIC_LIST_DATA) {
@@ -168,17 +174,20 @@ public class FindFragment extends Fragment implements View.OnClickListener {
                     if (isLoadMore) {
                         findAdapter.updateData(list, true);
                         isLoadMore = false;
-                        p++;
                     } else {
-                        findAdapter.updateData(list, false);
-                        p = 0;
+                        if (p == 1) {
+                            findAdapter.updateData(list, false);
+                        }
                     }
                     isLoadMore = false;
                 } else if (code == ApiCode.DYNAMIC_LIST_EMPTY) {
-
-//                    mSwipeRefreshLayout.setRefreshing(false);
-//                    text_view_empty.setVisibility(View.INVISIBLE);
-//                    mSwipeRefreshLayout.setVisibility(View.GONE);
+//                    if (findAdapter.getData() != null && findAdapter.getData().size() != 0) {
+//                        relative_recycler.setVisibility(View.VISIBLE);
+//                        relative_data_empty.setVisibility(View.INVISIBLE);
+//                    } else {
+//                        relative_recycler.setVisibility(View.INVISIBLE);
+//                        relative_data_empty.setVisibility(View.VISIBLE);
+//                    }
                 }
 
             }
@@ -214,7 +223,7 @@ public class FindFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.text_picture://屏蔽
                 myPopuwindown.dismiss();
-                EasyAlertDialogHelper.createOkCancelDiolag(getContext(), "", "你确定屏蔽该账号吗？", true, new EasyAlertDialogHelper.OnDialogActionListener() {
+                EasyAlertDialogHelper.createOkCancelDiolag(getContext(), "", "Whether or not to choose not to look at this user's dynamic selection will shield the other party's information and no longer show the new dynamic", true, new EasyAlertDialogHelper.OnDialogActionListener() {
 
                     @Override
                     public void doCancelAction() {
@@ -223,6 +232,7 @@ public class FindFragment extends Fragment implements View.OnClickListener {
 
                     @Override
                     public void doOkAction() {
+                        Log.i("infoinfoinfoinfo", "infoinfoinfo::::::" + findAdapter.getItemCount());
                         blackUser();
                     }
                 }).show();
@@ -238,8 +248,11 @@ public class FindFragment extends Fragment implements View.OnClickListener {
         mBlackAction.gainBlackUserDynamic(userToken, device, dynamic_id, new RequestCallback() {
             @Override
             public void onResult(int code, String result, Throwable var3) {
-                Toast.makeText(ChessApp.sAppContext, "屏蔽用户动态成功", Toast.LENGTH_SHORT).show();
-                getDataFindInformation();
+                Toast.makeText(ChessApp.sAppContext, "Blocked user dynamic successfully", Toast.LENGTH_SHORT).show();
+                if (index != -1) {
+                    findAdapter.removePositionData(index);
+                }
+//                getDataFindInformation();
             }
 
             @Override
@@ -267,8 +280,8 @@ public class FindFragment extends Fragment implements View.OnClickListener {
         TextView text_picture = view.findViewById(R.id.text_picture);
         TextView text_cancel = view.findViewById(R.id.text_cancel);
 
-        text_take_photo.setText("举报用户");
-        text_picture.setText("屏蔽用户");
+        text_take_photo.setText("Report");
+        text_picture.setText("Shield");
 
         text_take_photo.setOnClickListener(this);
         text_picture.setOnClickListener(this);
@@ -280,8 +293,7 @@ public class FindFragment extends Fragment implements View.OnClickListener {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            p=-1;
-            getDataFindInformation();
+            BToast.getInstance(ChessApp.sAppContext).showText(ChessApp.sAppContext, "The report is effective and will be dealt with within 24 hours", 2, false);
         }
     }
 
@@ -291,5 +303,6 @@ public class FindFragment extends Fragment implements View.OnClickListener {
         if (myBroadCast != null) {
             getActivity().unregisterReceiver(myBroadCast);
         }
+
     }
 }

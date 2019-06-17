@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.netease.nim.uikit.common.ToastHelper;
+import com.netease.nim.uikit.common.util.C;
 import com.netease.nim.uikit.support.permission.MPermission;
 import com.netease.nim.uikit.support.permission.annotation.OnMPermissionDenied;
 import com.netease.nim.uikit.support.permission.annotation.OnMPermissionGranted;
@@ -137,7 +138,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private void initData() {
         final String phone = edit_text_input.getText().toString().trim();
         String id = UserPreferences.getDevice();
-
+         if (TextUtils.isEmpty(phone)){
+             Toast.makeText(ChessApp.sAppContext,"请输入手机号码",Toast.LENGTH_SHORT).show();
+             return;
+         }
         mAction.getRegisterCode(phone, id, "86", new RequestCallback() {
             @Override
             public void onResult(int code, String result, Throwable var3) {
@@ -196,13 +200,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.text_view_next:
-//                Toast.makeText(ChessApp.sAppContext, "获取网络数据", Toast.LENGTH_SHORT).show();
-//                AddUserHeaderImgActivity.start(this);
-//                MainActivity.start(this);
+        if (v.getId()==R.id.text_view_next) {
                 initData();//获取网络数据
-                break;
         }
     }
 }

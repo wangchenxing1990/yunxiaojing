@@ -2,6 +2,7 @@ package com.yun.xiao.jing.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import com.yun.xiao.jing.ApiCode;
 import com.yun.xiao.jing.ChessApp;
 import com.yun.xiao.jing.R;
 import com.yun.xiao.jing.action.LoginAction;
+import com.yun.xiao.jing.api.ApiConstants;
 import com.yun.xiao.jing.fragment.MeFragment;
 import com.yun.xiao.jing.interfaces.RequestCallback;
 import com.yun.xiao.jing.preference.UserPreferences;
@@ -76,7 +78,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 WebActivity.start(this, ApiCode.WEB_SUGER_PRIVACY);
                 break;
             case R.id.text_contanct_us:
-                WebActivity.start(this, ApiCode.WEB_SUGER_PRIVACY);
+                Intent data = new Intent(Intent.ACTION_SENDTO);
+                data.setData(Uri.parse(ApiConstants.URL_EMAIL));
+                startActivity(data);
                 break;
             case R.id.text_log_out:
                 loginOutAccount();//登出账号
@@ -91,8 +95,10 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         loginAction.deleteAccount(token, device, new RequestCallback() {
             @Override
             public void onResult(int code, String result, Throwable var3) {
-                UserPreferences.getInstance(ChessApp.sAppContext).setUserToken("");
                 DataCacheManager.clearDataCache();
+                UserPreferences.getInstance(ChessApp.sAppContext).setUserIMAccount("");
+                UserPreferences.getInstance(ChessApp.sAppContext).setUserIMToken("");
+                UserPreferences.getInstance(ChessApp.sAppContext).setUserToken("");
                 finish();
                 PhoneNumberActivity.start(SettingActivity.this);
             }
@@ -109,6 +115,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onResult(int code, String result, Throwable var3) {
                 NIMClient.getService(AuthService.class).logout();
+                UserPreferences.getInstance(ChessApp.sAppContext).setUserIMAccount("");
+                UserPreferences.getInstance(ChessApp.sAppContext).setUserIMToken("");
+                UserPreferences.getInstance(ChessApp.sAppContext).setUserToken("");
                 finish();
                 PhoneNumberActivity.start(SettingActivity.this);
             }

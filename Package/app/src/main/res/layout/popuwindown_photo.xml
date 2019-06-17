@@ -27,7 +27,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/view_line_background" />
+            android:background="@color/view_line_background"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/text_take_photo"
@@ -60,7 +61,7 @@
         android:layout_margin="10dp"
         android:background="@drawable/shape_white_background"
         android:gravity="center"
-        android:text="取消"
+        android:text="cancel"
         android:textColor="#0044ff"
         android:textSize="17dp" />
 

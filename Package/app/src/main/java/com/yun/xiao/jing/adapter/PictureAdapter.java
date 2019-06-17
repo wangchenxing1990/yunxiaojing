@@ -3,6 +3,7 @@ package com.yun.xiao.jing.adapter;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +22,14 @@ import java.util.List;
 
 public class PictureAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<PictureBean.InfoBean> listData;
+    Drawable drawableMalse;
+    Drawable drawableFemale;
 
     public PictureAdapter(List<PictureBean.InfoBean> listData) {
+        drawableMalse = ChessApp.sAppContext.getResources().getDrawable(R.drawable.icon_female);
+        drawableFemale = ChessApp.sAppContext.getResources().getDrawable(R.mipmap.icon_male_normal);
+        drawableMalse.setBounds(0, 0, 20, 20);
+        drawableFemale.setBounds(0, 0, 20, 20);
         this.listData = listData;
     }
 
@@ -40,17 +47,17 @@ public class PictureAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int i) {
-        Drawable drawable = ChessApp.sAppContext.getResources().getDrawable(R.drawable.icon_female);
-        drawable.setBounds(0, 0, 20, 20);
+
         if (viewHolder instanceof MyViewHolder) {
             int sex = listData.get(i).getSex();
             int age = listData.get(i).getAge();
             if (sex == 1) {
+                Log.i("sexsexsex", "sexsex:::::" + sex);
                 ((MyViewHolder) viewHolder).text_sex.setText(String.valueOf(age));
-                ((MyViewHolder) viewHolder).text_sex.setCompoundDrawables(drawable, null, null, null);
+                ((MyViewHolder) viewHolder).text_sex.setCompoundDrawables(drawableMalse, null, null, null);
             } else if (sex == 2) {
                 ((MyViewHolder) viewHolder).text_sex.setText(String.valueOf(age));
-                ((MyViewHolder) viewHolder).text_sex.setCompoundDrawables(drawable, null, null, null);
+                ((MyViewHolder) viewHolder).text_sex.setCompoundDrawables(drawableFemale, null, null, null);
             }
 
             ((MyViewHolder) viewHolder).text_name.setText(listData.get(i).getUsername());

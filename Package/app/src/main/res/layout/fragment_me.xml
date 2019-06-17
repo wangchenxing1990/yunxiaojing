@@ -56,7 +56,7 @@
             android:layout_marginLeft="@dimen/dp_40"
             android:layout_marginTop="@dimen/dp_30"
             android:layout_marginBottom="@dimen/dp_40"
-            android:src="@mipmap/default_male_head" />
+            android:src="@mipmap/icon_head_me" />
 
         <ImageView
             android:id="@+id/image_view_edit_info"
@@ -88,12 +88,11 @@
             android:layout_marginTop="@dimen/dp_10"
             android:layout_toRightOf="@+id/iv_user_head"
             android:background="@drawable/icon_female_background"
-            android:drawableLeft="@drawable/icon_female"
             android:drawablePadding="@dimen/dp_5"
             android:gravity="center"
             android:paddingLeft="@dimen/dp_10"
             android:paddingRight="@dimen/dp_10"
-            android:text="23"
+            android:text=""
             android:textColor="@color/white_color"
             android:textSize="@dimen/sp_10" />
     </RelativeLayout>

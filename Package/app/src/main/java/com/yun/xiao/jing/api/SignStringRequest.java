@@ -40,105 +40,106 @@ public class SignStringRequest extends StringRequest {
     public static final int DEFAULT_TIMEOUT_MS = 8000;
 
     public SignStringRequest(int method, final String url, final Response.Listener<String> listener, final Response.ErrorListener errorListener) {
-        super(method, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                if (listener != null) {
-                    listener.onResponse(response);
-                }
-                LogUtil.i(TAG, "SignStringRequest请求 onResponse : " + url);
-                LogUtil.i(TAG, "SignStringRequest请求 onResponse : " + response);
-//                if (!StringUtil.isSpace(url) && url.contains(HostManager.mainHost)) {
-//                    HostManager.resetMainHostWeight();//主host调用成功一次后将其权重置为0
+        super(method, url,listener,errorListener);
+//                new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//                if (listener != null) {
+//                    listener.onResponse(response);
 //                }
-                //下面的是  强制更新app的code
-//                if (CacheConstant.isMonopolyDialogShow) {
-//                    return;
-//                }
-//                JSONObject json = null;
-//                try {
-//                    json = new JSONObject(response);
-//                    int code = json.getInt("code");
-//                    if (code == ApiCode.CODE_MONOPOLY_UPDATE && !url.contains(ApiConstants.URL_APP_UPGRADE) /*url.contains("user/amount")*/) {
-//                        CacheConstant.isMonopolyDialogShow = true;
-//                        final AppVersionEntity appVersionEntity = new AppVersionEntity();
-//                        appVersionEntity.isMandatory = true;
-//                        appVersionEntity.content = "版本过低";
-//                        appVersionEntity.downloadUrl = "https://api.everpoker.win/index/download";
-//                        String canleStr = "";
-//                        if (appVersionEntity.isMandatory) {
-//                            //需要强制更新
-//                            canleStr = CacheConstant.GetString(R.string.exit);
-//                        } else {
-//                            canleStr = CacheConstant.GetString(R.string.update_not);
-//                        }
-//                        final EasyAlertDialog mVersionDialog = EasyAlertDialogHelper.createOkCancelDiolag(CacheConstant.mTopActivity,
-//                                null, CacheConstant.GetString(R.string.app_update_title), CacheConstant.GetString(R.string.update), canleStr, false, new EasyAlertDialogHelper.OnDialogActionListener() {
-//                                    @Override
-//                                    public void doCancelAction() {
-//                                        CacheConstant.isMonopolyDialogShow = false;
-//                                        if (appVersionEntity.isMandatory) {//强更 但是点击"取消"
-//                                            android.os.Process.killProcess(android.os.Process.myPid());
-//                                            System.exit(0);
-//                                        } else {
-//                                        }
-//                                    }
-//
-//                                    @Override
-//                                    public void doOkAction() {
-//                                        CacheConstant.isMonopolyDialogShow = false;
-//                                        Object[] params = new Object[2];
-//                                        params[0] = appVersionEntity;
-//                                        params[1] = false;//不检查是否存在文件直接重新下载覆盖
-//                                        try {
-//                                            Class checkVersionClass = Class.forName("com.htgames.nutspoker.ui.action.CheckVersionAction");
-//                                            Constructor constructor = checkVersionClass.getDeclaredConstructor(Activity.class, View.class);
-//                                            constructor.setAccessible(true);
-//                                            Object instance = constructor.newInstance(CacheConstant.mTopActivity, null);
-//                                            java.lang.reflect.Method dealDownloadNewApp = checkVersionClass.getDeclaredMethod("dealDownloadNewApp", AppVersionEntity.class, boolean.class);
-//                                            dealDownloadNewApp.setAccessible(true);
-//                                            dealDownloadNewApp.invoke(instance, params);
-//                                        } catch (Exception e) {
-//                                            e.printStackTrace();
-//                                        }
-//                                        if (!appVersionEntity.isMandatory) {
-//                                        } else {
+//                LogUtil.i(TAG, "SignStringRequest请求 onResponse : " + url);
+//                LogUtil.i(TAG, "SignStringRequest请求 onResponse : " + response);
+////                if (!StringUtil.isSpace(url) && url.contains(HostManager.mainHost)) {
+////                    HostManager.resetMainHostWeight();//主host调用成功一次后将其权重置为0
+////                }
+//                //下面的是  强制更新app的code
+////                if (CacheConstant.isMonopolyDialogShow) {
+////                    return;
+////                }
+////                JSONObject json = null;
+////                try {
+////                    json = new JSONObject(response);
+////                    int code = json.getInt("code");
+////                    if (code == ApiCode.CODE_MONOPOLY_UPDATE && !url.contains(ApiConstants.URL_APP_UPGRADE) /*url.contains("user/amount")*/) {
+////                        CacheConstant.isMonopolyDialogShow = true;
+////                        final AppVersionEntity appVersionEntity = new AppVersionEntity();
+////                        appVersionEntity.isMandatory = true;
+////                        appVersionEntity.content = "版本过低";
+////                        appVersionEntity.downloadUrl = "https://api.everpoker.win/index/download";
+////                        String canleStr = "";
+////                        if (appVersionEntity.isMandatory) {
+////                            //需要强制更新
+////                            canleStr = CacheConstant.GetString(R.string.exit);
+////                        } else {
+////                            canleStr = CacheConstant.GetString(R.string.update_not);
+////                        }
+////                        final EasyAlertDialog mVersionDialog = EasyAlertDialogHelper.createOkCancelDiolag(CacheConstant.mTopActivity,
+////                                null, CacheConstant.GetString(R.string.app_update_title), CacheConstant.GetString(R.string.update), canleStr, false, new EasyAlertDialogHelper.OnDialogActionListener() {
+////                                    @Override
+////                                    public void doCancelAction() {
+////                                        CacheConstant.isMonopolyDialogShow = false;
+////                                        if (appVersionEntity.isMandatory) {//强更 但是点击"取消"
 ////                                            android.os.Process.killProcess(android.os.Process.myPid());
 ////                                            System.exit(0);
-//                                            CacheConstant.mTopActivity.finish();
-//                                            CacheConstant.mTopActivity = null;
-//                                        }
-//                                    }
-//                                });
-//                        String updateContent = appVersionEntity.content;
-//                        if (!TextUtils.isEmpty(updateContent)) {
-//                            String goodUpdateContent = updateContent.replace(" ", "").replace("\t", "");//删除特殊字符
-//                            mVersionDialog.setMessage2(goodUpdateContent);
-//                            mVersionDialog.setMessage2GravityLeft();
-//                        }
-//                        mVersionDialog.setCancelable(false);
-//                        mVersionDialog.setCanceledOnTouchOutside(false);
-//                        mVersionDialog.show();
-//                        Window windowTest = mVersionDialog.getWindow();
-//                        WindowManager.LayoutParams lp = windowTest.getAttributes();
-//                        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-//                        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
-//                        windowTest.setGravity(Gravity.CENTER);
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
+////                                        } else {
+////                                        }
+////                                    }
+////
+////                                    @Override
+////                                    public void doOkAction() {
+////                                        CacheConstant.isMonopolyDialogShow = false;
+////                                        Object[] params = new Object[2];
+////                                        params[0] = appVersionEntity;
+////                                        params[1] = false;//不检查是否存在文件直接重新下载覆盖
+////                                        try {
+////                                            Class checkVersionClass = Class.forName("com.htgames.nutspoker.ui.action.CheckVersionAction");
+////                                            Constructor constructor = checkVersionClass.getDeclaredConstructor(Activity.class, View.class);
+////                                            constructor.setAccessible(true);
+////                                            Object instance = constructor.newInstance(CacheConstant.mTopActivity, null);
+////                                            java.lang.reflect.Method dealDownloadNewApp = checkVersionClass.getDeclaredMethod("dealDownloadNewApp", AppVersionEntity.class, boolean.class);
+////                                            dealDownloadNewApp.setAccessible(true);
+////                                            dealDownloadNewApp.invoke(instance, params);
+////                                        } catch (Exception e) {
+////                                            e.printStackTrace();
+////                                        }
+////                                        if (!appVersionEntity.isMandatory) {
+////                                        } else {
+//////                                            android.os.Process.killProcess(android.os.Process.myPid());
+//////                                            System.exit(0);
+////                                            CacheConstant.mTopActivity.finish();
+////                                            CacheConstant.mTopActivity = null;
+////                                        }
+////                                    }
+////                                });
+////                        String updateContent = appVersionEntity.content;
+////                        if (!TextUtils.isEmpty(updateContent)) {
+////                            String goodUpdateContent = updateContent.replace(" ", "").replace("\t", "");//删除特殊字符
+////                            mVersionDialog.setMessage2(goodUpdateContent);
+////                            mVersionDialog.setMessage2GravityLeft();
+////                        }
+////                        mVersionDialog.setCancelable(false);
+////                        mVersionDialog.setCanceledOnTouchOutside(false);
+////                        mVersionDialog.show();
+////                        Window windowTest = mVersionDialog.getWindow();
+////                        WindowManager.LayoutParams lp = windowTest.getAttributes();
+////                        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+////                        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+////                        windowTest.setGravity(Gravity.CENTER);
+////                    }
+////                } catch (JSONException e) {
+////                    e.printStackTrace();
+////                }
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                if (errorListener != null) {
+//                    errorListener.onErrorResponse(error);
 //                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                if (errorListener != null) {
-                    errorListener.onErrorResponse(error);
-                }
-                LogUtil.i(TAG, "SignStringRequest请求 onErrorResponse : " + (error == null ? "error=null" : error.toString()) + "\nurl: " + url);
-//                HostManager.addHostWeight(url);//增加失败权重
-            }
-        });
+//                LogUtil.i(TAG, "SignStringRequest请求 onErrorResponse : " + (error == null ? "error=null" : error.toString()) + "\nurl: " + url);
+////                HostManager.addHostWeight(url);//增加失败权重
+//            }
+//        });
         init();
         initVolleyInterceptor(method, url);
     }

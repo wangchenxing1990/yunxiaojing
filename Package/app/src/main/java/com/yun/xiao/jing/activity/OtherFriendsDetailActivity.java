@@ -29,8 +29,6 @@ public class OtherFriendsDetailActivity extends AppCompatActivity implements Vie
 
     public static void start(Activity activity, FindInfoBean infoBean) {
         Intent intent = new Intent(activity, OtherFriendsDetailActivity.class);
-//        Bundle bundle=new Bundle();
-//        bundle.putSerializable("infoBean",infoBean);
         intent.putExtra("infoBean", infoBean);
         activity.startActivity(intent);
     }

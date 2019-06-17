@@ -97,7 +97,7 @@ public class IntroduceActivity extends AppCompatActivity implements View.OnClick
                 frame_layout_fale.setBackgroundDrawable(fale);
                 frame_layout_female.setBackgroundDrawable(normal);
                 image_fale.setImageResource(R.mipmap.icon_male_normal);
-                image_female.setImageResource(R.mipmap.icon_female);
+                image_female.setImageResource(R.mipmap.icon_female_select);
                 sex = 1;
                 break;
             case R.id.frame_layout_female:
@@ -105,7 +105,7 @@ public class IntroduceActivity extends AppCompatActivity implements View.OnClick
                 frame_layout_fale.setBackgroundDrawable(normal);
                 frame_layout_female.setBackgroundDrawable(female);
                 image_fale.setImageResource(R.mipmap.icon_male);
-                image_female.setImageResource(R.mipmap.icon_female_normal);
+                image_female.setImageResource(R.mipmap.icon_femal_normal);
                 sex = 2;
                 break;
             case R.id.text_view_time:

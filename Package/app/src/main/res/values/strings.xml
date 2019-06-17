@@ -1,5 +1,5 @@
-<resources>
-    <string name="app_name">Super Time</string>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Suger Time</string>
     <string name="phone_name">Phone number</string>
     <string name="input_phone_name">Please enter your cell phone number</string>
     <string name="text_view_continue">Continue</string>
@@ -19,10 +19,10 @@
     <string name="text_square">Square</string>
     <string name="text_message">Message</string>
     <string name="text_me">Hello</string>
-    <string name="text_visits">关注</string>
+    <string name="text_visits">Follower</string>
     <string name="text_visits_number">0</string>
-    <string name="text_follower">粉丝</string>
-    <string name="text_Setting">进来访客</string>
+    <string name="text_follower">Fans</string>
+    <string name="text_Setting">Visits</string>
     <string name="text_setting_about_us">About us</string>
     <string name="text_setting_terms_service">Terms of service</string>
     <string name="text_setting_contanct_us">Contanct us</string>
@@ -30,23 +30,23 @@
     <string name="text_setting_delete">Delete</string>
 
 
-    <string name="userinfo_update_failed">上传失败</string>
-    <string name="network_is_not_available">网络连接失败，请检查你的网络设置</string>
-    <string name="password_is_empty">请输入密码</string>
-    <string name="passwordCheck_is_empty">请再次输入密码</string>
-    <string name="password_no_passwordCheck">两次密码不同</string>
+    <string name="userinfo_update_failed">fail to upload</string>
+    <string name="network_is_not_available">Network connection failed, please check your network Settings</string>
+    <string name="password_is_empty">enter your password</string>
+    <string name="passwordCheck_is_empty">Please enter your password again</string>
+    <string name="password_no_passwordCheck">Two different passwords</string>
 
-    <string name="input_name_info">请输入你的昵称</string>
-    <string name="select_sex">请选择性别</string>
-    <string name="select_birthday">请选择出生日期</string>
-    <string name="start_session_record">我发起了白板演示</string>
-    <string name="session_end_record">白板演示已结束</string>
+    <string name="input_name_info">Please enter your nickname</string>
+    <string name="select_sex">Please select gender</string>
+    <string name="select_birthday">Please select date of birth</string>
+    <string name="start_session_record">I initiated the whiteboard demonstration</string>
+    <string name="session_end_record">The whiteboard presentation is over</string>
 
-    <string name="text_phone_no_empty">手机号码不能为空</string>
-    <string name="text_device_no_empty">手机设备不能为空</string>
-    <string name="text_message_send_successfully">短信发送成功</string>
-    <string name="text_message_send_failed">短信发送失败</string>
-    <string name="text_phone_prefix_empty">手机号前缀地域参数为空</string>
+    <string name="text_phone_no_empty">Cell phone number cannot be empty</string>
+    <string name="text_device_no_empty">Mobile device cannot be empty</string>
+    <string name="text_message_send_successfully">SMS successfully sent</string>
+    <string name="text_message_send_failed">SMS failed to send</string>
+    <string name="text_phone_prefix_empty">The phone number prefix area parameter is empty</string>
     <string name="new_message_count_max">…</string>
     <string name="club">俱乐部</string>
     <string name="main_tab_discovery">动态</string>
@@ -55,24 +55,24 @@
     <string name="main_tab_record">生涯</string>
     <string name="main_tab_me">我</string>
     <string name="more">更多</string>
-    <string name="message_p2p_clear_tips">确定清空点对点历史消息?</string>
-    <string name="sure_keep_roam">确认单保留漫游</string>
-    <string name="message_info">聊天信息</string>
-    <string name="message_history_query">云消息记录</string>
-    <string name="message_clear">清空本地消息记录</string>
-    <string name="message_p2p_clear">清空点对点历史消息</string>
-    <string name="input_panel_file">发送文件</string>
-    <string name="readed">已读</string>
-    <string name="unread">未读</string>
-    <string name="ack_msg_info">消息已读详情</string>
-    <string name="create_normal_team">创建讨论组</string>
-    <string name="msg_notice">消息提醒</string>
-    <string name="input_panel_ack_msg">已读回执</string>
+    <string name="message_p2p_clear_tips">Make sure to empty the point-to-point history messages?</string>
+    <string name="sure_keep_roam">Confirmation form reserved roaming</string>
+    <string name="message_info">chat message</string>
+    <string name="message_history_query">Cloud message logging</string>
+    <string name="message_clear">Clear the local message record</string>
+    <string name="message_p2p_clear">Clear point-to-point history messages</string>
+    <string name="input_panel_file">send file</string>
+    <string name="readed">unread</string>
+    <string name="unread">readed</string>
+    <string name="ack_msg_info">The message has been read in detail</string>
+    <string name="create_normal_team">Create discussion groups</string>
+    <string name="msg_notice">message reminding </string>
+    <string name="input_panel_ack_msg">read receipt</string>
     <string name="input_panel_guess">猜 拳</string>
     <string name="input_panel_RTS">白 板</string>
     <string name="input_panel_snapchat">阅后即焚</string>
     <string name="input_panel_tip">Tip</string>
-    <string name="send_ack_msg">发送已读回执消息</string>
+    <string name="send_ack_msg">Send a read back message</string>
     <string name="report_one">Pronographic,</string>
     <string name="report_two">Politically senstive,</string>
     <string name="report_three">Ilegal violence,</string>

@@ -19,7 +19,7 @@ public class BannerViewPager extends ViewPager {
     private DiscoveryBannerAdapter mAdapter;
     public int currentBannerIndex = 0;
     private Handler autoNextHandler;
-    public static final int INTERVAL = 4000;//每4秒轮播一次
+    public static final int INTERVAL = 2000;//每4秒轮播一次
 
     public BannerViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);

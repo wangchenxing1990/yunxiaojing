@@ -35,10 +35,10 @@ public class FileBrowserViewHolder extends TViewHolder {
 
         File f = new File(fileItem.getPath());
         if (fileItem.getName().equals("@1")) {
-            fileName.setText("/返回根目录");
+            fileName.setText("/Return to root");
             fileImage.setImageResource(R.drawable.directory);
         } else if (fileItem.getName().equals("@2")) {
-            fileName.setText("..返回上一级目录");
+            fileName.setText("..Return to the previous directory");
             fileImage.setImageResource(R.drawable.directory);
         } else {
             fileName.setText(fileItem.getName());

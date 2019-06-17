@@ -108,11 +108,11 @@ public class PhoneNumberActivity extends AppCompatActivity implements View.OnCli
 //                    EnterCodeActivity.startActivity(PhoneNumberActivity.this,edit_text_input.getText().toString().trim());
                 } else if (code == ApiCode.USER_ALREADY_OFFLINE) {
                     relative_layout.setVisibility(View.VISIBLE);
-                }else if(code == ApiCode.USER_TIME_EXPIRATION){
+                } else if (code == ApiCode.USER_TIME_EXPIRATION) {
                     RegisterActivity.start(PhoneNumberActivity.this);
-                }else if(code==ApiCode.GET_USER_INFORMATION_FAILED){
+                } else if (code == ApiCode.GET_USER_INFORMATION_FAILED) {
                     RegisterActivity.start(PhoneNumberActivity.this);
-                }else if(code==ApiCode.TOKEN_NO_QUERY){
+                } else if (code == ApiCode.TOKEN_NO_QUERY) {
                     RegisterActivity.start(PhoneNumberActivity.this);
                 }
             }
@@ -129,7 +129,7 @@ public class PhoneNumberActivity extends AppCompatActivity implements View.OnCli
         com.netease.nimlib.sdk.RequestCallback<LoginInfo> call = new com.netease.nimlib.sdk.RequestCallback<LoginInfo>() {
             @Override
             public void onSuccess(LoginInfo loginInfo) {
-                Log.i("登录云信成功","登录云信成功");
+                Log.i("登录云信成功", "登录云信成功");
                 MainActivity.start(PhoneNumberActivity.this);
                 finish();
             }

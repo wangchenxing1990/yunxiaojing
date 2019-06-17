@@ -82,7 +82,7 @@ public class ConversationFragment extends Fragment implements View.OnClickListen
     private RecyclerView mRecyclerView;
     private ImageView imageView, image_view_left;
     private String sex = "0";
-    private int p = 1;
+    private int p = 0;
     private String page = "10";
     private SmartRefreshLayout mSwipeRefresh;
     private TextView text_view_number;
@@ -113,6 +113,7 @@ public class ConversationFragment extends Fragment implements View.OnClickListen
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(1000/*,false*/);//传入false表示刷新失败
+                p = 0;
                 getData();
             }
         });
@@ -138,10 +139,8 @@ public class ConversationFragment extends Fragment implements View.OnClickListen
                     String info = jsonObject.getString("info");
                     if (info.equals("0")) {
                         text_view_number.setVisibility(View.INVISIBLE);
-                        image_view_left.setClickable(false);
                     } else {
                         text_view_number.setText(info);
-                        image_view_left.setClickable(true);
                     }
 
                 } catch (JSONException e) {
@@ -181,27 +180,27 @@ public class ConversationFragment extends Fragment implements View.OnClickListen
                 if (code == ApiCode.HOME_PAGE_BROWSING_SUCCESSFULLY) {
                     OtherInformationActivity.start(getActivity(), toToken);
                 } else {
-                    Toast.makeText(ChessApp.sAppContext, "网络不好,稍后重试", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChessApp.sAppContext, "Bad network. Try again later", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailed() {
-                Toast.makeText(ChessApp.sAppContext, "网络不好,稍后重试", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ChessApp.sAppContext, "Bad network. Try again later", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void getData() {
-        mAction.getUserList(token, device, sex, String.valueOf(p+1), page, new RequestCallback() {
+        mAction.getUserList(token, device, sex, String.valueOf(p + 1), page, new RequestCallback() {
             @Override
             public void onResult(int code, String result, Throwable var3) {
                 Gson gson = new Gson();
                 PictureBean pictureBean = gson.fromJson(result, PictureBean.class);
-                if (isLoadMore){
+                if (isLoadMore) {
                     adapter.updateData(pictureBean.getInfo(), true);
                     p++;
-                }else{
+                } else {
                     adapter.updateData(pictureBean.getInfo(), false);
                 }
 

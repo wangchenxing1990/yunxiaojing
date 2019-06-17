@@ -21,9 +21,9 @@
         <activity
             android:name="com.netease.nim.uikit.business.session.activity.P2PMessageActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+        <!-- android:screenOrientation="portrait" -->
         <activity
             android:name="com.netease.nim.uikit.business.session.activity.TeamMessageActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -196,6 +196,14 @@
             android:theme="@style/VideoTheme" />
         <activity
             android:name="com.netease.nim.uikit.common.media.imagepicker.camera.CaptureActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="com.netease.nim.uikit.common.activity.ContactsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="com.netease.nim.uikit.common.activity.SystemMessageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>

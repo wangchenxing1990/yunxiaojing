@@ -37,13 +37,10 @@ public class RegisterAction extends BaseAction {
     private String requestCreateUrl = "";
 
     public void getRegisterCode(String mobile, String mobile_device, String mobile_prefix, final RequestCallback requestCallback) {
-//        if (!NetworkUtil.isNetAvailable(ChessApp.sAppContext)) {
-//            return;
-//        }
-        StyledDialog.buildLoading().show();
+
+        StyledDialog.buildLoading("").show();
         requestCreateUrl = ApiConstants.HOST + ApiConstants.CHECK_LOGIN;
         Log.i("wangyukui1990", requestCreateUrl);
-//        final HashMap<String, String> paramsMap = NetWork.getRequestCommonParams(ChessApp.sAppContext);
         final HashMap<String, String> paramsMap = new HashMap<>();
         paramsMap.put("mobile", mobile);
         paramsMap.put("mobile_device", mobile_device);
@@ -116,10 +113,9 @@ public class RegisterAction extends BaseAction {
     }
 
     public void getVerifyMessageCode(String mobile, String mobile_code, String mobile_device, String mobile_prefix, final RequestCallback requestCallback) {
-
+        StyledDialog.buildLoading("").show();
         requestCreateUrl = ApiConstants.HOST + ApiConstants.VERIFY_MOBILE_CODE;
         Log.i("wangyukui1990", requestCreateUrl);
-//        final HashMap<String, String> paramsMap = NetWork.getRequestCommonParams(ChessApp.sAppContext);
         final HashMap<String, String> paramsMap = new HashMap<>();
         paramsMap.put("mobile", mobile);
         paramsMap.put("mobile_device", mobile_device);
@@ -171,6 +167,7 @@ public class RegisterAction extends BaseAction {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                StyledDialog.dismissLoading();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -178,8 +175,7 @@ public class RegisterAction extends BaseAction {
                 if (!TextUtils.isEmpty(error.getMessage())) {
                     LogUtil.i(TAG, error.getMessage());
                 }
-//                Toast.makeText(ChessApp.sAppContext, R.string.club_create_failed, Toast.LENGTH_SHORT).show();
-//                DialogMaker.dismissProgressDialog();
+                StyledDialog.dismissLoading();
                 if (requestCallback != null) {
                     requestCallback.onFailed();
                 }
@@ -195,7 +191,7 @@ public class RegisterAction extends BaseAction {
     }
 
     public void updateInformation(String username, String birthday, int sex, String token, String device, final RequestCallback requestCallback) {
-        StyledDialog.buildLoading().show();
+        StyledDialog.buildLoading("").show();
         requestCreateUrl = ApiConstants.HOST + ApiConstants.UPDATE_USER_INFO;
         Log.i("wangyukui1990", requestCreateUrl);
         final HashMap<String, String> headerMap = new HashMap<>();
@@ -253,7 +249,7 @@ public class RegisterAction extends BaseAction {
 
     public void updatePasswordInfo(String userToken, String device, String password, final RequestCallback requestCallback) {
         requestCreateUrl = ApiConstants.HOST + ApiConstants.ADD_USER_PASSWORD;
-        StyledDialog.buildLoading().show();
+        StyledDialog.buildLoading("").show();
         Log.i("wangyukui1990", requestCreateUrl);
         final HashMap<String, String> headerMap = new HashMap<>();
         final HashMap<String, String> paramsMap = new HashMap<>();
@@ -340,8 +336,6 @@ public class RegisterAction extends BaseAction {
                 if (!TextUtils.isEmpty(error.getMessage())) {
                     LogUtil.i(TAG, error.getMessage());
                 }
-//                Toast.makeText(ChessApp.sAppContext, R.string.club_create_failed, Toast.LENGTH_SHORT).show();
-//                DialogMaker.dismissProgressDialog();
                 if (requestCallback != null) {
                     requestCallback.onFailed();
                 }
@@ -402,8 +396,6 @@ public class RegisterAction extends BaseAction {
                 if (!TextUtils.isEmpty(error.getMessage())) {
                     LogUtil.i(TAG, error.getMessage());
                 }
-//                Toast.makeText(ChessApp.sAppContext, R.string.club_create_failed, Toast.LENGTH_SHORT).show();
-//                DialogMaker.dismissProgressDialog();
                 if (requestCallback != null) {
                     requestCallback.onFailed();
                 }

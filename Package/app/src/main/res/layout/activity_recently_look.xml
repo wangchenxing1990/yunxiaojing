@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="最近访客"
+            android:text="View"
             android:textColor="@color/black_color"
             android:textSize="@dimen/sp_15" />
     </RelativeLayout>
@@ -39,5 +39,31 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/relative_layout"
         android:layout_marginTop="@dimen/dp_10" />
+
+    <RelativeLayout
+        android:id="@+id/relative_data_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="invisible">
+
+        <ImageView
+            android:id="@+id/image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/icon_look_me" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/image_view"
+            android:layout_marginTop="@dimen/dp_10"
+            android:gravity="center"
+            android:text="No one has viewed your information yet"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_18" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.util.Pools;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +13,9 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -33,7 +38,7 @@ import java.util.List;
 public class DiscoveryBannerAdapter extends AkPagerAdapter implements View.OnClickListener {
     private Pools.SimplePool<View> mPool = new Pools.SimplePool<View>(3);
     public int homeTabIndex = 0;
-    public String homeTabDisplayname = "全部";
+    public String homeTabDisplayname = "all";
 
     public DiscoveryBannerAdapter(Activity activity, Context c) {
         super(activity);
@@ -53,25 +58,19 @@ public class DiscoveryBannerAdapter extends AkPagerAdapter implements View.OnCli
         OtherInformationActivity.BannerItem bannerItem = (OtherInformationActivity.BannerItem) mData.get(realPos);
 //        LogUtil.i("循环轮播viewpager：" + position + "  root:" + "   realPos:" + realPos);
         final FrameLayout root = newJuImageView(realPos);
+
         int imageWidth = ScreenUtil.screenWidth;
-        int imageHeight = mActivity.getResources().getDimensionPixelOffset(R.dimen.dp_170);
+        int imageHeight = mActivity.getResources().getDimensionPixelOffset(R.dimen.dp_250);
 
         ImageLoader.getInstance().displayImage(bannerItem.picUrl, new NonViewAware(new ImageSize(imageWidth, imageHeight), ViewScaleType.CROP), createImageOptions(), new SimpleImageLoadingListener() {
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-//                int imageW = loadedImage.getWidth();
-//                int imageH = loadedImage.getHeight();
-//                ViewGroup.LayoutParams params = root.getLayoutParams();
-//                params.width = ScreenUtil.screenWidth;
-//                params.height = ScreenUtil.screenHeight * imageW / imageH;
-//                root.setLayoutParams(params);
-                Log.i("imageloadimageload","width::::"+loadedImage.getWidth()+"height::::"+loadedImage.getHeight());
-                Log.i("imageloadimageload","Screenwidth::::"+ScreenUtil.screenWidth+"Screenheight::::"+ScreenUtil.screenHeight);
-                Log.i("imageloadimageload","dp2px:::::"+ScreenUtil.dp2px(ChessApp.sAppContext,200));
-                Bitmap bitmap=ScreenUtil.scaleBitmap(loadedImage,ScreenUtil.screenWidth,ScreenUtil.dp2px(ChessApp.sAppContext,200));
-                root.setBackgroundDrawable(new BitmapDrawable(bitmap));
+
+//                Bitmap bitmap = ScreenUtil.scaleBitmap(loadedImage, ScreenUtil.screenWidth, ScreenUtil.dp2px(ChessApp.sAppContext, 200));
+                root.setBackgroundDrawable(new BitmapDrawable(loadedImage));
             }
         });
+
         root.setForeground(mActivity.getResources().getDrawable(R.drawable.fg_horde));
         root.setOnClickListener(this);
         root.setTag(R.id.item_data, bannerItem);

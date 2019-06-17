@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.api.model.contact.ContactChangedObserver;
@@ -238,6 +239,8 @@ public class OtherInformationActivity extends AppCompatActivity implements View.
         }
         initAutoNextHandler(mNoticeData);
 //        text_view_height.setText(infoBeanTwo.getInfo().get());
+//        Glide.with(ChessApp.sAppContext).load(mNoticeData.get(0).picUrl).into(image_view);
+//        image_view.setImageBitmap();
     }
 
     private String type = "1";
@@ -300,7 +303,7 @@ public class OtherInformationActivity extends AppCompatActivity implements View.
      * 拉黑用户向服务器
      */
     private void blackUserToService() {
-        EasyAlertDialogHelper.createOkCancelDiolag(this, "", "你确定拉黑该用户吗？", true, new EasyAlertDialogHelper.OnDialogActionListener() {
+        EasyAlertDialogHelper.createOkCancelDiolag(this, "", "Whether to blackmail the other party will delete the other party's information and no longer accept new information?", true, new EasyAlertDialogHelper.OnDialogActionListener() {
 
             @Override
             public void doCancelAction() {
@@ -348,11 +351,7 @@ public class OtherInformationActivity extends AppCompatActivity implements View.
 
             @Override
             public void onResult(int code, String result, Throwable var3) {
-                if (code == ApiCode.ESTABLISHMENT_ALREADY_FRIENDS) {
-                    NimUIKit.startP2PSession(OtherInformationActivity.this, infoBeanTwo.getInfo().getImaccount().toLowerCase(), infoBeanTwo.getInfo().getUsername());
-                } else if (code == ApiCode.ESTABLISHMENT_OF_IS_FRIENDSHIP) {
-                    addFriends();
-                }
+                NimUIKit.startP2PSession(OtherInformationActivity.this, infoBeanTwo.getInfo().getImaccount().toLowerCase(), infoBeanTwo.getInfo().getUsername());
             }
 
             @Override
@@ -400,8 +399,8 @@ public class OtherInformationActivity extends AppCompatActivity implements View.
         TextView text_picture = view.findViewById(R.id.text_picture);
         TextView text_cancel = view.findViewById(R.id.text_cancel);
 
-        text_take_photo.setText("举报用户");
-        text_picture.setText("拉黑用户");
+        text_take_photo.setText("Report");
+        text_picture.setText("Blacklist");
 
         text_take_photo.setOnClickListener(this);
         text_picture.setOnClickListener(this);
