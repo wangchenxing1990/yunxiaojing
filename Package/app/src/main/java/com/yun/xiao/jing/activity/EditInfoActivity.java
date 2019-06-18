@@ -62,7 +62,6 @@ public class EditInfoActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         meInfoBean = (MeInfoBean) getIntent().getSerializableExtra(ApiParams.PARAMS_EDIT_BEAN);
-//        ChessApp.addActivity(this);
         userToken = UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
         device = UserPreferences.getDevice();
         setContentView(R.layout.activity_edit_info);
@@ -178,32 +177,26 @@ public class EditInfoActivity extends AppCompatActivity implements View.OnClickL
                         selectListOne = PictureSelector.obtainMultipleResult(data);
                         indexId = meInfoBean.getInfo().getImages().size() >= 1 ? meInfoBean.getInfo().getImages().get(0).getImg_id() : 0;
                         submitTakePhoto(selectListOne);
-//                        displayImage(imageOne, selectListOne);
                     } else if (index == R.id.image_two) {
                         selectListTwo = PictureSelector.obtainMultipleResult(data);
                         indexId = meInfoBean.getInfo().getImages().size() >= 2 ? meInfoBean.getInfo().getImages().get(1).getImg_id() : 0;
                         submitTakePhoto(selectListTwo);
-//                        displayImage(imageTwo, selectListTwo);
                     } else if (index == R.id.image_three) {
                         selectListThree = PictureSelector.obtainMultipleResult(data);
                         indexId = meInfoBean.getInfo().getImages().size() >= 3 ? meInfoBean.getInfo().getImages().get(2).getImg_id() : 0;
                         submitTakePhoto(selectListThree);
-//                        displayImage(imageThree, selectListThree);
                     } else if (index == R.id.image_fore) {
                         selectListFore = PictureSelector.obtainMultipleResult(data);
                         indexId = meInfoBean.getInfo().getImages().size() >= 4 ? meInfoBean.getInfo().getImages().get(3).getImg_id() : 0;
                         submitTakePhoto(selectListFore);
-//                        displayImage(imageFore, selectListFore);
                     } else if (index == R.id.image_five) {
                         selectListFive = PictureSelector.obtainMultipleResult(data);
                         indexId = meInfoBean.getInfo().getImages().size() >= 5 ? meInfoBean.getInfo().getImages().get(4).getImg_id() : 0;
                         submitTakePhoto(selectListFive);
-//                        displayImage(imageFive, selectListFive);
                     } else if (index == R.id.image_six) {
                         selectListSix = PictureSelector.obtainMultipleResult(data);
                         indexId = meInfoBean.getInfo().getImages().size() >= 6 ? meInfoBean.getInfo().getImages().get(5).getImg_id() : 0;
                         submitTakePhoto(selectListSix);
-//                        displayImage(imageSix, selectListSix);
                     }
                     break;
             }
@@ -297,7 +290,7 @@ public class EditInfoActivity extends AppCompatActivity implements View.OnClickL
     String str = "";
 
     private void submitTakePhoto(final List<LocalMedia> selectList) {
-        StyledDialog.buildLoading().show();
+        StyledDialog.buildLoading("").show();
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart(ApiParams.PARAMS_IMAGE_DATA, ApiConstants.BITMAP_TO_BASE_64 + Bitamp2Base64.bitmapToBase64(BitmapFactory.decodeFile(selectList.get(0).getCompressPath())));
         if (indexId != 0) {
@@ -334,8 +327,6 @@ public class EditInfoActivity extends AppCompatActivity implements View.OnClickL
                 handler.sendMessage(message);
             }
         });
-//            }
-//        }.start();
     }
 
     class MyHandler extends Handler {

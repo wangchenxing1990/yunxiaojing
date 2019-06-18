@@ -173,7 +173,6 @@ public class PostInfoActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.frame_layout_post:
                 submitTakePhoto();
-//                submitPostInDynamic();//发表动态
                 break;
         }
     }
@@ -210,8 +209,6 @@ public class PostInfoActivity extends AppCompatActivity implements View.OnClickL
     String strTwo = "";
 
     private void submitTakePhoto() {
-
-        StyledDialog.buildLoading().show();
         String content = edit_text_view.getText().toString().trim();
         if (TextUtils.isEmpty(content) && selectList.size() == 0) {
             Toast.makeText(ChessApp.sAppContext, "Please enter the published content", Toast.LENGTH_SHORT).show();
@@ -231,6 +228,7 @@ public class PostInfoActivity extends AppCompatActivity implements View.OnClickL
         }
         String userToken = UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
         String device = UserPreferences.getDevice();
+        StyledDialog.buildLoading("").show();
         OkHttpClient okHttp = new OkHttpClient();
         builder.addFormDataPart("content", content);
         Request request = new Request.Builder()

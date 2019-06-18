@@ -148,6 +148,7 @@ public class FindFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(1000/*,false*/);//传入false表示刷新失败
+                isLoadMore = false;
                 getDataFindInformation();
             }
         });
@@ -165,7 +166,6 @@ public class FindFragment extends Fragment implements View.OnClickListener {
     private boolean isLoadMore;
 
     public void getDataFindInformation() {
-        Log.i("pppppppp", "ppppppp::::" + p);
         mAction.getFindDiscoveryData(userToken, device, type, String.valueOf(p), page, new RequestCallback() {
             @Override
             public void onResult(int code, String result, Throwable var3) {
@@ -173,21 +173,12 @@ public class FindFragment extends Fragment implements View.OnClickListener {
                     List<FindInfoBean> list = ParseObjectToHaspMap.testJackson(result);
                     if (isLoadMore) {
                         findAdapter.updateData(list, true);
-                        isLoadMore = false;
                     } else {
                         if (p == 1) {
                             findAdapter.updateData(list, false);
                         }
                     }
-                    isLoadMore = false;
                 } else if (code == ApiCode.DYNAMIC_LIST_EMPTY) {
-//                    if (findAdapter.getData() != null && findAdapter.getData().size() != 0) {
-//                        relative_recycler.setVisibility(View.VISIBLE);
-//                        relative_data_empty.setVisibility(View.INVISIBLE);
-//                    } else {
-//                        relative_recycler.setVisibility(View.INVISIBLE);
-//                        relative_data_empty.setVisibility(View.VISIBLE);
-//                    }
                 }
 
             }
@@ -303,6 +294,5 @@ public class FindFragment extends Fragment implements View.OnClickListener {
         if (myBroadCast != null) {
             getActivity().unregisterReceiver(myBroadCast);
         }
-
     }
 }

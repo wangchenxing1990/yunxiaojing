@@ -35,7 +35,7 @@ public class EnterCodeActivity extends AppCompatActivity implements View.OnClick
     private TextView text_button_view, text_two;
     private NumKeyboard num_keyboard_layout;
     private GridPwdView join_game_grid_pwd_view;
-    String phone = "";
+    private String phone = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,8 +64,6 @@ public class EnterCodeActivity extends AppCompatActivity implements View.OnClick
                     UserPreferences.getInstance(ChessApp.sAppContext).setUserToken(token);
                     UserPreferences.getInstance(ChessApp.sAppContext).setUserIMAccount(imaccount);
                     UserPreferences.getInstance(ChessApp.sAppContext).setUserIMToken(imtoken);
-//                    IntroduceActivity.start(EnterCodeActivity.this);
-//                    SetPasswordActivity.start(EnterCodeActivity.this);
                     AddUserHeaderImgActivity.start(EnterCodeActivity.this);
                     StyledDialog.dismissLoading();
                 } catch (JSONException e) {
@@ -95,7 +93,6 @@ public class EnterCodeActivity extends AppCompatActivity implements View.OnClick
         switch (v.getId()) {
             case R.id.text_button_view:
                 getData();//获取网络数据
-//                IntroduceActivity.start(this);
                 break;
         }
     }

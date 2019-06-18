@@ -16,8 +16,7 @@
         <com.yun.xiao.jing.defineView.BannerViewPager
             android:id="@+id/view_pager_auto_notice"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@mipmap/banner_default" />
+            android:layout_height="match_parent" />
 
         <com.yun.xiao.jing.defineView.DiscoveryBannerIndicator
             android:id="@+id/discovery_banner_indicator"
@@ -31,9 +30,8 @@
         android:id="@+id/image_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_230"
-        android:visibility="invisible"
         android:scaleType="matrix"
-        />
+        android:visibility="invisible" />
 
     <ImageView
         android:id="@+id/iamge_view_left"

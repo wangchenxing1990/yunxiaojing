@@ -89,8 +89,8 @@ public class PictureAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (isMore) {//是上拉加载更多
             listData.addAll(info);
         } else {//不是上拉加载更多
-            this.listData.clear();
-            this.listData = info;
+            listData.clear();
+            listData = info;
         }
         notifyDataSetChanged();
     }

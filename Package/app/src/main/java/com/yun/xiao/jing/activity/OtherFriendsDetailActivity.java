@@ -82,7 +82,7 @@ public class OtherFriendsDetailActivity extends AppCompatActivity implements Vie
     private void initData() {
         Picasso.with(this).load(infoBean.getHeadimg()).transform(new CircleTransform()).into(image_view_left);
         text_name.setText(infoBean.getUsername());
-        text_time.setText(DateTool.stampToDate(String.valueOf(infoBean.getCreate_time())));
+        text_time.setText(String.valueOf(DateTool.formatTimestampToStr(infoBean.getCreate_time(),"")));
         text_content.setText(infoBean.getContent());
 
         text_fans.setText(NumberTool.intToString(String.valueOf(infoBean.getPraise())));

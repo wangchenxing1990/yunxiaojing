@@ -142,9 +142,9 @@ public class OtherInformationActivity extends AppCompatActivity implements View.
         initView();//初始化view
         getOtherFriendData();
         getDataFindInformation();
-        registerObservers(true);
-        registerDropCompletedListener(true);
-        registerOnlineStateChangeListener(true);
+//        registerObservers(true);
+//        registerDropCompletedListener(true);
+//        registerOnlineStateChangeListener(true);
     }
 
     DiscoveryBannerIndicator discovery_banner_indicator;
@@ -238,9 +238,6 @@ public class OtherInformationActivity extends AppCompatActivity implements View.
             view_pager_auto_notice.setCurrentItem(mNoticeData.size() == 1 ? 0 : 500);
         }
         initAutoNextHandler(mNoticeData);
-//        text_view_height.setText(infoBeanTwo.getInfo().get());
-//        Glide.with(ChessApp.sAppContext).load(mNoticeData.get(0).picUrl).into(image_view);
-//        image_view.setImageBitmap();
     }
 
     private String type = "1";
@@ -265,7 +262,6 @@ public class OtherInformationActivity extends AppCompatActivity implements View.
 
             }
         });
-
     }
 
     @Override
@@ -432,194 +428,13 @@ public class OtherInformationActivity extends AppCompatActivity implements View.
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        registerObservers(false);
+
         registerDropCompletedListener(false);
-        registerOnlineStateChangeListener(false);
-    }
-
-    private void registerOnlineStateChangeListener(boolean register) {
-        if (!NimUIKitImpl.enableOnlineState()) {
-            return;
-        }
-        NimUIKitImpl.getOnlineStateChangeObservable().registerOnlineStateChangeListeners(onlineStateChangeObserver, register);
-    }
-
-    OnlineStateChangeObserver onlineStateChangeObserver = new OnlineStateChangeObserver() {
-        @Override
-        public void onlineStateChange(Set<String> accounts) {
-//            notifyDataSetChanged();
-        }
-    };
-
-    /**
-     * ********************** 收消息，处理状态变化 ************************
-     */
-    private void registerObservers(boolean register) {
-        MsgServiceObserve service = NIMClient.getService(MsgServiceObserve.class);
-        service.observeReceiveMessage(messageReceiverObserver, register);
-        service.observeRecentContact(messageObserver, register);
-        service.observeMsgStatus(statusObserver, register);
-        service.observeRecentContactDeleted(deleteObserver, register);
-
-        registerTeamUpdateObserver(register);
-        registerTeamMemberUpdateObserver(register);
-        NimUIKit.getContactChangedObservable().registerObserver(friendDataChangedObserver, register);
-        if (register) {
-            registerUserInfoObserver();
-        } else {
-            unregisterUserInfoObserver();
-        }
 
     }
 
-    private void unregisterUserInfoObserver() {
-        if (userInfoObserver != null) {
-            NimUIKit.getUserInfoObservable().registerObserver(userInfoObserver, false);
-        }
-    }
-
-    private void refreshMessages(boolean unreadChanged) {
-//        sortRecentContacts(items);
-//        notifyDataSetChanged();
-//
-//        if (unreadChanged) {
-//
-//            // 方式一：累加每个最近联系人的未读（快）
-//
-//            int unreadNum = 0;
-//            for (RecentContact r : items) {
-//                unreadNum += r.getUnreadCount();
-//            }
-//
-//            // 方式二：直接从SDK读取（相对慢）
-//            //int unreadNum = NIMClient.getService(MsgService.class).getTotalUnreadCount();
-//
-//            if (callback != null) {
-//                callback.onUnreadCountChange(unreadNum);
-//            }
-
-//            Badger.updateBadgerCount(unreadNum);
-//        }
-    }
-
-    ContactChangedObserver friendDataChangedObserver = new ContactChangedObserver() {
-        @Override
-        public void onAddedOrUpdatedFriends(List<String> accounts) {
-            refreshMessages(false);
-        }
-
-        @Override
-        public void onDeletedFriends(List<String> accounts) {
-            refreshMessages(false);
-        }
-
-        @Override
-        public void onAddUserToBlackList(List<String> account) {
-            refreshMessages(false);
-        }
-
-        @Override
-        public void onRemoveUserFromBlackList(List<String> account) {
-            refreshMessages(false);
-        }
-    };
 
     private UserInfoObserver userInfoObserver;
-
-    private void registerUserInfoObserver() {
-        if (userInfoObserver == null) {
-            userInfoObserver = new UserInfoObserver() {
-                @Override
-                public void onUserInfoChanged(List<String> accounts) {
-//                    refreshMessages(false);
-                }
-            };
-        }
-        NimUIKit.getUserInfoObservable().registerObserver(userInfoObserver, true);
-    }
-
-    TeamMemberDataChangedObserver teamMemberDataChangedObserver = new TeamMemberDataChangedObserver() {
-        @Override
-        public void onUpdateTeamMember(List<TeamMember> members) {
-//            adapter.notifyDataSetChanged();
-        }
-
-        @Override
-        public void onRemoveTeamMember(List<TeamMember> member) {
-
-        }
-    };
-
-    private void registerTeamMemberUpdateObserver(boolean register) {
-        NimUIKit.getTeamChangedObservable().registerTeamMemberDataChangedObserver(teamMemberDataChangedObserver, register);
-    }
-
-    TeamDataChangedObserver teamDataChangedObserver = new TeamDataChangedObserver() {
-
-        @Override
-        public void onUpdateTeams(List<Team> teams) {
-//            adapter.notifyDataSetChanged();
-        }
-
-        @Override
-        public void onRemoveTeam(Team team) {
-
-        }
-    };
-
-    /**
-     * 注册群信息&群成员更新监听
-     */
-    private void registerTeamUpdateObserver(boolean register) {
-        NimUIKit.getTeamChangedObservable().registerTeamDataChangedObserver(teamDataChangedObserver, register);
-    }
-
-    Observer<RecentContact> deleteObserver = new Observer<RecentContact>() {
-        @Override
-        public void onEvent(RecentContact recentContact) {
-//            if (recentContact != null) {
-//                for (RecentContact item : items) {
-//                    if (TextUtils.equals(item.getContactId(), recentContact.getContactId())
-//                            && item.getSessionType() == recentContact.getSessionType()) {
-//                        items.remove(item);
-//                        refreshMessages(true);
-//                        break;
-//                    }
-//                }
-//            } else {
-//                items.clear();
-//                refreshMessages(true);
-//            }
-        }
-    };
-
-    Observer<IMMessage> statusObserver = new Observer<IMMessage>() {
-        @Override
-        public void onEvent(IMMessage message) {
-//            int index = getItemIndex(message.getUuid());
-////            if (index >= 0 && index < items.size()) {
-////                RecentContact item = items.get(index);
-////                item.setMsgStatus(message.getStatus());
-////                refreshViewHolderByIndex(index);
-////            }
-        }
-    };
-
-    Observer<List<RecentContact>> messageObserver = new Observer<List<RecentContact>>() {
-        @Override
-        public void onEvent(List<RecentContact> recentContacts) {
-            if (!DropManager.getInstance().isTouchable()) {
-                // 正在拖拽红点，缓存数据
-                for (RecentContact r : recentContacts) {
-//                    cached.put(r.getContactId(), r);
-                }
-
-                return;
-            }
-
-//            onRecentContactChanged(recentContacts);
-        }
-    };
 
     // 暂存消息，当RecentContact 监听回来时使用，结束后清掉
     private Map<String, Set<IMMessage>> cacheMessages = new HashMap<>();

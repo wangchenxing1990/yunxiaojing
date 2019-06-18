@@ -113,6 +113,7 @@ public class ConversationFragment extends Fragment implements View.OnClickListen
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(1000/*,false*/);//传入false表示刷新失败
+                isLoadMore = false;
                 p = 0;
                 getData();
             }
@@ -122,6 +123,7 @@ public class ConversationFragment extends Fragment implements View.OnClickListen
             public void onLoadmore(RefreshLayout refreshlayout) {
                 refreshlayout.finishLoadmore(1000/*,false*/);//传入false表示加载失败
                 isLoadMore = true;
+                p++;
                 getData();
             }
         });
@@ -199,12 +201,10 @@ public class ConversationFragment extends Fragment implements View.OnClickListen
                 PictureBean pictureBean = gson.fromJson(result, PictureBean.class);
                 if (isLoadMore) {
                     adapter.updateData(pictureBean.getInfo(), true);
-                    p++;
                 } else {
                     adapter.updateData(pictureBean.getInfo(), false);
                 }
 
-                isLoadMore = false;
             }
 
             @Override

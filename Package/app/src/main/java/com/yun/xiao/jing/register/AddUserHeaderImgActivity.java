@@ -510,7 +510,7 @@ public class AddUserHeaderImgActivity extends AppCompatActivity implements View.
 
     private void submitTakePhoto(final Bitmap bitmap) {
         Log.i("1111111111", "333333333333");
-        StyledDialog.buildLoading().show();
+        StyledDialog.buildLoading("").show();
         String strTwo = Bitamp2Base64.bitmapToBase64(bitmap);
         String userToken = UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
         String device = UserPreferences.getDevice();
