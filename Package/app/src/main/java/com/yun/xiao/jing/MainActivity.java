@@ -134,15 +134,6 @@ public class MainActivity extends AppCompatActivity {
                     changeFragment(findFragment, FRAGMENT_RECENTCONTACTS);
                 } else if (v == homeTab) {
                     Log.i("11111111111", "1441414444114");
-//                    if (mCurrentFragment != null && mGameFragment != null && mCurrentFragment == mGameFragment) {
-////                        mGameFragment.onBackPressed();
-//                    } else {
-//                        if (mGameFragment == null) {
-//                            mGameFragment = GameFragmentNew.newInstance();
-//                        }
-//                        changeFragment(mGameFragment, FRAGMENT_GAME);
-//                    }
-//                    PostInfoActivity.start(MainActivity.this);
                 } else if (v == recordTab) {
                     if (settingFragment == null) {
                         settingFragment = new RecentContactsFragment();

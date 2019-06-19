@@ -64,8 +64,6 @@ public class ConversationFragment extends Fragment implements View.OnClickListen
         super.onCreate(savedInstanceState);
         device = UserPreferences.getDevice();
         token = UserPreferences.getInstance(ChessApp.sAppContext).getUserToken();
-        Log.i("tokentokentoken", "token:::" + token);
-        Log.i("device", "devicedevice:::" + device);
         adapter = new PictureAdapter(listData);
         mAction = new FindAction(getActivity(), null);
     }
